@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>アプリ・ユースケースラボ — Apps-UC</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="AIユースケース・ポートフォリオから作った、Claude / Claude Code / Claude Cowork の実プロトタイプ集。">
+<style>
+  :root{
+    color-scheme: light dark;
+    --paper:#eef1f5; --surface:#ffffff; --surface-2:#f5f7fa;
+    --ink:#18202b; --ink-2:#4a5666; --ink-3:#7c8797;
+    --line:#dce1e9; --line-2:#c6cdd8;
+    --accent:#1f4e79; --accent-soft:#e4edf6; --accent-ink:#16385a;
+    --c1:#1f4e79; --c1-soft:#e4edf6;   /* Claude */
+    --c2:#2f8f7a; --c2-soft:#e0f0eb;   /* Claude Code */
+    --c3:#8a5a1f; --c3-soft:#f4ecdf;   /* Claude Cowork */
+    --shadow:0 1px 2px rgba(24,32,43,.05),0 8px 26px -10px rgba(24,32,43,.22);
+    --radius:16px; --maxw:1000px;
+    --serif:ui-serif,"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  }
+  :root:not([data-theme="light"]){ @media (prefers-color-scheme: dark){
+    --paper:#0f141a; --surface:#171d26; --surface-2:#1e2630;
+    --ink:#e7ecf3; --ink-2:#a9b4c2; --ink-3:#78859a;
+    --line:#28313d; --line-2:#39434f;
+    --accent:#6ea8dc; --accent-soft:#1d2a38; --accent-ink:#bcd6ef;
+    --c1:#6ea8dc; --c1-soft:#1d2a38; --c2:#5cbfa8; --c2-soft:#173028; --c3:#c9a15c; --c3-soft:#2c2416;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px -14px rgba(0,0,0,.7);
+  }}
+  :root[data-theme="dark"]{
+    --paper:#0f141a; --surface:#171d26; --surface-2:#1e2630;
+    --ink:#e7ecf3; --ink-2:#a9b4c2; --ink-3:#78859a;
+    --line:#28313d; --line-2:#39434f;
+    --accent:#6ea8dc; --accent-soft:#1d2a38; --accent-ink:#bcd6ef;
+    --c1:#6ea8dc; --c1-soft:#1d2a38; --c2:#5cbfa8; --c2-soft:#173028; --c3:#c9a15c; --c3-soft:#2c2416;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px -14px rgba(0,0,0,.7);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;letter-spacing:-.01em;line-height:1.18}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+
+  .topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex;align-items:center;gap:12px;height:58px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:600;font-size:15px}
+  .brand .dot{width:27px;height:27px;border-radius:8px;background:linear-gradient(150deg,var(--accent),color-mix(in srgb,var(--accent) 55%,#000));display:grid;place-items:center;color:#fff;font-family:var(--serif);font-size:15px;flex:none}
+  .spacer{flex:1}
+  .theme-btn{border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);border-radius:8px;height:34px;padding:0 12px;font-size:13px;cursor:pointer;font-family:var(--sans)}
+  .theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+  .hero{padding:56px 0 30px}
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 15px}
+  .hero h1{font-size:clamp(32px,5.2vw,52px);margin:0 0 18px}
+  .hero p.lead{font-size:clamp(16px,2.2vw,19px);color:var(--ink-2);max-width:64ch;margin:0 0 22px}
+  .metaline{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:16px}
+  .metaline b{color:var(--ink-2);font-weight:600}
+
+  .sectitle{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:34px 0 14px;display:flex;align-items:center;gap:12px}
+  .sectitle::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .cards{display:grid;grid-template-columns:1fr;gap:18px}
+  @media(min-width:760px){.cards{grid-template-columns:1fr 1fr}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
+  .card .band{height:5px;background:var(--tone)}
+  .card .in{padding:22px 22px 20px;display:flex;flex-direction:column;gap:13px;flex:1}
+  .plat{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--tone);background:var(--tone-soft);border-radius:20px;padding:5px 12px}
+  .card h3{font-family:var(--sans);font-size:20px;font-weight:700;margin:0;letter-spacing:-.01em}
+  .card .uc{font-size:12.5px;color:var(--ink-3);font-family:var(--mono)}
+  .card p{margin:0;font-size:14px;color:var(--ink-2);flex:1}
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-size:11.5px;color:var(--ink-3);border:1px solid var(--line);border-radius:6px;padding:2px 8px}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .btn{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;border-radius:9px;padding:9px 15px;cursor:pointer;border:1px solid var(--line-2);background:transparent;color:var(--ink-2);font-family:var(--sans)}
+  .btn:hover{text-decoration:none;border-color:var(--tone);color:var(--tone)}
+  .btn.solid{background:var(--tone);border-color:var(--tone);color:#fff}
+  .btn.solid:hover{filter:brightness(1.06);color:#fff}
+  .big{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin-bottom:-4px}
+
+  .note{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:26px 0;font-size:13.5px;color:var(--ink-2);box-shadow:var(--shadow)}
+  .note h3{font-family:var(--sans);font-size:15px;margin:0 0 8px}
+  .note ul{margin:6px 0 0;padding-left:20px} .note li{margin-bottom:5px}
+  .note code{background:var(--surface-2);padding:1px 6px;border-radius:5px;font-size:12px;font-family:var(--mono)}
+
+  footer{border-top:1px solid var(--line);padding:24px 0 60px;font-size:12.5px;color:var(--ink-3);margin-top:30px}
+  footer b{color:var(--ink-2)}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap">
+  <div class="brand"><span class="dot">Lab</span><span>アプリ・ユースケースラボ</span></div>
+  <span class="spacer"></span>
+  <button class="theme-btn" id="themeBtn" type="button">◐ テーマ</button>
+</div></div>
+
+<main class="wrap">
+  <section class="hero">
+    <p class="eyebrow">Apps-UC · Prototype Lab</p>
+    <h1>AIユースケースを、触れるプロトタイプにする。</h1>
+    <p class="lead">
+      社内AIユースケース・ポートフォリオ（39件・2段スクリーニング）をもとに、
+      <b>Claude / Claude Code / Claude Cowork</b> それぞれの強みに合わせて代表ユースケースを形にしたラボ。
+      下のカードから各プロトタイプを開けます。
+    </p>
+    <div class="metaline">
+      <span><b>3</b> プロトタイプ</span>
+      <span><b>元ネタ</b> UC-29/23・UC-16・UC-05/53</span>
+      <span><b>共有</b> ログイン不要の公開ページ</span>
+    </div>
+  </section>
+
+  <div class="sectitle">プロトタイプ</div>
+  <div class="cards">
+
+    <!-- 01 -->
+    <article class="card" style="--tone:var(--c1);--tone-soft:var(--c1-soft)">
+      <div class="band"></div>
+      <div class="in">
+        <span class="plat">● Claude（Artifacts＋採点キット）</span>
+        <h3>AIリテラシー＆セキュリティ・ガバナンス アセスメント</h3>
+        <div class="uc">UC-29 AI成熟度診断（外販）＋ UC-23 測定キット</div>
+        <p>自己申告ではなく、<b>本人が書いた文章</b>（プロンプト／会話ログ／シナリオ回答）をLLMに読ませ、AIリテラシー6次元とセキュリティ・ガバナンス意識5次元を<b>世界標準フレームワーク準拠</b>で採点・可視化。</p>
+        <div class="tags"><span class="tag">UNESCO/OECD</span><span class="tag">NIST/ISO/OWASP</span><span class="tag">レーダー＋危険挙動検知</span></div>
+        <div class="actions">
+          <a class="btn solid" href="./prototypes/01-claude-ai-maturity-diagnostic/">▶ アプリを開く</a>
+          <a class="btn" href="./prototypes/01-claude-ai-maturity-diagnostic/scoring-kit/">採点キット</a>
+          <a class="btn" href="./prototypes/01-claude-ai-maturity-diagnostic/README.md">解説</a>
+          <a class="btn" href="./prototypes/01-claude-ai-maturity-diagnostic/index-org-maturity.html">旧・組織診断</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 02 -->
+    <article class="card" style="--tone:var(--c2);--tone-soft:var(--c2-soft)">
+      <div class="band"></div>
+      <div class="in">
+        <span class="plat">● Claude Code</span>
+        <h3>会議自動化パック</h3>
+        <div class="uc">UC-16 会議自動化（議事録・タスク抽出）</div>
+        <p>文字起こしを入力に、<b>議事録・決定事項・タスク（担当/期限/優先）</b>を1コマンドで生成するPython CLIキット。LLMモード＋キー不要のオフラインデモ、人名匿名化（G1）対応。</p>
+        <div class="tags"><span class="tag">Python CLI</span><span class="tag">Markdown＋JSON</span><span class="tag">--offline / --redact</span></div>
+        <div class="actions">
+          <a class="btn solid" href="./prototypes/02-claudecode-meeting-pack/">▶ 説明ページ</a>
+          <a class="btn" href="./prototypes/02-claudecode-meeting-pack/meeting_pack.py" download>meeting_pack.py</a>
+          <a class="btn" href="./prototypes/02-claudecode-meeting-pack/README.md">解説</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 03 -->
+    <article class="card" style="--tone:var(--c3);--tone-soft:var(--c3-soft)">
+      <div class="band"></div>
+      <div class="in">
+        <span class="plat">● Claude Cowork</span>
+        <h3>競合モニタリング Skill</h3>
+        <div class="uc">UC-05 競合モニタリング配信 ＋ UC-53 ベンチマーク更新</div>
+        <p>担当業界・クライアント・競合の動きを定点で収集・検証・要約し、<b>出典リンク付き週次ブリーフィング</b>を生成して配信するCoworkスキル。原文リンク必須・一次情報主義を手順に内蔵。</p>
+        <div class="tags"><span class="tag">SKILL.md</span><span class="tag">Web＋Gmail/Notion</span><span class="tag">週次ブリーフィング</span></div>
+        <div class="actions">
+          <a class="btn solid" href="./prototypes/03-cowork-competitive-monitor/">▶ 説明ページ</a>
+          <a class="btn" href="./prototypes/03-cowork-competitive-monitor/SKILL.md" download>SKILL.md</a>
+          <a class="btn" href="./prototypes/03-cowork-competitive-monitor/README.md">解説</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="note">
+    <h3>このラボの考え方</h3>
+    3プラットフォームは「同じことを別の場所でやる」ものではなく、担当領域が違います。選抜資料の適格性テスト（チャットで済むものはUC化しない）に沿って役割分担しました。
+    <ul>
+      <li><b>Claude</b> … 触ってもらう体験が価値になるもの（採点キット＋可視化アプリ）。</li>
+      <li><b>Claude Code</b> … コード資産・パイプラインとして持つべきもの（CLI化・自動化）。</li>
+      <li><b>Claude Cowork</b> … 複数アプリを横断するエージェント作業（収集→検証→要約→配信）。</li>
+    </ul>
+    各プロトタイプは共通原則（G1 データ投入区分／G5 様式の汎用形式化／A1・G2 人間最終判断／G6 二モデル検証）を守っています。
+  </div>
+
+  <footer>
+    <b>アプリ・ユースケースラボ（Apps-UC）</b> — Claude / Claude Code / Claude Cowork のプロトタイプ集。
+    リポジトリ: <a href="https://github.com/masaGenAI/Apps-UC">masaGenAI/Apps-UC</a>
+  </footer>
+</main>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  document.getElementById('themeBtn').addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    var sysDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=!cur?(sysDark?'light':'dark'):(cur==='dark'?'light':'dark');
+    root.setAttribute('data-theme',next);
+  });
+})();
+</script>
+</body>
+</html>
