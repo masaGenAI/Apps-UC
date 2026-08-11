@@ -1,0 +1,593 @@
+<title>AI活用 成熟度診断 — アプリ・ユースケースラボ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    color-scheme: light dark;
+    /* --- Executive Slate palette (light) --- */
+    --paper:#eef1f5;
+    --surface:#ffffff;
+    --surface-2:#f5f7fa;
+    --ink:#18202b;
+    --ink-2:#4a5666;
+    --ink-3:#7c8797;
+    --line:#dce1e9;
+    --line-2:#c6cdd8;
+    --accent:#1f4e79;        /* prussian/consulting blue */
+    --accent-soft:#e4edf6;
+    --accent-ink:#16385a;
+    /* maturity semantic scale */
+    --m1:#c0453a; --m1-bg:#f7e6e4;
+    --m2:#c98a2b; --m2-bg:#f8eede;
+    --m3:#b79a1f; --m3-bg:#f6f0d9;
+    --m4:#2f8f7a; --m4-bg:#e0f0eb;
+    --m5:#1f6f8f; --m5-bg:#dceef3;
+    --shadow:0 1px 2px rgba(24,32,43,.05),0 6px 20px -8px rgba(24,32,43,.18);
+    --radius:14px;
+    --maxw:940px;
+    --serif:ui-serif,"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  :root:not([data-theme="light"]){
+    @media (prefers-color-scheme: dark){
+      --paper:#11151b;
+      --surface:#181e27;
+      --surface-2:#1f2732;
+      --ink:#e7ecf3;
+      --ink-2:#a9b4c2;
+      --ink-3:#78859a;
+      --line:#2a333f;
+      --line-2:#39434f;
+      --accent:#6ea8dc;
+      --accent-soft:#20303f;
+      --accent-ink:#bcd6ef;
+      --m1:#e0685c; --m1-bg:#3a211f;
+      --m2:#e0a758; --m2-bg:#38291a;
+      --m3:#cfb24a; --m3-bg:#332d18;
+      --m4:#5cbfa8; --m4-bg:#183029;
+      --m5:#5aadcc; --m5-bg:#152c34;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -12px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#11151b;
+    --surface:#181e27;
+    --surface-2:#1f2732;
+    --ink:#e7ecf3;
+    --ink-2:#a9b4c2;
+    --ink-3:#78859a;
+    --line:#2a333f;
+    --line-2:#39434f;
+    --accent:#6ea8dc;
+    --accent-soft:#20303f;
+    --accent-ink:#bcd6ef;
+    --m1:#e0685c; --m1-bg:#3a211f;
+    --m2:#e0a758; --m2-bg:#38291a;
+    --m3:#cfb24a; --m3-bg:#332d18;
+    --m4:#5cbfa8; --m4-bg:#183029;
+    --m5:#5aadcc; --m5-bg:#152c34;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -12px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);line-height:1.6;
+    font-size:16px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;letter-spacing:-.01em;line-height:1.2}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* --- top bar --- */
+  .topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex;align-items:center;gap:14px;height:58px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:600;font-size:15px}
+  .brand .dot{width:26px;height:26px;border-radius:7px;background:linear-gradient(150deg,var(--accent),color-mix(in srgb,var(--accent) 55%,#000));
+    display:grid;place-items:center;color:#fff;font-family:var(--serif);font-size:15px;flex:none}
+  .brand small{display:block;font-weight:500;color:var(--ink-3);font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+  .spacer{flex:1}
+  .theme-btn{border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);
+    border-radius:8px;height:34px;padding:0 12px;font-size:13px;cursor:pointer;font-family:var(--sans)}
+  .theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* --- hero --- */
+  .hero{padding:52px 0 30px}
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 14px}
+  .hero h1{font-size:clamp(30px,5vw,46px);margin:0 0 16px}
+  .hero p.lead{font-size:clamp(16px,2.2vw,19px);color:var(--ink-2);max-width:62ch;margin:0 0 22px}
+  .metaline{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:16px}
+  .metaline b{color:var(--ink-2);font-weight:600}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .btn{appearance:none;border:none;border-radius:10px;font-family:var(--sans);font-size:15px;font-weight:600;
+    cursor:pointer;padding:12px 22px;transition:transform .06s ease, background .2s}
+  .btn.primary{background:var(--accent);color:#fff}
+  .btn.primary:hover{background:var(--accent-ink)}
+  .btn.primary:active{transform:translateY(1px)}
+  .btn.ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line-2)}
+  .btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+
+  /* --- intro dims --- */
+  .dimgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:26px 0 30px}
+  .dimcard{padding:16px 16px 15px;border-radius:12px;border:1px solid var(--line);background:var(--surface)}
+  .dimcard .k{display:flex;align-items:center;gap:9px;font-weight:600;font-size:14.5px;margin-bottom:5px}
+  .dimcard .k i{width:9px;height:9px;border-radius:3px;flex:none}
+  .dimcard p{margin:0;font-size:13px;color:var(--ink-3);line-height:1.5}
+
+  /* --- quiz --- */
+  .stage{display:none}
+  .stage.active{display:block;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.stage.active{animation:none}}
+
+  .progress{position:sticky;top:58px;z-index:10;background:var(--paper);padding:14px 0 12px}
+  .pbar{height:6px;border-radius:4px;background:var(--line);overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:var(--accent);border-radius:4px;transition:width .35s ease}
+  .pmeta{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-3);margin-top:8px}
+
+  .qcard{padding:26px 26px 22px;margin-bottom:16px}
+  .qcard .qtag{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--accent);
+    display:inline-flex;align-items:center;gap:7px;margin-bottom:12px}
+  .qcard .qtag i{width:8px;height:8px;border-radius:3px}
+  .qcard h3{font-size:20px;margin:0 0 4px;font-family:var(--sans);font-weight:650;letter-spacing:-.01em;line-height:1.35}
+  .qcard .qhint{font-size:13.5px;color:var(--ink-3);margin:0 0 18px}
+  .opts{display:flex;flex-direction:column;gap:9px}
+  .opt{display:flex;gap:13px;align-items:flex-start;padding:13px 15px;border:1px solid var(--line-2);border-radius:11px;
+    cursor:pointer;background:var(--surface);transition:border-color .15s,background .15s}
+  .opt:hover{border-color:var(--accent);background:var(--surface-2)}
+  .opt input{position:absolute;opacity:0;pointer-events:none}
+  .opt .mark{width:22px;height:22px;border-radius:50%;border:2px solid var(--line-2);flex:none;margin-top:1px;
+    display:grid;place-items:center;transition:border-color .15s}
+  .opt .mark::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--accent);transform:scale(0);transition:transform .15s}
+  .opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+  .opt.sel .mark{border-color:var(--accent)}
+  .opt.sel .mark::after{transform:scale(1)}
+  .opt .otxt{font-size:14.5px}
+  .opt .otxt b{display:block;font-weight:600;margin-bottom:1px}
+  .opt .otxt span{color:var(--ink-3);font-size:13px}
+  .opt:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:2px}
+
+  .navrow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 60px}
+
+  /* --- results --- */
+  .scoretop{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+  @media(min-width:720px){.scoretop{grid-template-columns:300px minmax(0,1fr)}}
+  .levelcard{padding:24px;text-align:center;border-top:5px solid var(--lvlc,var(--accent))}
+  .levelcard .lvlnum{font-family:var(--serif);font-size:58px;line-height:1;color:var(--lvlc);font-weight:600}
+  .levelcard .lvlname{font-size:19px;font-weight:650;margin:6px 0 2px}
+  .levelcard .lvlof{font-size:12.5px;color:var(--ink-3);letter-spacing:.04em}
+  .levelcard .score{margin-top:16px;font-size:13px;color:var(--ink-2)}
+  .levelcard .score b{font-size:30px;font-family:var(--serif);color:var(--ink);font-weight:600}
+  .radarwrap{padding:20px;display:flex;flex-direction:column}
+  .radarwrap h3{font-size:15px;margin:0 0 4px;font-family:var(--sans);font-weight:650}
+  .radarwrap p{margin:0 0 6px;font-size:12.5px;color:var(--ink-3)}
+  canvas{width:100%;height:auto;max-width:100%}
+
+  .dimresults{display:grid;gap:11px;margin:22px 0}
+  .dimrow{padding:15px 17px;border-radius:12px;border:1px solid var(--line);background:var(--surface);
+    display:grid;grid-template-columns:1fr auto;gap:6px 14px;align-items:center}
+  .dimrow .dh{display:flex;align-items:center;gap:9px;font-weight:600;font-size:15px}
+  .dimrow .dh i{width:10px;height:10px;border-radius:3px;flex:none}
+  .dimrow .badge{font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap}
+  .dimrow .track{grid-column:1/-1;height:8px;border-radius:5px;background:var(--surface-2);overflow:hidden}
+  .dimrow .track i{display:block;height:100%;border-radius:5px}
+  .dimrow .rec{grid-column:1/-1;font-size:13px;color:var(--ink-2);margin-top:2px}
+  .dimrow .rec b{color:var(--ink)}
+
+  .callout{padding:20px 22px;border-radius:12px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 30%,var(--line));margin:6px 0 22px}
+  .callout h3{font-family:var(--sans);font-size:16px;margin:0 0 8px}
+  .callout p{margin:0 0 8px;font-size:14px;color:var(--ink-2)}
+  .callout ul{margin:6px 0 0;padding-left:20px}
+  .callout li{font-size:14px;margin-bottom:6px;color:var(--ink-2)}
+  .callout li b{color:var(--ink)}
+
+  .disclaimer{font-size:12px;color:var(--ink-3);border-top:1px solid var(--line);padding:16px 0 60px;line-height:1.6}
+  .disclaimer code{background:var(--surface-2);padding:1px 5px;border-radius:4px;font-size:11.5px}
+  footer.credit{border-top:1px solid var(--line);padding:22px 0;font-size:12.5px;color:var(--ink-3)}
+  footer.credit b{color:var(--ink-2)}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <span class="dot">診</span>
+      <span>AI活用 成熟度診断<small>アプリ・ユースケースラボ / Prototype 01</small></span>
+    </div>
+    <span class="spacer"></span>
+    <button class="theme-btn" id="themeBtn" type="button">◐ テーマ</button>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section class="stage active" id="intro">
+    <div class="hero">
+      <p class="eyebrow">Executive Self-Diagnostic</p>
+      <h1>あなたの組織は、AIで「導入」の先へ進めているか。</h1>
+      <p class="lead">
+        日本の課題は導入率ではなく<b>効果創出</b>にある——生成AIの効果が「期待を大きく上回る」企業は日本10%に対し米国45%。
+        差を分けるのは投資額ではなく、<b>測定設計・業務組込・統制</b>という3つの「型」の有無です。
+        7つの観点・14問で、あなたの組織の成熟度を可視化し、次の一手を提示します。
+      </p>
+      <div class="metaline">
+        <span><b>所要</b> 約4分・14問</span>
+        <span><b>出力</b> 成熟度レベル＋レーダー＋優先アクション</span>
+        <span><b>データ</b> ブラウザ内で完結（送信なし）</span>
+      </div>
+    </div>
+
+    <div class="dimgrid" id="dimIntro"></div>
+
+    <button class="btn primary" id="startBtn" type="button">診断をはじめる →</button>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="stage" id="quiz">
+    <div class="progress">
+      <div class="pbar"><i id="pbarFill"></i></div>
+      <div class="pmeta"><span id="pQ">設問 1 / 14</span><span id="pPct">0%</span></div>
+    </div>
+    <div id="qContainer"></div>
+    <div class="navrow">
+      <button class="btn ghost" id="prevBtn" type="button">← 戻る</button>
+      <button class="btn primary" id="nextBtn" type="button" disabled>次へ →</button>
+    </div>
+  </section>
+
+  <!-- ============ RESULTS ============ -->
+  <section class="stage" id="result">
+    <div class="hero" style="padding-bottom:8px">
+      <p class="eyebrow">Diagnostic Result</p>
+      <h1 id="rTitle">診断結果</h1>
+      <p class="lead" id="rLead"></p>
+    </div>
+
+    <div class="scoretop">
+      <div class="card levelcard" id="levelCard">
+        <div class="lvlnum num" id="rLvlNum">3</div>
+        <div class="lvlname" id="rLvlName">—</div>
+        <div class="lvlof">5段階中</div>
+        <div class="score">総合スコア <b class="num" id="rScore">0</b> <span style="color:var(--ink-3)">/ 100</span></div>
+      </div>
+      <div class="card radarwrap">
+        <h3>7観点のバランス</h3>
+        <p>凹んだ軸が、次に投資すべき「型」の候補です。</p>
+        <canvas id="radar" width="620" height="460" role="img" aria-label="7観点の成熟度レーダーチャート"></canvas>
+      </div>
+    </div>
+
+    <div class="callout" id="topRec">
+      <h3>最優先の一手</h3>
+      <div id="topRecBody"></div>
+    </div>
+
+    <h3 style="font-size:17px;margin:26px 0 4px">観点別の評価とアクション</h3>
+    <div class="dimresults" id="dimResults"></div>
+
+    <div class="navrow">
+      <button class="btn ghost" id="restartBtn" type="button">↺ もう一度診断する</button>
+      <button class="btn primary" id="printBtn" type="button">結果を印刷 / PDF保存</button>
+    </div>
+
+    <p class="disclaimer">
+      本診断はプロトタイプです。設問と評価軸は、社内AIユースケース・ポートフォリオ資料（39件・2段スクリーニング）の枠組み
+      ——3つの型（測定設計・業務組込・統制）、経営の8決断（D1–D8）、ガバナンス原則（G1–G8）、投資配分10-20-70——に基づいて構成しています。
+      結果は自己申告に基づく目安であり、投資判断には <code>Before業務の実測</code> と個別のユースケース選抜（適格性テスト→単一LLMテスト）を併用してください。
+    </p>
+  </section>
+
+  <footer class="credit">
+    <b>アプリ・ユースケースラボ</b> — Prototype 01 / Claude（Artifacts）で作成。
+    元ユースケース：UC-29 AI成熟度診断サービス（外販・◆本命）＋ UC-23 AIケイパビリティ測定キット。
+  </footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- Dimensions ----------
+  const DIMS = [
+    {id:"exec", name:"経営の決断", color:"var(--m1)", ck:"--m1",
+     desc:"効率化で空いた時間の使い道・課金モデル・統制強度を経営が決めているか（D1–D8）"},
+    {id:"measure", name:"測定設計", color:"var(--m2)", ck:"--m2",
+     desc:"Before実測と、効率化＝時間／高度化＝代理指標の二階建て測定があるか"},
+    {id:"embed", name:"業務組込", color:"var(--m3)", ck:"--m3",
+     desc:"工程分解に基づき、AIが日々の業務動線に組み込まれているか"},
+    {id:"gov", name:"統制・ガバナンス", color:"var(--m4)", ck:"--m4",
+     desc:"データ投入区分・人間最終判断・シャドーAIの受け皿が整備されているか（G1–G8）"},
+    {id:"asset", name:"データ資産・評価基盤", color:"var(--m5)", ck:"--m5",
+     desc:"自社データと『何を良しとするか』の評価セットを資産として蓄積しているか"},
+    {id:"talent", name:"人材・育成", color:"var(--accent)", ck:"--accent",
+     desc:"ジュニアの育成を『作業の代替』でなく『判断力の育成』に再設計しているか"},
+    {id:"platform", name:"基盤・投資配分", color:"var(--m1)", ck:"--m1",
+     desc:"クラウド基盤と10-20-70（人・プロセスへの70%配分）を押さえているか"}
+  ];
+
+  // ---------- Questions (2 per dimension = 14) ----------
+  // scale: options carry a 0–4 value
+  const OPT4 = [
+    {v:4,t:"当てはまる",s:"仕組みとして定着し、運用されている"},
+    {v:3,t:"おおむね当てはまる",s:"着手済みで一部が回っている"},
+    {v:2,t:"どちらとも言えない",s:"検討中／人によってばらつく"},
+    {v:1,t:"あまり当てはまらない",s:"議論はあるが未着手"},
+    {v:0,t:"当てはまらない",s:"考えたことがない／該当なし"}
+  ];
+  const QS = [
+    {dim:"exec", q:"効率化で空いた時間を『何に充てるか』（値下げ／回転／高度化）を経営が明文で決めている。",
+      hint:"D1。決めないまま進めると、現場は稼働率評価の下で効率化を隠す。"},
+    {dim:"exec", q:"AI活用のKPIと課金モデル（人月／成果／サブスク）の見直しを、経営アジェンダとして扱っている。",
+      hint:"D2。課金モデルを変えない限り、効率化は自社の売上を削る矛盾が残る。"},
+    {dim:"measure", q:"主要業務の『AI導入前（Before）』の所要時間を実測し、記録している。",
+      hint:"Beforeの現状値は、AI利用が広がった後には取れない。"},
+    {dim:"measure", q:"効率化は時間で、高度化は代理指標（見落とし検出・手戻り率・失注理由の変化）で測る二階建てにしている。",
+      hint:"D8。測れないから投資しない、を避けるための設計。"},
+    {dim:"embed", q:"案件・業務のライフサイクルを工程まで分解し、『代替／支援／人が担う』を工程ごとに判定している。",
+      hint:"適合範囲（ジャギッドフロンティア）を外すと品質が下がる（G7）。"},
+    {dim:"embed", q:"AIが一部の人の実験ではなく、日々の標準的な業務動線に組み込まれている。",
+      hint:"配分10-20-70。ツール配布だけでは定着しない。"},
+    {dim:"gov", q:"データ投入可否の区分表（公開／社内限／顧客秘密／個人情報 × ツール別）を整備し、手引きに同梱している。",
+      hint:"G1。未整備なら、これが全施策に先行する最優先タスク。"},
+    {dim:"gov", q:"一律禁止ではなく、リスク階層別の統制＋シャドーAIの安全な受け皿と検知をセットで用意している。",
+      hint:"D5／G4。一律禁止はシャドーAIを地下化させる。"},
+    {dim:"asset", q:"過去案件の実績・失注理由・教訓など、自社固有のデータを再利用可能な形で蓄積している。",
+      hint:"ツールに優位は残らない。持続する優位は自社データ・評価・関係の3つ。"},
+    {dim:"asset", q:"『何を良い成果とするか』の評価セット（チェックリスト・評価基準）を作り、外部に渡さず自社で保有している。",
+      hint:"D6。評価セットと過去案件データは絶対に外部化しない領域。"},
+    {dim:"talent", q:"AIが代替する工程（リサーチ・資料作成・議事録）に代わる、ジュニアの学習機会を設計し直している。",
+      hint:"D3。効果は新人層で最大（+34%）だが、学習機会の喪失と表裏。"},
+    {dim:"talent", q:"育成の中身を『作業の実行』から『AI出力の批判的レビューと判断』へ作り替えている。",
+      hint:"作業の代替でなく、判断力の育成装置として再定義する。"},
+    {dim:"platform", q:"顧客実データを扱う本番処理の経路（プライベートクラウド等の安全な基盤）が用意されている。",
+      hint:"A2。本番はSaaSではなく閉域基盤を原則経路にする。"},
+    {dim:"platform", q:"投資をアルゴリズム10%・技術/データ20%・人とプロセス70%に配分する原則を持っている。",
+      hint:"10-20-70。研修・業務動線の再設計に技術と同等以上の工数を割く。"}
+  ];
+
+  // ---------- Levels ----------
+  const LEVELS = [
+    {min:0,  name:"Ad hoc（素の利用）",     ck:"--m1", lead:"AIは個人の実験にとどまり、組織の型がありません。まずは経営の決断と測定設計から着手すべき段階です。"},
+    {min:35, name:"Emerging（芽生え）",      ck:"--m2", lead:"一部で活用が始まっていますが、測定と統制が追いついていません。効率化の実測で根拠を作る段階です。"},
+    {min:55, name:"Structured（型が回る）",   ck:"--m3", lead:"型が回り始めています。データ資産と評価基盤の蓄積を強め、高度化への段階移行を設計する段階です。"},
+    {min:72, name:"Scaling（拡張）",         ck:"--m4", lead:"複数の型が定着し拡張フェーズにあります。人材育成と基盤の統制を厚くし、外販への接続を検討できます。"},
+    {min:88, name:"Advantaged（優位確立）",  ck:"--m5", lead:"自社データと評価基準が差別化の核になっています。優位の源泉（データ・評価・関係）への集中投資を続ける段階です。"}
+  ];
+
+  // ---------- Per-dimension recommendations ----------
+  const REC = {
+    exec:{lo:"経営会議でD1（空いた時間の使い道）・D4（効率化か高度化か）・D5（統制強度）を先に決議する。第1波の実測前が期限。",
+          hi:"決めた方針をKPI・課金モデルに落とし込み、現場評価と整合させる（UC-23で測定）。"},
+    measure:{lo:"灯台部門を1つ指定し、対象工程のBefore所要時間を今すぐ実測開始する（AI普及後は取れない）。",
+             hi:"高度化UC向けに代理指標を定義し、経営会議でその妥当性を合意しておく（D8）。"},
+    embed:{lo:"案件ライフサイクルを工程分解し、工程ごとに代替／支援／人が担うを判定する（2-1）。",
+           hi:"適合範囲（G7）を明示し、標準業務フローにAIステップを正式に組み込む。"},
+    gov:{lo:"データ投入可否の区分表（G1）を策定し、全施策の利用手引きに同梱する。最優先タスク。",
+         hi:"リスク階層別統制へ移行し、シャドーAIの受け皿（安全基盤）と検知を誘導目的で運用する（G4）。"},
+    asset:{lo:"過去案件データと評価チェックリストを匿名化して蓄積し始める（資産化の起点）。",
+           hi:"評価セットを版管理し、外部化しない資産として台帳化する（UC-22）。"},
+    talent:{lo:"ジュニアの学習機会をAI前提で再設計する。AI出力レビューを育成カリキュラムに組み込む（D3）。",
+            hi:"育成を『判断力の育成装置』として運用し、成果物のレビュー1回通過率を指標化する。"},
+    platform:{lo:"クラウド習熟が低い前提で、まずSaaS＋標準機能で完結する施策を先行させ、基盤は段階構築する。",
+              hi:"顧客実データ用の閉域基盤を整え、投資配分を10-20-70で明示的に管理する。"}
+  };
+
+  // ---------- State ----------
+  const answers = new Array(QS.length).fill(null);
+  let cur = 0;
+
+  const $ = s=>document.querySelector(s);
+  const stages = {intro:$("#intro"),quiz:$("#quiz"),result:$("#result")};
+  function show(name){for(const k in stages)stages[k].classList.toggle("active",k===name);window.scrollTo({top:0,behavior:"instant"});}
+
+  function dimById(id){return DIMS.find(d=>d.id===id);}
+
+  // ---------- Intro cards ----------
+  (function buildIntro(){
+    const wrap = $("#dimIntro");
+    DIMS.forEach(d=>{
+      const el = document.createElement("div");
+      el.className="dimcard";
+      el.innerHTML = `<div class="k"><i style="background:${d.color}"></i>${d.name}</div><p>${d.desc}</p>`;
+      wrap.appendChild(el);
+    });
+  })();
+
+  // ---------- Render question ----------
+  function renderQ(){
+    const q = QS[cur], d = dimById(q.dim);
+    const cont = $("#qContainer");
+    cont.innerHTML = "";
+    const card = document.createElement("div");
+    card.className="card qcard";
+    card.innerHTML = `
+      <span class="qtag"><i style="background:${d.color}"></i>${d.name}</span>
+      <h3>${q.q}</h3>
+      <p class="qhint">${q.hint}</p>
+      <div class="opts" role="radiogroup" aria-label="${q.q.replace(/"/g,'')}"></div>`;
+    const opts = card.querySelector(".opts");
+    OPT4.forEach((o)=>{
+      const lab = document.createElement("label");
+      lab.className="opt"+(answers[cur]===o.v?" sel":"");
+      lab.tabIndex=0;
+      lab.setAttribute("role","radio");
+      lab.setAttribute("aria-checked", answers[cur]===o.v?"true":"false");
+      lab.innerHTML = `<input type="radio" name="q${cur}" value="${o.v}">
+        <span class="mark"></span>
+        <span class="otxt"><b>${o.t}</b><span>${o.s}</span></span>`;
+      const choose=()=>{answers[cur]=o.v;renderQ();updateNav();};
+      lab.addEventListener("click",choose);
+      lab.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();choose();}});
+      opts.appendChild(lab);
+    });
+    cont.appendChild(card);
+    // progress
+    const pct = Math.round((cur)/(QS.length)*100);
+    $("#pbarFill").style.width = (answers[cur]!==null?((cur+1)/QS.length*100):pct)+"%";
+    $("#pQ").textContent = `設問 ${cur+1} / ${QS.length}`;
+    $("#pPct").textContent = Math.round((cur+ (answers[cur]!==null?1:0))/QS.length*100)+"%";
+  }
+  function updateNav(){
+    $("#prevBtn").style.visibility = cur===0?"hidden":"visible";
+    const answered = answers[cur]!==null;
+    $("#nextBtn").disabled = !answered;
+    $("#nextBtn").textContent = cur===QS.length-1 ? "結果を見る →" : "次へ →";
+  }
+
+  // ---------- Scoring ----------
+  function computeDim(){
+    const out = {};
+    DIMS.forEach(d=>{
+      const idx = QS.map((q,i)=>q.dim===d.id?i:-1).filter(i=>i>=0);
+      const got = idx.reduce((a,i)=>a+(answers[i]||0),0);
+      const max = idx.length*4;
+      out[d.id] = {pct: Math.round(got/max*100), raw:got, max, n:idx.length};
+    });
+    return out;
+  }
+  function overall(dim){
+    const vals = DIMS.map(d=>dim[d.id].pct);
+    return Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
+  }
+  function levelFor(score){
+    let lv = LEVELS[0], idx=0;
+    LEVELS.forEach((l,i)=>{if(score>=l.min){lv=l;idx=i;}});
+    return {lv,idx};
+  }
+  function badgeFor(pct){
+    if(pct>=75)return{t:"確立",bg:"--m4-bg",fg:"--m4"};
+    if(pct>=50)return{t:"発展途上",bg:"--m3-bg",fg:"--m3"};
+    if(pct>=25)return{t:"芽生え",bg:"--m2-bg",fg:"--m2"};
+    return{t:"未着手",bg:"--m1-bg",fg:"--m1"};
+  }
+
+  // ---------- Radar ----------
+  function drawRadar(dim){
+    const cv = $("#radar"), ctx = cv.getContext("2d");
+    const DPR = Math.min(window.devicePixelRatio||1,2);
+    const W=cv.width, H=cv.height;
+    cv.width=W*DPR; cv.height=H*DPR; ctx.scale(DPR,DPR);
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2, cy=H/2+6, R=Math.min(W,H)/2-64;
+    const N=DIMS.length;
+    const css=getComputedStyle(document.documentElement);
+    const line=css.getPropertyValue("--line-2").trim();
+    const ink3=css.getPropertyValue("--ink-3").trim();
+    const ink=css.getPropertyValue("--ink-2").trim();
+    const accent=css.getPropertyValue("--accent").trim();
+    const ang = i => -Math.PI/2 + i*2*Math.PI/N;
+    // grid rings
+    ctx.lineWidth=1;
+    for(let r=1;r<=4;r++){
+      ctx.beginPath();
+      for(let i=0;i<=N;i++){const a=ang(i%N),rr=R*r/4;const x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}
+      ctx.strokeStyle=line; ctx.globalAlpha=r===4?.9:.5; ctx.stroke(); ctx.globalAlpha=1;
+    }
+    // spokes + labels
+    ctx.font="12px system-ui,-apple-system,sans-serif";
+    DIMS.forEach((d,i)=>{
+      const a=ang(i);
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*R,cy+Math.sin(a)*R);
+      ctx.strokeStyle=line;ctx.globalAlpha=.5;ctx.stroke();ctx.globalAlpha=1;
+      const lx=cx+Math.cos(a)*(R+22), ly=cy+Math.sin(a)*(R+22);
+      ctx.fillStyle=ink3;
+      ctx.textAlign = Math.abs(Math.cos(a))<0.3?"center":(Math.cos(a)>0?"left":"right");
+      ctx.textBaseline = Math.sin(a)>0.3?"top":(Math.sin(a)<-0.3?"bottom":"middle");
+      const nm=d.name.length>7?d.name.slice(0,7):d.name;
+      ctx.fillText(d.name, lx, ly);
+    });
+    // data polygon
+    ctx.beginPath();
+    DIMS.forEach((d,i)=>{
+      const a=ang(i), v=dim[d.id].pct/100, rr=R*v;
+      const x=cx+Math.cos(a)*rr, y=cy+Math.sin(a)*rr;
+      i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+    });
+    ctx.closePath();
+    ctx.fillStyle=accent; ctx.globalAlpha=.16; ctx.fill(); ctx.globalAlpha=1;
+    ctx.strokeStyle=accent; ctx.lineWidth=2; ctx.stroke();
+    DIMS.forEach((d,i)=>{
+      const a=ang(i), v=dim[d.id].pct/100, rr=R*v;
+      const x=cx+Math.cos(a)*rr, y=cy+Math.sin(a)*rr;
+      ctx.beginPath();ctx.arc(x,y,3.5,0,7);ctx.fillStyle=accent;ctx.fill();
+    });
+  }
+
+  // ---------- Results ----------
+  function showResults(){
+    const dim = computeDim();
+    const score = overall(dim);
+    const {lv} = levelFor(score);
+    const css=getComputedStyle(document.documentElement);
+    const lvColor = css.getPropertyValue(lv.ck).trim();
+
+    $("#rScore").textContent = score;
+    const lvIndex = LEVELS.indexOf(lv)+1;
+    $("#rLvlNum").textContent = lvIndex;
+    $("#rLvlName").textContent = lv.name;
+    $("#levelCard").style.setProperty("--lvlc", lvColor);
+    $("#rTitle").textContent = `成熟度レベル ${lvIndex}：${lv.name}`;
+    $("#rLead").textContent = lv.lead;
+
+    drawRadar(dim);
+
+    // top rec = two weakest dims
+    const ranked = [...DIMS].sort((a,b)=>dim[a.id].pct-dim[b.id].pct);
+    const weak = ranked.slice(0,2);
+    $("#topRecBody").innerHTML =
+      `<p>スコアが最も低い2観点が、投資対効果の高い「次の一手」です。</p><ul>`+
+      weak.map(d=>`<li><b>${d.name}（${dim[d.id].pct}点）</b>：${REC[d.id].lo}</li>`).join("")+
+      `</ul>`;
+
+    // per-dim rows
+    const wrap = $("#dimResults"); wrap.innerHTML="";
+    DIMS.forEach(d=>{
+      const p = dim[d.id].pct;
+      const bd = badgeFor(p);
+      const rec = p>=60 ? REC[d.id].hi : REC[d.id].lo;
+      const row = document.createElement("div");
+      row.className="dimrow";
+      row.innerHTML = `
+        <div class="dh"><i style="background:${d.color}"></i>${d.name}</div>
+        <div class="badge" style="background:var(${bd.bg});color:var(${bd.fg})">${bd.t}・${p}点</div>
+        <div class="track"><i style="width:${p}%;background:${d.color}"></i></div>
+        <div class="rec"><b>推奨：</b>${rec}</div>`;
+      wrap.appendChild(row);
+    });
+    show("result");
+  }
+
+  // ---------- Nav wiring ----------
+  $("#startBtn").addEventListener("click",()=>{cur=0;renderQ();updateNav();show("quiz");});
+  $("#nextBtn").addEventListener("click",()=>{
+    if(answers[cur]===null)return;
+    if(cur===QS.length-1){showResults();return;}
+    cur++;renderQ();updateNav();
+  });
+  $("#prevBtn").addEventListener("click",()=>{if(cur>0){cur--;renderQ();updateNav();}});
+  $("#restartBtn").addEventListener("click",()=>{answers.fill(null);cur=0;show("intro");});
+  $("#printBtn").addEventListener("click",()=>window.print());
+
+  // ---------- Theme toggle ----------
+  const root=document.documentElement;
+  $("#themeBtn").addEventListener("click",()=>{
+    const cur=root.getAttribute("data-theme");
+    const sysDark=window.matchMedia("(prefers-color-scheme: dark)").matches;
+    let next;
+    if(!cur){next=sysDark?"light":"dark";}
+    else if(cur==="dark"){next="light";}
+    else{next="dark";}
+    root.setAttribute("data-theme",next);
+    if(stages.result.classList.contains("active")){showResults();}
+  });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{
+    if(stages.result.classList.contains("active"))showResults();
+  });
+})();
+</script>
