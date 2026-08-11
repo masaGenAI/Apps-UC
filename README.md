@@ -8,7 +8,7 @@
 
 | # | プロトタイプ | プラットフォーム | 元ユースケース | 形式 |
 |---|---|---|---|---|
-| 01 | [AI活用 成熟度診断](./prototypes/01-claude-ai-maturity-diagnostic/) | **Claude**（Artifacts） | UC-29 AI成熟度診断（外販）＋ UC-23 測定キット | 単一HTMLアプリ |
+| 01 | [AIリテラシー＆セキュリティ・ガバナンス アセスメント](./prototypes/01-claude-ai-maturity-diagnostic/) | **Claude**（Artifacts＋採点キット） | UC-29 AI成熟度診断（外販）＋ UC-23 測定キット | 採点キット＋HTMLハーネス |
 | 02 | [会議自動化パック](./prototypes/02-claudecode-meeting-pack/) | **Claude Code** | UC-16 会議自動化（議事録・タスク抽出） | Python CLIキット |
 | 03 | [競合モニタリング Skill](./prototypes/03-cowork-competitive-monitor/) | **Claude Cowork** | UC-05 競合モニタリング配信 ＋ UC-53 ベンチマーク更新 | SKILL.mdキット |
 
@@ -19,8 +19,8 @@
 3プラットフォームは「同じことを別の場所でやる」ものではなく、**担当領域が違う**。
 選抜資料の適格性テスト（チャットで済むものはUC化しない）に沿って役割分担した。
 
-- **Claude（Artifacts）** … *触ってもらう体験*が価値になるもの。自己完結HTMLをその場で公開できる。
-  → 成熟度診断（UC-29）。クライアントがクリックして進める外販ツールに最適。
+- **Claude（Artifacts＋採点キット）** … *触ってもらう体験*が価値になるもの。採点キットをLLMに読ませ、実際に書いた文章をスコア化。
+  → AIリテラシー＆セキュリティ・ガバナンス アセスメント（UC-29/23）。世界標準フレームワーク準拠の外販ツールに最適。
 - **Claude Code** … *コード資産・パイプライン*として持つべきもの。CLI化・自動化・様式の外部化。
   → 会議自動化パック（UC-16）。適格性テストで「チャット代替不可（ルールA）」判定の領域。
 - **Claude Cowork** … *複数アプリを横断するエージェント作業*。Web検索・Gmail・Notionを跨いで完結。
@@ -37,8 +37,11 @@
 
 ```
 prototypes/
-├── 01-claude-ai-maturity-diagnostic/   # Claude Artifact（HTML）
-│   ├── index.html
+├── 01-claude-ai-maturity-diagnostic/   # Claude（採点キット＋HTMLハーネス）
+│   ├── index.html                      # 採点結果を可視化するハーネス（Artifact）
+│   ├── index-org-maturity.html         # 旧・組織成熟度診断（温存）
+│   ├── scoring-kit/                    # LLMに読ませる採点キット（主役）
+│   ├── research/                       # 世界フレームワークのエビデンス一覧(md+xlsx)
 │   └── README.md
 ├── 02-claudecode-meeting-pack/         # Claude Code（Python CLI）
 │   ├── meeting_pack.py
