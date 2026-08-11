@@ -180,14 +180,14 @@
     </p>
     <div class="metaline">
       <span><b>方式</b> 採点キット＋この可視化ハーネス</span>
-      <span><b>採点者</b> Claude等のLLM</span>
+      <span><b>採点者</b> お使いのLLM（任意）</span>
       <span><b>根拠</b> 世界標準フレームワーク（research/ に出典）</span>
     </div>
   </section>
 
   <div class="steps">
     <div class="steptab active" data-step="build"><span class="n">1</span><span><span class="t">文章を入れて採点プロンプトを作る</span><br><span class="s">プロンプト／会話／シナリオ回答</span></span></div>
-    <div class="steptab" data-step="render"><span class="n">2</span><span><span class="t">採点結果(JSON)を貼って可視化</span><br><span class="s">Claudeの出力を貼り戻す</span></span></div>
+    <div class="steptab" data-step="render"><span class="n">2</span><span><span class="t">採点結果(JSON)を貼って可視化</span><br><span class="s">LLMの出力を貼り戻す</span></span></div>
   </div>
 
   <!-- STEP 1: build prompt -->
@@ -219,14 +219,14 @@
       </div>
 
       <div class="promptout" id="promptOut">
-        <div class="bar"><b>採点プロンプト</b>（Claudeに貼って実行 → 返ってきたJSONをStep 2へ）
+        <div class="bar"><b>採点プロンプト</b>（お使いのLLMに貼って実行 → 返ってきたJSONをStep 2へ）
           <span class="spacer" style="flex:1"></span>
           <button class="btn primary sm" id="copyPromptBtn" type="button">📋 コピー</button>
         </div>
         <pre id="promptText"></pre>
       </div>
       <div class="callout" style="margin-top:14px">
-        <b>使い方：</b> 生成したプロンプトをコピー → Claude（新規会話 or この採点キットを入れたプロジェクト）に貼って実行 →
+        <b>使い方：</b> 生成したプロンプトをコピー → お使いのLLM（ChatGPT／Gemini／Copilot／Claude 等、または採点キットを入れた社内アシスタント）に貼って実行 →
         出力末尾の <code>JSON</code> をコピー → 上のタブ「Step 2」に貼ると、スコアカードが描画されます。
       </div>
     </div>
@@ -236,7 +236,7 @@
   <section class="panel" id="panel-render">
     <div class="card sec-card">
       <h2>採点結果(JSON)を貼り付け</h2>
-      <p class="desc">Claudeの出力末尾にある JSON をそのまま貼ってください（前後の文章やコードフェンスが混ざっても構いません）。</p>
+      <p class="desc">LLMの出力末尾にある JSON をそのまま貼ってください（前後の文章やコードフェンスが混ざっても構いません）。</p>
       <textarea id="jsonInput" class="mono" placeholder='{ "literacy": { "L1": {"score":3,...} }, "security": {...}, "red_flags":[...] }'></textarea>
       <div class="parse-err" id="parseErr"></div>
       <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
@@ -534,7 +534,7 @@
   $('#renderBtn').addEventListener('click',function(){
     var d=extractJSON($('#jsonInput').value);
     var err=$('#parseErr');
-    if(!d||(!d.literacy&&!d.security)){err.style.display='block';err.textContent='JSONを読み取れませんでした。Claude出力末尾のJSON（{ … }）をそのまま貼ってください。';return;}
+    if(!d||(!d.literacy&&!d.security)){err.style.display='block';err.textContent='JSONを読み取れませんでした。LLM出力末尾のJSON（{ … }）をそのまま貼ってください。';return;}
     err.style.display='none';
     try{render(d);}catch(e){err.style.display='block';err.textContent='描画エラー: '+e.message;}
   });
