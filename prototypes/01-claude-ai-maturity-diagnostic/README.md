@@ -51,7 +51,8 @@ scoring-kit/
 ### B. HTMLハーネス（可視化）— [`index.html`](./index.html)
 - **公開Artifact**：https://claude.ai/code/artifact/4e85945c-23c2-45a3-a777-dad2b3ddb86d
 - Step 1：証跡（＋任意で会社ポリシー）を入れて採点プロンプトを自動生成→コピー。
-- Step 2：LLMの採点結果JSONを貼ると、**4層KPI／10次元レーダー／ディメンション別（引用・本人担当分）／ゲート／会社ポリシー違反／Business Impact／強み・次の一手**を描画。`downloads` で保存。
+- Step 2：LLMの採点結果JSONを貼ると、**4層KPI／10次元レーダー／ディメンション別（引用・本人担当分）／ゲート／会社ポリシー違反／Business Impact／強み・次の一手**を描画。
+- **PDF出力**：「📄 PDFで出力（印刷）」→ ブラウザの「PDFとして保存」で、採点結果を**1枚のレポートPDF**として出力（印刷用レイアウトに最適化）。Markdown保存も可。出力例：[`sample-scorecard.pdf`](./sample-scorecard.pdf)。
 
 ## 想定KPI
 - UC-23：研修前後の Capability Maturity／Score／カバレッジの変化（証跡強度を上げながら）

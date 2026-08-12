@@ -165,6 +165,30 @@
   footer.credit{border-top:1px solid var(--line);padding:20px 0 46px;font-size:12.5px;color:var(--ink-3)}
   footer.credit b{color:var(--ink-2)}
   .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+  /* --- print report (PDF) --- */
+  .printhead{display:none}
+  @media print{
+    @page{margin:12mm}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    html,body{background:#fff}
+    .topbar,.steps,.hero,#panel-build,#panel-render>.sec-card,.theme-btn,.toast,#resultView .actions,footer.credit{display:none !important}
+    .panel{display:block !important}
+    #resultView{display:block !important}
+    .printhead{display:block !important;margin-bottom:14px;border-bottom:2px solid var(--accent);padding-bottom:10px}
+    .printhead .pt{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink)}
+    .printhead .pm{font-size:12px;color:var(--ink-3);margin-top:4px;display:flex;flex-wrap:wrap;gap:4px 16px}
+    .printhead .pm b{color:var(--ink-2)}
+    .card{box-shadow:none;border:1px solid #c9d0da;break-inside:avoid}
+    .kpis{grid-template-columns:repeat(4,1fr) !important;gap:8px}
+    .kpi{padding:12px}
+    .grid2{grid-template-columns:1.05fr .95fr !important}
+    .grid2,.twocol,.impact,.redflags,.block{break-inside:avoid}
+    .dimrow{break-inside:avoid}
+    canvas{max-height:360px}
+    .disclaimer{display:block;font-size:10px;page-break-before:auto}
+    a[href]{color:var(--ink)}
+  }
 </style>
 
 <div class="topbar">
@@ -262,6 +286,10 @@
     </div>
 
     <div id="resultView">
+      <div class="printhead">
+        <div class="pt">AIケイパビリティ成熟度アセスメント — 採点レポート</div>
+        <div class="pm"><span id="phDate"></span><span id="phSummary"></span><span><b>モデル</b> CMMI型5段階×10次元（会社ポリシー・ゲート方式）</span></div>
+      </div>
       <div class="kpis">
         <div class="card kpi" id="kMaturity"><div class="k">Capability Maturity</div><div class="v num"><span id="rMatLv">–</span></div><div class="d" id="rMatName">—</div><span class="gatebadge" id="rGateBadge" style="display:none">ゲート補正</span></div>
         <div class="card kpi" id="kScore"><div class="k">Capability Score</div><div class="v num"><span id="rScore">–</span><small>/100</small></div><div class="d" id="rCoverage">カバレッジ –</div></div>
@@ -298,8 +326,9 @@
         <div class="card listcard"><h3>🎯 次の一手（次レベルへ）</h3><ul id="nextActions"></ul></div>
       </div>
 
-      <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn primary" id="saveBtn" type="button">💾 スコアカードを保存</button>
+      <div class="actions" style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn primary" id="pdfBtn" type="button">📄 PDFで出力（印刷）</button>
+        <button class="btn ghost sm" id="saveBtn" type="button">💾 Markdownで保存</button>
         <button class="btn ghost sm" id="againBtn" type="button">↺ 別の証跡を採点</button>
       </div>
     </div>
@@ -610,5 +639,25 @@
   var root=document.documentElement;
   $('#themeBtn').addEventListener('click',function(){var cur=root.getAttribute('data-theme');var sd=window.matchMedia('(prefers-color-scheme: dark)').matches;root.setAttribute('data-theme',!cur?(sd?'light':'dark'):(cur==='dark'?'light':'dark'));if($('#resultView').style.display==='block'&&lastData)render(lastData);});
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){if($('#resultView').style.display==='block'&&lastData)render(lastData);});
+})();
+</script>
+<script>
+(function(){
+  function q(s){return document.querySelector(s);}
+  function fillHead(){
+    try{
+      var d=new Date();
+      var ds=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
+      q('#phDate').innerHTML='<b>作成日</b> '+ds;
+      var mat=(q('#rMatLv')&&q('#rMatLv').textContent)||'';
+      var matN=(q('#rMatName')&&q('#rMatName').textContent)||'';
+      var sc=(q('#rScore')&&q('#rScore').textContent)||'';
+      var ev=(q('#rEvid')&&q('#rEvid').textContent)||'';
+      q('#phSummary').innerHTML='<b>Maturity</b> '+mat+' '+matN+' ／ <b>Score</b> '+sc+'/100 ／ <b>Evidence</b> '+ev;
+    }catch(e){}
+  }
+  var btn=q('#pdfBtn');
+  if(btn)btn.addEventListener('click',function(){fillHead();window.print();});
+  window.addEventListener('beforeprint',fillHead);
 })();
 </script>
