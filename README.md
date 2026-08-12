@@ -8,7 +8,7 @@
 
 | # | プロトタイプ | プラットフォーム | 元ユースケース | 形式 |
 |---|---|---|---|---|
-| 01 | [AIリテラシー＆セキュリティ・ガバナンス アセスメント](./prototypes/01-claude-ai-maturity-diagnostic/) | **Claude**（Artifacts＋採点キット） | UC-29 AI成熟度診断（外販）＋ UC-23 測定キット | 採点キット＋HTMLハーネス |
+| 01 | [AIケイパビリティ成熟度アセスメント](./prototypes/01-claude-ai-maturity-diagnostic/) | **Claude**（Artifacts＋採点キット） | UC-29 AI成熟度診断（外販）＋ UC-23 測定キット | 採点キット（型＋Rise版）＋HTMLハーネス |
 | 02 | [会議自動化パック](./prototypes/02-claudecode-meeting-pack/) | **Claude Code** | UC-16 会議自動化（議事録・タスク抽出） | Python CLIキット |
 | 03 | [競合モニタリング Skill](./prototypes/03-cowork-competitive-monitor/) | **Claude Cowork** | UC-05 競合モニタリング配信 ＋ UC-53 ベンチマーク更新 | SKILL.mdキット |
 

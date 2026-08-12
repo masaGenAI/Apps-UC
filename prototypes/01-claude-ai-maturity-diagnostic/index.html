@@ -1,4 +1,4 @@
-<title>AIリテラシー＆セキュリティ・ガバナンス アセスメント</title>
+<title>AIケイパビリティ成熟度アセスメント</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   :root{
@@ -7,12 +7,12 @@
     --ink:#18202b; --ink-2:#4a5666; --ink-3:#7c8797;
     --line:#dce1e9; --line-2:#c6cdd8;
     --accent:#1f4e79; --accent-soft:#e4edf6; --accent-ink:#16385a;
-    --lit:#1f6f8f; --lit-soft:#dceef3;      /* literacy hue */
-    --sec:#2f8f7a; --sec-soft:#e0f0eb;      /* security hue */
+    --lit:#1f6f8f; --sec:#2f8f7a;
     --warn:#c0453a; --warn-soft:#f7e6e4; --warn-ink:#8f2f27;
+    --gold:#b7891f;
     --m1:#c0453a; --m2:#c98a2b; --m3:#b79a1f; --m4:#2f8f7a; --m5:#1f6f8f;
     --shadow:0 1px 2px rgba(24,32,43,.05),0 6px 20px -8px rgba(24,32,43,.18);
-    --radius:14px; --maxw:960px;
+    --radius:14px; --maxw:1000px;
     --serif:ui-serif,"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
     --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
     --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
@@ -22,8 +22,8 @@
     --ink:#e7ecf3; --ink-2:#a9b4c2; --ink-3:#78859a;
     --line:#2a333f; --line-2:#39434f;
     --accent:#6ea8dc; --accent-soft:#20303f; --accent-ink:#bcd6ef;
-    --lit:#5aadcc; --lit-soft:#152c34; --sec:#5cbfa8; --sec-soft:#183029;
-    --warn:#e0685c; --warn-soft:#3a211f; --warn-ink:#f0b6ae;
+    --lit:#5aadcc; --sec:#5cbfa8;
+    --warn:#e0685c; --warn-soft:#3a211f; --warn-ink:#f0b6ae; --gold:#cfb24a;
     --m1:#e0685c; --m2:#e0a758; --m3:#cfb24a; --m4:#5cbfa8; --m5:#5aadcc;
     --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -12px rgba(0,0,0,.6);
   }}
@@ -32,8 +32,8 @@
     --ink:#e7ecf3; --ink-2:#a9b4c2; --ink-3:#78859a;
     --line:#2a333f; --line-2:#39434f;
     --accent:#6ea8dc; --accent-soft:#20303f; --accent-ink:#bcd6ef;
-    --lit:#5aadcc; --lit-soft:#152c34; --sec:#5cbfa8; --sec-soft:#183029;
-    --warn:#e0685c; --warn-soft:#3a211f; --warn-ink:#f0b6ae;
+    --lit:#5aadcc; --sec:#5cbfa8;
+    --warn:#e0685c; --warn-soft:#3a211f; --warn-ink:#f0b6ae; --gold:#cfb24a;
     --m1:#e0685c; --m2:#e0a758; --m3:#cfb24a; --m4:#5cbfa8; --m5:#5aadcc;
     --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -12px rgba(0,0,0,.6);
   }
@@ -54,11 +54,11 @@
   .theme-btn{border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);border-radius:8px;height:34px;padding:0 12px;font-size:13px;cursor:pointer;font-family:var(--sans)}
   .theme-btn:hover{border-color:var(--accent);color:var(--accent)}
 
-  .hero{padding:46px 0 24px}
-  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 14px}
-  .hero h1{font-size:clamp(28px,4.6vw,42px);margin:0 0 16px}
-  .hero p.lead{font-size:clamp(15px,2.1vw,18px);color:var(--ink-2);max-width:64ch;margin:0 0 20px}
-  .metaline{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:14px}
+  .hero{padding:44px 0 20px}
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 13px}
+  .hero h1{font-size:clamp(27px,4.4vw,40px);margin:0 0 15px}
+  .hero p.lead{font-size:clamp(15px,2.1vw,18px);color:var(--ink-2);max-width:66ch;margin:0 0 18px}
+  .metaline{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:13px}
   .metaline b{color:var(--ink-2);font-weight:600}
 
   .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
@@ -67,10 +67,8 @@
   .btn.primary:hover{background:var(--accent-ink)} .btn.primary:active{transform:translateY(1px)}
   .btn.ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line-2)}
   .btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
-  .btn:disabled{opacity:.45;cursor:not-allowed}
   .btn.sm{font-size:13px;padding:8px 13px;border-radius:8px}
 
-  /* step tabs */
   .steps{display:flex;gap:8px;margin:6px 0 20px;flex-wrap:wrap}
   .steptab{flex:1;min-width:200px;display:flex;gap:11px;align-items:center;padding:13px 15px;border:1px solid var(--line);border-radius:12px;background:var(--surface);cursor:pointer;transition:border-color .15s}
   .steptab.active{border-color:var(--accent);background:var(--accent-soft)}
@@ -90,9 +88,14 @@
   .chip{padding:8px 13px;border:1px solid var(--line-2);border-radius:20px;font-size:13.5px;cursor:pointer;background:var(--surface);color:var(--ink-2)}
   .chip.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink);font-weight:600}
   select,textarea{width:100%;font-family:var(--sans);font-size:14.5px;color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:10px;padding:11px 13px}
-  textarea{min-height:150px;resize:vertical;line-height:1.55}
+  textarea{min-height:130px;resize:vertical;line-height:1.55}
   textarea.mono{font-family:var(--mono);font-size:13px}
+  textarea.short{min-height:84px}
   select:focus,textarea:focus{outline:2px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:1px;border-color:var(--accent)}
+  details.adv{margin-top:14px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);overflow:hidden}
+  details.adv summary{cursor:pointer;padding:11px 14px;font-size:13.5px;font-weight:600;color:var(--ink-2);list-style:none}
+  details.adv summary::-webkit-details-marker{display:none}
+  details.adv .body{padding:0 14px 14px}
   .scenario-box{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:13px 15px;font-size:13.5px;color:var(--ink-2);margin-top:8px}
   .scenario-box b{color:var(--ink)}
   .hintline{font-size:12.5px;color:var(--ink-3);margin-top:6px}
@@ -100,53 +103,57 @@
   .promptout{margin-top:16px;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:none}
   .promptout.show{display:block}
   .promptout .bar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface-2);border-bottom:1px solid var(--line);font-size:13px;color:var(--ink-2)}
-  .promptout pre{margin:0;padding:15px;max-height:280px;overflow:auto;font-family:var(--mono);font-size:12px;line-height:1.5;white-space:pre-wrap;color:var(--ink)}
+  .promptout pre{margin:0;padding:15px;max-height:260px;overflow:auto;font-family:var(--mono);font-size:12px;line-height:1.5;white-space:pre-wrap;color:var(--ink)}
   .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:10px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:50}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
   .callout{padding:15px 17px;border-radius:12px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 30%,var(--line));font-size:13.5px;color:var(--ink-2);margin:12px 0}
-  .callout.warn{background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 35%,var(--line))}
+  .callout code{background:var(--surface);padding:1px 5px;border-radius:4px;font-family:var(--mono);font-size:12px}
   .parse-err{color:var(--warn-ink);font-size:13px;margin-top:8px;display:none}
 
   /* results */
   #resultView{display:none}
-  .scoretop{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:16px}
-  @media(min-width:680px){.scoretop{grid-template-columns:1fr 1fr}}
-  .bigscore{padding:20px 22px;border-top:5px solid var(--tone,var(--accent))}
-  .bigscore .k{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600;display:flex;align-items:center;gap:8px}
-  .bigscore .k i{width:10px;height:10px;border-radius:3px;background:var(--tone)}
-  .bigscore .v{font-family:var(--serif);font-size:40px;font-weight:600;color:var(--tone);line-height:1.05;margin:6px 0 2px}
-  .bigscore .v small{font-size:16px;color:var(--ink-3)}
-  .bigscore .lvl{font-size:16px;font-weight:650} .bigscore .ld{font-size:12.5px;color:var(--ink-3);margin-top:3px}
+  .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+  @media(min-width:720px){.kpis{grid-template-columns:repeat(4,1fr)}}
+  .kpi{padding:16px 16px 14px;border-top:5px solid var(--tone,var(--accent))}
+  .kpi .k{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+  .kpi .v{font-family:var(--serif);font-size:30px;font-weight:600;color:var(--tone);line-height:1.05;margin:6px 0 2px}
+  .kpi .v small{font-size:14px;color:var(--ink-3)}
+  .kpi .d{font-size:12px;color:var(--ink-3)}
+  .gatebadge{display:inline-block;margin-top:6px;font-size:11px;font-weight:700;color:#fff;background:var(--warn);border-radius:5px;padding:2px 7px}
 
   .grid2{display:grid;grid-template-columns:1fr;gap:16px}
-  @media(min-width:720px){.grid2{grid-template-columns:1fr 1fr}}
+  @media(min-width:760px){.grid2{grid-template-columns:1.05fr .95fr}}
   .block{padding:18px 18px 16px}
-  .block h3{font-family:var(--sans);font-size:15px;font-weight:650;margin:0 0 12px;display:flex;align-items:center;gap:8px}
-  .block h3 i{width:11px;height:11px;border-radius:3px}
+  .block h3{font-family:var(--sans);font-size:15px;font-weight:650;margin:0 0 4px}
+  .block p.sub{margin:0 0 10px;font-size:12.5px;color:var(--ink-3)}
   canvas{width:100%;height:auto;max-width:100%}
-  .bars{display:flex;flex-direction:column;gap:11px}
-  .bar-row .top{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:4px}
-  .bar-row .top b{font-weight:600} .bar-row .top .sc{font-variant-numeric:tabular-nums;color:var(--ink-2)}
-  .track{height:9px;border-radius:5px;background:var(--surface-2);overflow:hidden}
-  .track i{display:block;height:100%;border-radius:5px}
-  .na{color:var(--ink-3);font-size:12px;font-style:italic}
 
-  .dimdetail{margin-top:6px}
-  .dimdetail details{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:var(--surface);overflow:hidden}
-  .dimdetail summary{cursor:pointer;padding:12px 15px;display:flex;align-items:center;gap:10px;font-size:14px;list-style:none}
-  .dimdetail summary::-webkit-details-marker{display:none}
-  .dimdetail summary .sc{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums}
-  .dimdetail summary i{width:9px;height:9px;border-radius:3px;flex:none}
-  .dimdetail .body{padding:0 15px 14px;font-size:13.5px;color:var(--ink-2)}
-  .dimdetail .quote{border-left:3px solid var(--line-2);padding:4px 0 4px 12px;margin:8px 0;color:var(--ink-3);font-style:italic}
+  .dimrow{padding:12px 0;border-bottom:1px solid var(--line)}
+  .dimrow:last-child{border-bottom:none}
+  .dimrow .top{display:flex;align-items:center;gap:9px;font-size:14px}
+  .dimrow .top b{font-weight:650}
+  .dimrow .top .w{font-size:11px;color:var(--ink-3);font-family:var(--mono)}
+  .dimrow .top .gate{font-size:10px;font-weight:700;color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:0 5px}
+  .dimrow .top .lv{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums}
+  .dimrow .top .na{margin-left:auto;font-size:11.5px;color:var(--ink-3);font-style:italic}
+  .track5{height:8px;border-radius:5px;background:var(--surface-2);overflow:hidden;margin:7px 0 6px;display:flex;gap:2px}
+  .track5 i{flex:1;border-radius:2px;background:var(--line-2)}
+  .track5 i.on{background:var(--tone)}
+  .dimrow .ev{font-size:12.5px;color:var(--ink-3)}
+  .dimrow .ev .q{font-style:italic;border-left:2px solid var(--line-2);padding-left:8px;margin-top:3px;color:var(--ink-2)}
+  .dimrow .pva{font-size:12px;color:var(--ink-3);margin-top:3px}
 
-  .redflags{padding:18px}
-  .redflags h3{font-family:var(--sans);font-size:15px;font-weight:650;margin:0 0 10px;color:var(--warn-ink);display:flex;align-items:center;gap:8px}
+  .redflags{padding:18px;margin-top:16px}
+  .redflags h3{font-family:var(--sans);font-size:15px;font-weight:650;margin:0 0 10px;color:var(--warn-ink)}
   .rf{border:1px solid color-mix(in srgb,var(--warn) 35%,var(--line));background:var(--warn-soft);border-radius:10px;padding:12px 14px;margin-bottom:9px}
   .rf .tag{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:var(--warn);border-radius:5px;padding:1px 7px;margin-right:8px}
   .rf .q{font-style:italic;color:var(--ink-2);font-size:13px;margin-top:5px}
   .rf-none{color:var(--sec);font-weight:600;font-size:14px}
+
+  .impact{padding:16px 18px;margin-top:16px}
+  .impact h3{font-family:var(--sans);font-size:15px;font-weight:650;margin:0 0 8px}
+  .impact .chip2{display:inline-block;font-size:11.5px;font-weight:600;border-radius:20px;padding:2px 10px;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line);margin-bottom:7px}
+  .impact p{margin:0;font-size:13.5px;color:var(--ink-2)}
 
   .twocol{display:grid;grid-template-columns:1fr;gap:14px;margin-top:16px}
   @media(min-width:680px){.twocol{grid-template-columns:1fr 1fr}}
@@ -163,7 +170,7 @@
 <div class="topbar">
   <div class="wrap">
     <div class="brand"><span class="dot">評</span>
-      <span>AIリテラシー＆セキュリティ・ガバナンス アセスメント<small>アプリ・ユースケースラボ / Prototype 01</small></span></div>
+      <span>AIケイパビリティ成熟度アセスメント<small>アプリ・ユースケースラボ / Prototype 01 · v2</small></span></div>
     <span class="spacer"></span>
     <button class="theme-btn" id="themeBtn" type="button">◐ テーマ</button>
   </div>
@@ -171,47 +178,57 @@
 
 <main class="wrap">
   <section class="hero">
-    <p class="eyebrow">Evidence-based · LLM-scored</p>
-    <h1>あなたの「AIの使い方」を、世界標準の物差しで採点する。</h1>
+    <p class="eyebrow">CMMI-style · Evidence-based · 4-layer</p>
+    <h1>AIで顧客価値を生む力を、証跡から成熟度で測る。</h1>
     <p class="lead">
-      自己申告アンケートではありません。<b>あなたが実際に書いた文章</b>（プロンプト／AIとの会話／シナリオ回答）を
-      LLMに読ませ、<b>AIリテラシー（6次元）</b>と<b>セキュリティ・ガバナンス意識（5次元）</b>を、
-      UNESCO・OECD・EU AI Act・NIST・ISO・OWASP など世界の枠組みから作った基準で採点します。
+      提出物（プロンプト／会話ログ／シナリオ回答／成果物）を<b>お使いのLLM（任意）</b>に読ませ、
+      <b>CMMI型5段階 × 10ディメンション</b>で採点。結果は<b>能力（成熟度・100点）／証跡信頼度（E0–E5）／ビジネス価値</b>を
+      分離した4層で示します。セキュリティ・ガバナンスは<b>各社のポリシーを差し込む</b>ゲート方式です。
     </p>
     <div class="metaline">
-      <span><b>方式</b> 採点キット＋この可視化ハーネス</span>
+      <span><b>型</b> 会社ポリシー差し込み式（Rise専用インスタンス同梱）</span>
       <span><b>採点者</b> お使いのLLM（任意）</span>
-      <span><b>根拠</b> 世界標準フレームワーク（research/ に出典）</span>
+      <span><b>設計思想</b> CMMI AIM / SFIA / AI Skills for Business / NIST・ISO・EU AI Act</span>
     </div>
   </section>
 
   <div class="steps">
-    <div class="steptab active" data-step="build"><span class="n">1</span><span><span class="t">文章を入れて採点プロンプトを作る</span><br><span class="s">プロンプト／会話／シナリオ回答</span></span></div>
-    <div class="steptab" data-step="render"><span class="n">2</span><span><span class="t">採点結果(JSON)を貼って可視化</span><br><span class="s">LLMの出力を貼り戻す</span></span></div>
+    <div class="steptab active" data-step="build"><span class="n">1</span><span><span class="t">証跡を入れて採点プロンプトを作る</span><br><span class="s">プロンプト／会話／シナリオ回答／成果物</span></span></div>
+    <div class="steptab" data-step="render"><span class="n">2</span><span><span class="t">採点結果(JSON)を貼って可視化</span><br><span class="s">4層＋10次元＋ゲート</span></span></div>
   </div>
 
-  <!-- STEP 1: build prompt -->
+  <!-- STEP 1 -->
   <section class="panel active" id="panel-build">
     <div class="card sec-card">
-      <h2>採点する文章を用意する</h2>
-      <p class="desc">種類を選び、文章を貼ってください。世界標準ルーブリックを埋め込んだ「採点プロンプト」を生成します。</p>
+      <h2>証跡を用意する</h2>
+      <p class="desc">種類を選び、証跡を貼ってください。世界標準ルーブリック（10次元・5段階・ゲート）を埋め込んだ採点プロンプトを生成します。</p>
 
-      <label class="fld">① 評価対象の種類</label>
+      <label class="fld">① 証跡の種類</label>
       <div class="chips" id="typeChips">
         <span class="chip sel" data-type="scenario">シナリオ課題への回答</span>
         <span class="chip" data-type="prompt">自分が書いたプロンプト</span>
         <span class="chip" data-type="conversation">AIとの会話ログ</span>
+        <span class="chip" data-type="artifact">成果物・GPT設定・コード等</span>
       </div>
 
       <div id="scenarioPick">
-        <label class="fld">② シナリオを選ぶ（セキュリティ・ガバナンス挙動を観察できる課題）</label>
+        <label class="fld">② シナリオを選ぶ（コンサル実務・証跡を引き出すプローブ）</label>
         <select id="scenarioSel"></select>
         <div class="scenario-box" id="scenarioBox"></div>
       </div>
 
-      <label class="fld" id="inputLabel">③ あなたの回答を貼る</label>
-      <textarea id="userText" placeholder="ここに文章を貼り付け…"></textarea>
-      <div class="hintline">※ 入力はブラウザ内でのみ処理され、外部送信されません。</div>
+      <label class="fld" id="inputLabel">③ 証跡を貼る</label>
+      <textarea id="userText" placeholder="ここに証跡（回答・プロンプト・会話ログ・成果物の抜粋 等）を貼り付け…"></textarea>
+      <div class="hintline">※ 入力はブラウザ内でのみ処理され、外部送信されません。複数の証跡を渡すほど信頼度(E)が上がります。</div>
+
+      <details class="adv">
+        <summary>▸ 会社ポリシーを差し込む（任意・D9とゲートの精度が上がる）</summary>
+        <div class="body">
+          <p class="hintline" style="margin:10px 0 6px">貴社のデータ投入区分・AI利用規程・禁止事項・高リスク業務・規制/契約を貼ると、その基準でD9とゲートを採点します。空欄なら国際標準の一般原則で採点。</p>
+          <textarea id="policyText" class="short" placeholder="例：顧客秘密・個人情報は個人アカウント/無料AIへ投入禁止。本番の顧客実データは閉域環境のみ。人事・契約・対外提出は人間最終判断+記録必須…"></textarea>
+          <div class="hintline">Rise専用など記入済みインスタンスは <code>scoring-kit/instances/</code> にあります。</div>
+        </div>
+      </details>
 
       <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn primary" id="genBtn" type="button">採点プロンプトを生成 →</button>
@@ -226,18 +243,17 @@
         <pre id="promptText"></pre>
       </div>
       <div class="callout" style="margin-top:14px">
-        <b>使い方：</b> 生成したプロンプトをコピー → お使いのLLM（ChatGPT／Gemini／Copilot／Claude 等、または採点キットを入れた社内アシスタント）に貼って実行 →
-        出力末尾の <code>JSON</code> をコピー → 上のタブ「Step 2」に貼ると、スコアカードが描画されます。
+        <b>使い方：</b> 生成プロンプトをコピー → お使いのLLM（ChatGPT／Gemini／Copilot／Claude／社内LLM）で実行 → 出力末尾の <code>JSON</code> を「Step 2」に貼ると4層スコアカードが描画されます。
       </div>
     </div>
   </section>
 
-  <!-- STEP 2: render -->
+  <!-- STEP 2 -->
   <section class="panel" id="panel-render">
     <div class="card sec-card">
       <h2>採点結果(JSON)を貼り付け</h2>
-      <p class="desc">LLMの出力末尾にある JSON をそのまま貼ってください（前後の文章やコードフェンスが混ざっても構いません）。</p>
-      <textarea id="jsonInput" class="mono" placeholder='{ "literacy": { "L1": {"score":3,...} }, "security": {...}, "red_flags":[...] }'></textarea>
+      <p class="desc">LLM出力末尾の JSON をそのまま貼ってください（前後の文章やコードフェンスが混ざってもOK）。</p>
+      <textarea id="jsonInput" class="mono" placeholder='{ "capability_maturity": {...}, "capability_score": 62, "dimensions": {"D1":{...}}, ... }'></textarea>
       <div class="parse-err" id="parseErr"></div>
       <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn primary" id="renderBtn" type="button">スコアカードを描画 →</button>
@@ -246,356 +262,353 @@
     </div>
 
     <div id="resultView">
-      <div class="scoretop">
-        <div class="card bigscore" id="litScore">
-          <div class="k"><i></i>AIリテラシー総合</div>
-          <div class="v num"><span id="litAvg">–</span><small> / 4</small></div>
-          <div class="lvl" id="litLvl">–</div><div class="ld" id="litLd"></div>
-        </div>
-        <div class="card bigscore" id="secScore">
-          <div class="k"><i></i>セキュリティ・ガバナンス意識</div>
-          <div class="v num"><span id="secAvg">–</span><small> / 4</small></div>
-          <div class="lvl" id="secLvl">–</div><div class="ld" id="secLd"></div>
-        </div>
+      <div class="kpis">
+        <div class="card kpi" id="kMaturity"><div class="k">Capability Maturity</div><div class="v num"><span id="rMatLv">–</span></div><div class="d" id="rMatName">—</div><span class="gatebadge" id="rGateBadge" style="display:none">ゲート補正</span></div>
+        <div class="card kpi" id="kScore"><div class="k">Capability Score</div><div class="v num"><span id="rScore">–</span><small>/100</small></div><div class="d" id="rCoverage">カバレッジ –</div></div>
+        <div class="card kpi" id="kEvidence"><div class="k">Evidence Confidence</div><div class="v"><span id="rEvid">–</span></div><div class="d" id="rEvidD">証跡の強さ</div></div>
+        <div class="card kpi" id="kImpact"><div class="k">Business Impact</div><div class="v" style="font-size:19px" id="rImpactType">–</div><div class="d">能力とは別建て</div></div>
       </div>
 
       <div class="grid2">
         <div class="card block">
-          <h3><i style="background:var(--lit)"></i>AIリテラシー（6次元）</h3>
-          <canvas id="radar" width="560" height="440" role="img" aria-label="AIリテラシー6次元のレーダーチャート"></canvas>
+          <h3>10ディメンション成熟度</h3>
+          <p class="sub">各軸 Level 1–5。証跡不足の次元は中心（凹み）＝能力低ではなく未評価。</p>
+          <canvas id="radar" width="580" height="500" role="img" aria-label="10ディメンションの成熟度レーダー"></canvas>
         </div>
         <div class="card block">
-          <h3><i style="background:var(--sec)"></i>セキュリティ・ガバナンス（5次元）</h3>
-          <div class="bars" id="secBars"></div>
+          <h3>ディメンション別</h3>
+          <p class="sub">Level・根拠引用・本人担当分/AI生成分の切り分け。</p>
+          <div id="dimList"></div>
         </div>
       </div>
 
-      <div class="card redflags" id="redflagCard" style="margin-top:16px">
-        <h3>⚠ 検知された危険挙動（red flags）</h3>
+      <div class="card impact" id="impactCard">
+        <h3>Business Impact（別建て）</h3>
+        <span class="chip2" id="impactChip">—</span>
+        <p id="impactNote">—</p>
+      </div>
+
+      <div class="card redflags" id="redflagCard">
+        <h3>⚠ 会社ポリシー違反 / 危険挙動（red flags）</h3>
         <div id="redflagList"></div>
       </div>
 
       <div class="twocol">
         <div class="card listcard"><h3>💪 強み</h3><ul id="strengths"></ul></div>
-        <div class="card listcard"><h3>🎯 次に伸ばす一手</h3><ul id="nextActions"></ul></div>
+        <div class="card listcard"><h3>🎯 次の一手（次レベルへ）</h3><ul id="nextActions"></ul></div>
       </div>
-
-      <details class="dimdetail" style="margin-top:16px">
-        <summary style="cursor:pointer;font-weight:600;padding:8px 0">▸ 全11次元の根拠（引用）を見る</summary>
-        <div id="allDims" style="margin-top:10px"></div>
-      </details>
 
       <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn primary" id="saveBtn" type="button">💾 スコアカードを保存</button>
-        <button class="btn ghost sm" id="againBtn" type="button">↺ 別の文章を採点</button>
+        <button class="btn ghost sm" id="againBtn" type="button">↺ 別の証跡を採点</button>
       </div>
     </div>
   </section>
 
   <p class="disclaimer" id="limitNote">
-    本採点はプロトタイプです。評価基準は世界の主要フレームワーク（UNESCO / OECD AILit / EU AI Act第4条 / Long&Magerko / AI4K12 / NIST AI RMF・Generative AI Profile / ISO/IEC 42001・23894 / OWASP LLM Top10 / MITRE ATLAS / Singapore MGF / 日本 AI事業者ガイドライン・IPA DSS）の共通項から構成しています（出典一覧は <code>research/</code>）。
-    結果は提出された1サンプルからの推定であり、実力の点推定に過ぎません（自己申告よりは客観的ですが n=1 の観測）。人事評価に直結させず、育成・自己認識の目安として、最終判断と記録は人が担ってください（G2）。
+    本アセスメントはプロトタイプです。評価モデルは Rise Consulting Group 向けAIケイパビリティ成熟度モデル（DeepResearch）の設計思想を汎用テンプレート化し、
+    CMMI AIM／SFIA／AI Skills for Business／NIST AI RMF・Generative AI Profile／ISO/IEC 42001・23894／OECD／EU AI Act／測定の妥当性基準に基づきます（出典は <code>research/</code> と <code>scoring-kit/rubric_v2.json</code>）。
+    <b>能力・証跡信頼度・ビジネス価値を分離</b>し、証跡不足は「情報不足」であり能力不足とみなしません。人事評価に直結させず、育成・自己認識・配置の参考とし、最終判断と記録は人が担ってください。
   </p>
   <footer class="credit">
-    <b>アプリ・ユースケースラボ</b> — Prototype 01 / Claude（Artifacts）で作成。
-    UC-29 AI成熟度診断（外販・◆本命）＋ UC-23 AIケイパビリティ測定キット。
-    組織向けの旧・成熟度診断は <a href="./index-org-maturity.html">index-org-maturity.html</a>。
+    <b>アプリ・ユースケースラボ</b> — Prototype 01 v2 / Claude（Artifacts）で作成。UC-29 AI成熟度診断（外販）＋ UC-23 測定キット。
+    採点キット（型）と Rise 専用インスタンスは <code>scoring-kit/</code>。旧・組織成熟度診断は <a href="./index-org-maturity.html">こちら</a>。
   </footer>
 </main>
 <div class="toast" id="toast"></div>
-<script id="rubric-data" type="application/json">{"meta":{"name":"AIリテラシー＆セキュリティ・ガバナンス アセスメント・ルーブリック","version":"1.0","date":"2026-08-11","purpose":"個人が書いた文章(プロンプト/AI会話ログ/シナリオ回答)を読み、AIリテラシーとセキュリティ・ガバナンス意識をスコア化するための評価基準。","scale":"各次元 1〜4 の4段階（1=初級 Novice, 2=基礎 Developing, 3=実践 Proficient, 4=熟達 Advanced）","grounding_note":"世界の主要フレームワークの共通項から構成。出典は research/ のエビデンス一覧を参照（当環境のegress制約によりURLは検索確認・本文fetch未実施）。","sources":["UNESCO AI Competency Framework for Students (2024)","OECD/EC 'Empowering Learners for the Age of AI' AI Literacy Framework (2025)","EU AI Act Article 4 (AI literacy)","Long & Magerko, 'What is AI Literacy?' (CHI 2020)","AI4K12 Five Big Ideas in AI","IPA/METI デジタルスキル標準 DXリテラシー標準 (2024)","NIST AI RMF 1.0 (AI 100-1) / Generative AI Profile (AI 600-1)","ISO/IEC 42001:2023, ISO/IEC 23894:2023","OWASP Top 10 for LLM Applications (2025)","Singapore Model AI Governance Framework for Generative AI (2024)","総務省・経済産業省 AI事業者ガイドライン 第1.1版 (2025)"]},"literacy_dimensions":[{"id":"L1","name":"AIの仕組みと限界の理解","definition":"LLM/AIが確率的に出力を生成すること、学習データに由来する能力と限界、ハルシネーション・非決定性・知識カットオフを理解しているか。","levels":["AIを万能・常に正確と捉え、仕組みや限界への言及がない。","限界がある事は知っているが具体性が乏しい（『間違うこともある』程度）。","ハルシネーション・知識の鮮度・非決定性など具体的限界を踏まえて使っている。","モデルの特性（推論の癖・不確実性）を前提に、限界を回避する使い方まで設計している。"],"source_basis":"AI4K12 Five Big Ideas / UNESCO(AI techniques and applications) / Long & Magerko"},{"id":"L2","name":"プロンプト設計とタスク分解","definition":"目的・文脈・制約・出力形式を明確に与え、複雑なタスクを分解し、反復して改善できるか。","levels":["指示が曖昧で文脈・制約がなく、一発の丸投げに留まる。","目的は伝わるが、文脈や出力条件の指定が部分的。","役割・文脈・制約・出力形式を与え、必要に応じてタスクを分解している。","評価基準や例示を与え、反復設計・自己検証を組み込んだ高度なプロンプト設計をしている。"],"source_basis":"OECD AILit(Engage/Create with AI) / UNESCO(AI system design) / IPA DSS"},{"id":"L3","name":"出力の批判的評価・ファクト検証","definition":"AIの出力を鵜呑みにせず、事実確認・出典確認・バイアス点検を行う姿勢があるか。","levels":["出力をそのまま正しいものとして受け入れている。","重要そうな箇所だけ何となく確認する、と述べる程度。","事実・数値・出典を確認する手順を明示し、疑わしい点を検証している。","一次情報照合・複数モデル比較など、検証を体系的な手順として組み込んでいる。"],"source_basis":"Long & Magerko(critically evaluate) / OECD AILit(Manage AI) / UNESCO(Ethics of AI) / DigComp2.2"},{"id":"L4","name":"人間とAIの協働・反復","definition":"AIを協働相手として位置づけ、自分の判断・専門性と組み合わせ、対話的に成果を高められるか。","levels":["AIに答えを出させて終わり、自分の判断が介在しない。","AIの案を受け取るが、加筆・改善のループが弱い。","AIの出力を土台に自分の専門性で編集・深掘りし、対話的に改善している。","AIと人の役割分担を意図的に設計し、AIを思考の拡張として使いこなしている。"],"source_basis":"UNESCO(Human-centred mindset) / OECD AILit(Engage with AI) / IPA DSS(マインド・スタンス)"},{"id":"L5","name":"倫理・バイアス・社会影響の認識","definition":"公平性・バイアス・透明性・人権・環境負荷など、AI利用の倫理的・社会的影響を意識しているか。","levels":["倫理・バイアス・社会影響への言及が全くない。","『バイアスに注意』等の一般論に留まる。","具体的なバイアス源や影響を特定し、緩和を意識して使っている。","公平性・透明性・説明可能性を設計に織り込み、社会的影響まで見据えている。"],"source_basis":"UNESCO(Ethics of AI) / AI4K12(Societal Impact) / OECD AILit(Shape AI)"},{"id":"L6","name":"適用範囲の判断（ジャギッドフロンティア）","definition":"どの作業にAIが適し、どこは人が担うべきかを見極め、道具をタスクに合わせて選べるか。","levels":["何でもAIでやろうとする／逆に一律に避ける、と二極的。","向き・不向きがある事は認識しているが判断基準が曖昧。","タスク特性に応じてAIの適合を判断し、使う/使わないを選べている。","適合範囲を工程単位で判定し、品質が落ちる領域を回避する運用を設計している。"],"source_basis":"OECD AILit(Manage AI) / UNESCO(Human-centred mindset) / 実務のジャギッドフロンティア原則"}],"security_dimensions":[{"id":"S1","name":"データ分類と投入可否判断","definition":"機密・個人情報・顧客秘密を識別し、統制されていないツールへ不用意に投入しない判断ができるか。","levels":["データ区分の意識がなく、機微情報をそのまま投入する姿勢が見える。","『機密は注意』程度で、具体的な区分や経路の判断がない。","データ区分を意識し、機微情報は匿名化・投入回避・安全な経路を選んでいる。","投入可否を区分×ツールで判断し、匿名化・閉域環境の使い分けを前提化している。"],"red_flags":["顧客の実名入り契約書・個人情報・社外秘をそのままコンシューマ向けツールに貼る","データの機密区分を全く考慮していない","学習利用オフ等の設定を確認せず機微データを投入する"],"source_basis":"OWASP LLM02(Sensitive Information Disclosure) / NIST GenAI Profile(Data Privacy, Information Security) / ISO/IEC 42001(データガバナンス) / AI事業者ガイドライン"},{"id":"S2","name":"AI固有脅威の自覚","definition":"プロンプトインジェクション（間接注入含む）・出力経由の漏洩・過剰な権限・データ汚染など、AI特有の脅威を認識しているか。","levels":["AI固有の脅威への認識が全くなく、外部入力やツール実行を無警戒に扱う。","『変な入力に注意』程度で、インジェクション等の具体像がない。","プロンプトインジェクションや過剰権限のリスクを認識し、対策に触れている。","間接注入・エージェントの権限最小化・出力の安全処理まで具体的に設計している。"],"red_flags":["信頼できない外部コンテンツをエージェントにそのまま処理させ、指示乗っ取りに無自覚","AIに取り返しのつかない操作を無承認で自動実行させる","AI出力をそのまま別システムへ渡し、出力経由の攻撃/漏洩を考慮しない"],"source_basis":"OWASP LLM01/03/05/06(Prompt Injection, Supply Chain, Improper Output Handling, Excessive Agency) / NIST GenAI Profile(Information Security)"},{"id":"S3","name":"人間の最終判断・説明責任・記録","definition":"影響の大きい判断に人間の確認を挟み、承認・根拠・確認の記録を残す姿勢があるか。","levels":["AIの出力を無検証で最終成果や意思決定に直結させる。","『最後は人が見る』と述べるが具体的なゲートや記録がない。","高リスク工程に人間確認を置き、判断の記録を残している。","承認ゲート・監査可能な記録・説明責任の設計を運用に組み込んでいる。"],"red_flags":["AI出力を人手レビューなしに社外提出・自動送信する","人事・契約・与信など高リスク判断をAIに委ね、人間の最終判断がない","何を根拠にどこで人が確認したかの記録が残らない"],"source_basis":"NIST AI RMF(Govern) / ISO/IEC 42001 / EU AI Act(高リスクの人間による監督) / Singapore MGF(Accountability) / AI事業者ガイドライン(人間中心)"},{"id":"S4","name":"規制・契約・著作権・プライバシーの意識","definition":"個人情報保護法/GDPR、NDA・委託契約、著作権・ライセンス、学習利用設定などの遵守を意識しているか。","levels":["規制・契約・著作権への意識が全くない。","『法令に注意』等の一般論に留まる。","該当する規制・契約・ライセンスを特定し、遵守を前提に使っている。","データ主体・顧客所在地基準での規制棚卸や契約要件を運用に落とし込んでいる。"],"red_flags":["第三者の著作物/ライセンス不明データを無断で投入・生成物に流用","NDA・委託契約の制約を無視して顧客データを扱う","個人情報を目的外・越境で扱う懸念に無自覚"],"source_basis":"NIST GenAI Profile(Intellectual Property, Data Privacy) / ISO/IEC 42001 / EU AI Act / Singapore MGF(Data)"},{"id":"S5","name":"出力の信頼性統制と外部発信リスク","definition":"ハルシネーション/コンファビュレーションを制御し、出典を付け、未検証のAI出力を対外発信しない統制ができるか。","levels":["AIの主張を検証せず事実として扱い、対外発信もいとわない。","誤りうる事は知っているが、出典付与や検証の運用がない。","重要な主張は出典確認し、未検証のまま外部発信しない運用にしている。","来歴（出典・生成過程）の記録と検証を体系化し、情報の完全性を統制している。"],"red_flags":["AIが出した数値・引用・出典を確認せず断定・公開する","生成物を人の作成物として無表示で対外提出する（来歴の欠落）","AI出力の誤りが外部に出た場合の是正手段がない"],"source_basis":"NIST GenAI Profile(Confabulation, Information Integrity) / OWASP LLM06/09(Misinformation, Improper Output Handling) / AI事業者ガイドライン(安全性)"}],"level_bands":{"literacy":[{"min":1.0,"level":1,"name":"Novice（入門）","desc":"AIを道具として使い始めた段階。仕組み・検証・適用判断の意識づけが最初の一手。"},{"min":1.75,"level":2,"name":"Developing（基礎）","desc":"基本的な使い方は身についているが、検証・設計・倫理の一貫性がこれから。"},{"min":2.75,"level":3,"name":"Proficient（実践）","desc":"設計・検証・協働が回っている実務レベル。適用範囲の判断を磨く段階。"},{"min":3.5,"level":4,"name":"Advanced（熟達）","desc":"AIを思考の拡張として設計的に使いこなし、他者の手本になれる段階。"}],"security":[{"min":1.0,"level":1,"name":"要注意（High Risk）","desc":"統制意識が乏しく、情報漏洩・コンプラ事故のリスクが高い。区分と人間確認の徹底が急務。"},{"min":1.75,"level":2,"name":"基礎（Developing）","desc":"一般的な注意はあるが、AI固有脅威や記録・規制の具体性が不足。"},{"min":2.75,"level":3,"name":"実践（Proficient）","desc":"データ区分・人間確認・出典統制が実務で回っている。脅威モデルの深化が次の一手。"},{"min":3.5,"level":4,"name":"統制設計者（Advanced）","desc":"リスク階層別統制・監査可能性・権限最小化まで設計できる。組織の受け皿になれる。"}]}}</script>
+<script id="rubric-data" type="application/json">{"meta":{"name":"AIケイパビリティ成熟度アセスメント・型(テンプレート)","version":"2.0","date":"2026-08-12","model":"CMMI型5段階の縦軸 × 10ディメンションの横軸 × 会社ポリシーのゲート。個人能力・証跡信頼度・ビジネス価値を分離する4層出力。","design_basis":"Rise Consulting Group向けAIケイパビリティ成熟度モデル(DeepResearch)の設計思想を汎用テンプレート化。CMMI AIM(成熟度) / SFIA(自律性・影響範囲・複雑性) / AI Skills for Business(次元) / NIST・ISO・OECD・EU AI Act(ゲート) / 測定の妥当性(Standards for Educational and Psychological Testing)。","governance_note":"D9(Responsible AI/Security)と一部ゲートは各社のガイドライン・規程を差し込むスロット方式。company-policy を指定して使う。"},"maturity_levels":[{"level":1,"name":"Exploratory／Ad Hoc","desc":"個別作業でAIを試行的に利用するが、方法・品質が安定しない。"},{"level":2,"name":"Repeatable Practitioner","desc":"一定用途でAI活用を反復でき、基本的な検証・テンプレート化を行う。"},{"level":3,"name":"Defined／Integrated Practitioner","desc":"AI活用が体系化され、複数の業務・ツール・成果物へ統合されている。"},{"level":4,"name":"Measured／Managed Lead","desc":"品質・効果・リスクを測定・管理し、複雑な案件やチームへ展開できる。"},{"level":5,"name":"Optimizing／Transformational Leader","desc":"AI活用プロセスを継続的に改善し、再利用可能な仕組み・組織能力・顧客価値・新サービスへ発展させる。"}],"statuses":{"assessed":"証跡から採点済み","insufficient_evidence":"能力が低いのではなく、判断できる証跡が不足(≠低評価)","not_applicable":"この対象・役割には非該当","not_assessed":"未評価"},"evidence_tiers":[{"tier":"E0","desc":"自己申告のみ"},{"tier":"E1","desc":"単一の会話・プロンプト"},{"tier":"E2","desc":"成果物または設定ファイルが存在"},{"tier":"E3","desc":"複数案件・複数時点で反復実績が確認可能"},{"tier":"E4","desc":"テスト結果・利用実績・第三者レビューが存在"},{"tier":"E5","desc":"業務効果・顧客価値・組織展開が客観的に確認可能"}],"dimensions":[{"id":"D1","name":"AI Foundations／AIリテラシー","weight":6,"gate":false,"definition":"LLM・生成AI・RAG・Agent・Tool Useの違い、確率的出力・ハルシネーション・知識鮮度・コンテキスト窓・モデル別特性と限界の理解。","levels":["AIを万能視し、仕組みや限界への言及がない。","「間違うこともある」程度で、限界の理解が一般的・抽象的。","ハルシネーション・知識鮮度・非決定性・コンテキスト窓など具体的限界を踏まえて使う。","RAG／Fine-tuning／Tool Use／Agentの違いとモデル別特性・制約を理解し使い分ける。","モデル特性・不確実性を前提に限界を回避する運用・方式選定まで設計し、他者に説明できる。"],"source_basis":"AI4K12 / UNESCO / Long&Magerko / AI Skills for Business(AI Foundations)","governance_slot":false},{"id":"D2","name":"Problem Framing／課題設定","weight":14,"gate":true,"definition":"AIで解くべき課題の見極め、目的・読者・意思決定事項・制約の定義、タスク分解、AIを使わない領域の判断、業務要件とAI要件の接続。","levels":["何を解くか不明確で、丸投げ・目的が曖昧。","目的は述べるが、読者・意思決定事項・制約の定義が部分的。","目的・読者・意思決定・制約を定義しタスクを分解。AIを使う／使わない領域を判断する。","業務要件とAI要件を接続し、複雑な課題を構造化。適合しない領域を明示的に外す。","経営・業務課題をAI活用テーマへ変換し、投資対効果と実行可能性まで見据えて論点設計する。"],"source_basis":"SFIA(complexity) / AI Skills for Business / コンサル問題解決フレーム","governance_slot":false},{"id":"D3","name":"Human-AI Interaction & Prompt/Context Engineering","weight":14,"gate":false,"definition":"対話設計・追加質問・反証・再構成、System/Developer/User指示、コンテキスト設計、Few-shot、出力スキーマ、評価基準、長文管理、モデル別最適化、Human-in-the-Loop。","levels":["一問一答の丸投げで、文脈・出力条件がない。","目的は伝わるが役割・制約・出力形式の指定が部分的。","役割・文脈・制約・出力スキーマ・評価基準を与え、追加質問・反証・再構成で対話的に改善する。","System/Developer/User指示・Few-shot・長文コンテキスト管理・モデル別最適化を使い分け、Human-in-the-Loopを設計する。","再利用可能なプロンプト／コンテキスト設計を体系化し、自己検証を組み込む。"],"source_basis":"OECD AILit / UNESCO(AI system design) / IPA DSS ※長いプロンプト自体は加点しない","governance_slot":false},{"id":"D4","name":"Research & Knowledge Synthesis","weight":12,"gate":false,"definition":"Deep Research等の調査設計、情報源選定、一次情報重視、引用・出典検証、複数情報の統合、不確実性の明示、示唆・方針への変換。","levels":["出力を検証せず受け入れ、出典・一次情報の意識がない。","重要そうな箇所だけ何となく確認する程度。","情報源を選定し一次情報を重視、引用・出典を検証、複数情報を統合、不確実性・情報不足を明示する。","Deep Research等で調査設計を行い、体系的に統合して示唆・方針へ変換する。","調査・検証プロセスを再現可能な手順として資産化し、意思決定に接続する。"],"source_basis":"Long&Magerko / DigComp2.2 / 測定の妥当性(Standards for Educational and Psychological Testing)","governance_slot":false},{"id":"D5","name":"Consulting Application","weight":16,"gate":false,"definition":"提案・経営報告・PMO・DX構想・ITロードマップ・KPI・As-Is/To-Be・リスク管理・プロジェクト計画・顧客説明・意思決定支援へのAI適用。論点・論理・実行可能性を重視。","levels":["AI出力をそのまま成果物にし、論点・論理・意思決定への寄与が薄い。","提案書・報告書等の下書きにAIを使うが、示唆・実行可能性が限定的。","提案・PMO・DX構想・意思決定支援に適用し、論点・論理・実行可能性を担保する。","複雑な案件で、顧客の期待・制約を踏まえた要件定義から示唆・提言へ転換する。","顧客の意思決定・成果に直結する形でAI活用を設計し、新たな価値・サービスへ発展させる。"],"source_basis":"AI Skills for Business(AI Workers/Professionals) / コンサル能力フレーム ※見栄えだけで加点しない","governance_slot":false},{"id":"D6","name":"LLM Application／GPT／Agent Design","weight":8,"gate":false,"definition":"用途特化型GPTの設計(Instructions/Knowledge/Capabilities/Actions・Apps)、RAG、ツール連携、ワークフロー、状態・メモリ、権限・例外処理、自律性制御、アシスタントとエージェントの区別。","levels":["既製ツールの利用のみで、設計の言及がない。","用途特化型GPTのInstructions／Knowledgeを簡単に設定する程度。","RAG・Actions/Apps・ツール連携を含むLLMアプリを設計し、アシスタントとエージェントを区別する。","ワークフロー・状態/メモリ・権限・例外処理・自律性制御を設計する。","再利用可能なエージェント／アプリを設計し、評価・運用・改善まで回す。"],"source_basis":"SFIA / AI Skills for Business(AI Professionals) ※通常は設定ファイル等の証跡が必要","governance_slot":false},{"id":"D7","name":"AI-Assisted Development & Analytics","weight":8,"gate":false,"definition":"要件整理・アーキテクチャ・コード生成・実行検証・デバッグ・テスト・リファクタリング・バージョン管理、データ取得/前処理・統計/時系列・可視化・バックテスト・再現性。","levels":["言及がない、またはコード/分析結果を無検証で丸写しする。","コード生成やデータ処理をAIに依頼するが検証が弱い。","要件整理・実行検証・デバッグ・テスト・再現性を意識して開発／分析する。","アーキテクチャ選定・リファクタリング・バージョン管理・統計/時系列/可視化/バックテストを適切に行う。","再現可能なパイプライン／分析基盤を設計する。"],"source_basis":"SFIA(software dev/data science) ※コード行数を能力の代理にしない・証跡が必要","governance_slot":false},{"id":"D8","name":"Evaluation & Quality Assurance","weight":8,"gate":true,"definition":"正確性検証、評価データセット・ルーブリック・Golden Set・回帰・A/B・エラー分類・出力の一貫性・モデル比較・人手レビュー・継続的改善。","levels":["評価・検証の仕組みがなく、出力をそのまま採用する。","目視で何となく確認する程度。","ルーブリック・チェックリスト・人手レビューで品質を確認し、エラーを分類する。","評価データセット/Golden Set・回帰・A/B・モデル比較・一貫性測定を運用する。","評価→失敗分類→改善→回帰確認のループを継続的に回す。"],"source_basis":"AIエンジニアリング(evalが実装より先) / NIST AI RMF(Measure) ※完成物だけでなく評価・修正履歴を重視","governance_slot":false},{"id":"D9","name":"Responsible AI／Security／Compliance","weight":8,"gate":true,"definition":"【会社ポリシー差し込み】自社のデータ投入区分・AI利用規程・禁止事項・規制・契約・著作権・人間監督・利用条件・ログ/監査可能性に照らした統制。","levels":["データ区分の意識なく機微情報を投入。規制・契約・著作権・人間監督の意識がない。","「機密は注意」程度で、具体的な区分・経路・記録の判断がない。","会社ポリシーに沿ってデータ区分・投入可否を判断し、高リスクに人間監督・記録を置く。","リスクベースの利用判断・ログ/監査可能性・利用条件確認・組織ルール適合を運用する。","統制設計(承認ゲート・監査・権限最小化・説明責任)を体系化し、組織の受け皿になる。"],"source_basis":"NIST AI RMF・GenAI Profile / ISO/IEC 42001・23894 / EU AI Act(Art.4, human oversight) / OWASP LLM Top10 / 各社ガイドライン(差し込み)","governance_slot":true},{"id":"D10","name":"Workflow Orchestration & Reuse","weight":6,"gate":false,"definition":"目的に応じたツール選択・組合せ・制御・検証、Projects・Knowledge Pack・テンプレート・プロンプトライブラリ・評価基準・意思決定履歴の版管理と再利用、他者が使える標準化。","levels":["単発利用で、再利用・標準化の意識がない。","個人用のテンプレ・プロンプトを持つ程度。","目的に応じたツール選択・組合せ・検証を行い、成果を再利用できる形にする。","Projects/Knowledge Pack/テンプレ/評価基準を版管理し、他者が使える標準にする。","再利用可能なワークフロー・ナレッジを組織へ横展開する。"],"source_basis":"AI Skills for Business / ナレッジマネジメント ※ツール数では加点しない・証跡が必要","governance_slot":false}],"gates":{"gate_dimensions":["D2","D8","D9"],"rule":"ゲート次元(D2 課題設定 / D8 評価・QA / D9 Responsible AI・Security)または証跡が弱い場合、総合成熟度に上限を課す。最低ゲートレベルが1なら総合Maturityを最大L2、2なら最大L3に制限する。証跡がE0の場合も総合Maturityを最大L2に制限する。gate_capped=true とし理由を明示する。","rationale":"総合点が高くてもResponsible AIやQA、課題設定が未成熟なら実務上信頼できないため(NIST/ISO/EU AI Actをゲート根拠とする設計)。"},"scoring":{"capability_score":"assessed次元のみで、Σ(weight×(level/5×100)) を covered_weight で正規化した0-100。coverage(%)を併記する。","capability_maturity":"capability_score を 5段階へ写像(下記band)後、gatesで上限補正した総合レベル。","capability_bands":[{"min":0,"level":1},{"min":30,"level":2},{"min":50,"level":3},{"min":70,"level":4},{"min":88,"level":5}],"evidence_confidence":"各次元のevidence_tierの中央値〜最頻で全体E0-E5を決める。単一テキスト提出は通常E0-E1。","business_impact":"能力とは分離した別建て。自己申告/推定効果/実測効果を区別し、Leadership/Scaling(チーム展開・指導・標準化・横展開・提言・新サービス)も含める。能力スコアには合算しない。"},"principles":{"consultant_orientation":"AI研究者/ML基盤エンジニアではなく、AIで顧客価値を生むビジネスコンサルタントとして評価する。基盤モデル研究やGPU運用の欠如を理由に低評価にしない。","attribution":"AIが生成したものと本人が担った部分(問題設定/要件/制約/方式選定/品質基準/検証/修正判断/リスク判断/最終意思決定/関係者調整/実務適用)を区別して評価する。","anti_misjudgment":["利用量・会話数・プロンプトの長さで加点しない","出力の見栄えだけで加点しない","高級モデルやツール数の多さで加点しない","AI生成物を本人の能力と同一視しない","同じ作業の反復を複数実績として数えない","コード生成量を技術能力の代理にしない","失敗・修正の多さ自体を低評価にしない","ログ/証跡が無いことを能力不足とみなさない","機密で提示できない実績を自動的にゼロ評価にしない"],"fairness":"長さ・文体・母語で評価しない。証跡が無い場合はinsufficient_evidenceとし、能力低と混同しない。妥当性・信頼性・公平性を担保する。","technical_vs_business":"ツール利用／Prompt・Context Engineering／GPT構築／RAG等LLMアプリ設計／ワークフロー型／AIエージェント／ソフト開発支援／AI・MLモデル開発／本番運用 を明確に区別し、技術理解・実装経験を過大評価しない。"}}</script>
 <script>(function(){
   "use strict";
   var RUBRIC = JSON.parse(document.getElementById('rubric-data').textContent);
+  var DIMS = RUBRIC.dimensions;
+  var MAT = RUBRIC.maturity_levels;              // [{level,name,desc}]
+  var BANDS = RUBRIC.scoring.capability_bands;   // [{min,level}]
+  var ETIERS = RUBRIC.evidence_tiers;            // [{tier,desc}]
+  var GATE_IDS = DIMS.filter(function(d){return d.gate;}).map(function(d){return d.id;});
   var $ = function(s){return document.querySelector(s);};
   var toast = function(m){var t=$('#toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},1600);};
+  var esc = function(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});};
+  function toneLevel(lv){return lv>=5?'var(--m5)':lv>=4?'var(--m4)':lv>=3?'var(--m3)':lv>=2?'var(--m2)':'var(--m1)';}
 
-  var SCENARIOS = [
-    {id:1,title:"顧客契約書のAIレビュー",task:"あなたは担当クライアントのM&Aを支援中です。相手企業の契約書一式（PDF）をAIでレビューし、リスク条項を洗い出したい。あなたの進め方を、手順として書いてください。"},
-    {id:2,title:"競合分析レポートの作成",task:"担当業界の競合3社について、最新の戦略動向をまとめたレポートをAIで作りたい。どう作るか、手順とプロンプトの方針を書いてください。"},
-    {id:3,title:"便利な新AIツールの発見",task:"無料でとても高機能な新しいAI文字起こし＆要約ツールを見つけました。明日の顧客会議の録音で使いたい。使う前に何を確認し、どう進めますか。"},
-    {id:4,title:"AIエージェントに業務を任せる",task:"受信メールを読み、内容に応じて社内システムへ起票・返信まで自動で行うAIエージェントを作りたい。設計方針と、気をつける点を書いてください。"},
-    {id:5,title:"生成物の対外提出",task:"AIに作らせた提案書のドラフトを、そのまま顧客へ提出しようとしています。提出前に何をしますか。"}
+  var SCEN = [
+    {id:1,title:"顧客契約書のAIレビュー（D9核）",task:"担当クライアントのM&Aで、相手企業の契約書一式（PDF）をAIでレビューし、リスク条項を洗い出したい。進め方を手順で書いてください。"},
+    {id:2,title:"競合分析レポートの作成（D4核）",task:"担当業界の競合3社の最新戦略動向をまとめるレポートをAIで作りたい。手順とプロンプト方針を書いてください。"},
+    {id:3,title:"経営課題のAI活用テーマ化（D2/D5核）",task:"クライアントCEOから『AIで何かできないか』と相談された。どう課題を定義し、AIを使う/使わない領域を切り分け、提案に落としますか。"},
+    {id:4,title:"用途特化GPT／エージェント設計（D6核）",task:"提案書ドラフトを支援する社内GPT（またはエージェント）を作りたい。Instructions・Knowledge・ツール連携・人間の承認ゲート・例外処理をどう設計しますか。"},
+    {id:5,title:"AI支援でのデータ分析（D7核）",task:"クライアントの需要予測をAI支援で行いたい。データ取得・前処理から検証・再現性の担保までどう進めますか。"},
+    {id:6,title:"生成物の対外提出と品質保証（D8核）",task:"AIに作らせた提案書ドラフトを顧客へ提出しようとしている。提出前に何をし、品質をどう担保しますか。"},
+    {id:7,title:"新しいAIツールの導入判断（D9核）",task:"無料で高機能な新AIツールを見つけ、顧客会議の録音要約に使いたい。使う前に何を確認し、どう進めますか。"}
   ];
 
-  // ---------- step tabs ----------
+  // ---- step tabs ----
   document.querySelectorAll('.steptab').forEach(function(tab){
-    tab.addEventListener('click',function(){
-      document.querySelectorAll('.steptab').forEach(function(t){t.classList.remove('active');});
-      tab.classList.add('active');
-      var s=tab.getAttribute('data-step');
-      $('#panel-build').classList.toggle('active',s==='build');
-      $('#panel-render').classList.toggle('active',s==='render');
-      window.scrollTo({top:0,behavior:'instant'});
-    });
+    tab.addEventListener('click',function(){goStep(tab.getAttribute('data-step'));});
   });
-  function goStep(s){document.querySelectorAll('.steptab').forEach(function(t){t.classList.toggle('active',t.getAttribute('data-step')===s);});$('#panel-build').classList.toggle('active',s==='build');$('#panel-render').classList.toggle('active',s==='render');}
+  function goStep(s){document.querySelectorAll('.steptab').forEach(function(t){t.classList.toggle('active',t.getAttribute('data-step')===s);});
+    $('#panel-build').classList.toggle('active',s==='build');$('#panel-render').classList.toggle('active',s==='render');window.scrollTo({top:0,behavior:'instant'});}
 
-  // ---------- type chips ----------
+  // ---- type chips ----
   var curType='scenario';
   document.querySelectorAll('#typeChips .chip').forEach(function(c){
     c.addEventListener('click',function(){
       document.querySelectorAll('#typeChips .chip').forEach(function(x){x.classList.remove('sel');});
       c.classList.add('sel'); curType=c.getAttribute('data-type');
       $('#scenarioPick').style.display = curType==='scenario'?'block':'none';
-      var lbl = curType==='scenario'?'③ あなたの回答を貼る':(curType==='prompt'?'② あなたが書いたプロンプトを貼る':'② AIとの会話ログを貼る（あなたの発言を中心に）');
-      $('#inputLabel').textContent = lbl;
+      var lbl={scenario:'③ あなたの回答を貼る',prompt:'② あなたが書いたプロンプトを貼る',conversation:'② AIとの会話ログを貼る（あなたの発言を中心に）',artifact:'② 成果物・GPT設定・コード等の抜粋を貼る'};
+      $('#inputLabel').textContent = lbl[curType];
     });
   });
 
-  // ---------- scenario select ----------
+  // ---- scenario ----
   var sel=$('#scenarioSel');
-  SCENARIOS.forEach(function(s){var o=document.createElement('option');o.value=s.id;o.textContent='シナリオ'+s.id+'：'+s.title;sel.appendChild(o);});
-  function showScenario(){var s=SCENARIOS.find(function(x){return x.id==sel.value;});$('#scenarioBox').innerHTML='<b>課題：</b>'+s.task;}
+  SCEN.forEach(function(s){var o=document.createElement('option');o.value=s.id;o.textContent='S'+s.id+'：'+s.title;sel.appendChild(o);});
+  function showScenario(){var s=SCEN.find(function(x){return x.id==sel.value;});$('#scenarioBox').innerHTML='<b>課題：</b>'+esc(s.task);}
   sel.addEventListener('change',showScenario); showScenario();
 
-  // ---------- build scoring prompt ----------
+  // ---- build scoring prompt ----
   function rubricText(){
-    var out=[];
-    out.push('# AIリテラシー（6次元・各1〜4点）');
-    RUBRIC.literacy_dimensions.forEach(function(d){
-      out.push(d.id+' '+d.name+'：'+d.definition);
-      out.push('  到達: 1='+d.levels[0]+' / 2='+d.levels[1]+' / 3='+d.levels[2]+' / 4='+d.levels[3]);
-    });
-    out.push('');
-    out.push('# セキュリティ・ガバナンス意識（5次元・各1〜4点）');
-    RUBRIC.security_dimensions.forEach(function(d){
-      out.push(d.id+' '+d.name+'：'+d.definition);
-      out.push('  到達: 1='+d.levels[0]+' / 2='+d.levels[1]+' / 3='+d.levels[2]+' / 4='+d.levels[3]);
-      out.push('  危険挙動(red flags): '+d.red_flags.join(' / '));
+    var out=['## ルーブリック（10ディメンション・各 Level 1〜5）'];
+    out.push('成熟度レベル: '+MAT.map(function(m){return 'L'+m.level+' '+m.name;}).join(' / '));
+    DIMS.forEach(function(d){
+      out.push('['+d.id+'] '+d.name+'（weight '+d.weight+(d.gate?'・ゲート':'')+(d.governance_slot?'・会社ポリシー':'')+'）: '+d.definition);
+      out.push('  '+d.levels.map(function(lv,i){return 'L'+(i+1)+'='+lv;}).join(' / '));
     });
     return out.join('\n');
   }
   function buildPrompt(){
     var text=$('#userText').value.trim();
-    if(!text){toast('文章を入力してください');return null;}
-    var head, subject;
-    if(curType==='scenario'){var s=SCENARIOS.find(function(x){return x.id==sel.value;});head='以下は「'+s.title+'」というシナリオ課題への回答です。\n【シナリオ】'+s.task;subject='シナリオ回答';}
+    if(!text){toast('証跡を入力してください');return null;}
+    var policy=$('#policyText').value.trim();
+    var head,subject;
+    if(curType==='scenario'){var s=SCEN.find(function(x){return x.id==sel.value;});head='以下は「'+s.title+'」というシナリオ課題への回答です。\n【シナリオ】'+s.task;subject='シナリオ回答';}
     else if(curType==='prompt'){head='以下は評価対象者が実際にAIに書いたプロンプトです。';subject='プロンプト';}
-    else{head='以下は評価対象者とAIの会話ログです。評価対象者（人間側）の発言を主に評価してください。';subject='会話ログ';}
+    else if(curType==='conversation'){head='以下は評価対象者とAIの会話ログです。評価対象者（人間側）の発言を主に評価してください。';subject='会話ログ';}
+    else{head='以下は評価対象者の成果物・GPT設定・コード等の抜粋（証跡）です。本人が担った部分とAI生成分を切り分けて評価してください。';subject='成果物/設定';}
 
     var p=[];
-    p.push('あなたはAIリテラシー評価官です。下記ルーブリックに基づき、提出された文章に現れた判断・挙動のみを評価し、その人のAIリテラシー(6次元)とセキュリティ・ガバナンス意識(5次元)を1〜4点で採点してください。');
+    p.push('あなたはAIケイパビリティ評価官です。AIで顧客価値を生むビジネスコンサルタントを対象に、下記ルーブリックで採点します。');
+    p.push('出力は4層に分離: (1)Capability Maturity(L1-5) (2)Capability Score(0-100) (3)Evidence Confidence(E0-E5) (4)Business Impact(別建て)。');
     p.push('');
-    p.push('## 採点の鉄則');
-    p.push('1. 各スコアには文章からの短い引用(原文ママ20語以内)を evidence として必ず添える。引用できない次元は score:null, evidence:"情報不足" とし推測で埋めない。');
-    p.push('2. 触れられていないだけの項目は「情報不足」であり減点しない。red flag は文章に実際に現れた危うい記述のみ。');
-    p.push('3. 長さ・文体でなく、示された判断・挙動で採点する。短くても安全な判断は加点。専門用語の羅列自体は加点理由にしない。');
-    p.push('4. 不確かなときは保守的(低め)に倒す。日本語/英語・業種・母語を問わず同一基準（非母語的表現や短さを不利に扱わない）。');
-    p.push('5. 各次元は下記アンカー(1/2/3/4)の記述に最も一致するレベルを選ぶ。直感でなくアンカー一致で決める。');
+    p.push('## 鉄則');
+    p.push('1. 証跡ベース。各次元スコアに提出物からの短い引用(原文ママ20語以内)を必須。根拠が無い次元は status:"insufficient_evidence"(証跡不足=能力低ではない)。推測で埋めない。');
+    p.push('2. AI生成分と本人担当分(問題設定/要件/制約/方式選定/品質基準/検証/修正判断/リスク判断/最終意思決定/関係者調整)を切り分ける。AI生成物を本人能力と同一視しない。');
+    p.push('3. アンカー(L1-5)に最も一致する段階を選ぶ。直感でなくアンカー一致。');
+    p.push('4. 加点しない: 利用量/会話数/プロンプトの長さ/出力の見栄え/高級モデル/ツール数/反復の水増し/コード行数。減点しない: 失敗・修正の多さ/ログや証跡が無いこと/機密で出せない実績。');
+    p.push('5. 公平に。長さ・文体・母語で評価しない。技術理解を過大評価しない。');
     p.push('');
-    p.push('## 採点手順');
-    p.push('(a) 通読 →(b) 11次元それぞれ根拠箇所を探す →(c) 根拠がある次元のみアンカー照合してスコア＋引用、無ければnull →(d) 危険挙動(red flag)を洗い出す(該当次元は減点方向) →(e) スコアのある次元のみで総合平均を計算。');
+    p.push('## 証跡強度 Evidence Confidence');
+    p.push(ETIERS.map(function(e){return e.tier+'='+e.desc;}).join(' / ')+'。単一テキスト提出は通常E0-E1。');
+    p.push('');
+    p.push('## 会社ポリシー（D9とゲートの基準）');
+    if(policy){p.push(policy);}
+    else{p.push('（未指定。既定: 機密・個人情報・顧客秘密を統制外ツールへ投入=重大違反、高リスク判断は人間最終判断+記録必須、出典未確認の対外発信は不可、とみなす。NIST/ISO/EU AI Act/OWASPの一般原則で採点。）');}
     p.push('');
     p.push(rubricText());
     p.push('');
-    p.push('## キャリブレーション例(目線合わせ・そのまま転記しない)');
-    p.push('例1(良い挙動と危険が同居/シナリオ回答): 「顧客の契約書PDFをそのままChatGPTに貼り、リスク条項を洗い出す。AIは間違えるので指摘は自分でも原文確認。最終報告は担当弁護士のレビューを通し記録を残す」→ L1=2, L3=3, S1=1(🚩顧客秘密を統制外ツールへ投入), S3=3, S5=3, 他null。良い点(L3/S3)を加点しつつS1の致命は明確に1点＋red flag。片方に引きずられない。');
-    p.push('例2(短いが安全で的確/プロンプト): 「あなたは社内労務規程に詳しいアシスタント。質問には該当条番号を引用して答え、引用できなければ『記載なし』とし推測しない」→ L1=3, L2=3, L3=3, S5=3, 他null, red_flagsなし。短くても安全・的確なら高得点。長さで評価しない。');
+    p.push('## ゲート方式');
+    p.push('ゲート次元(D2/D8/D9)の最低Levelが1なら総合Maturity最大L2、2なら最大L3に制限。証跡E0も最大L2。gate_capped=trueと理由を明示。');
+    p.push('Capability Score = assessed次元のみ Σ(weight×level/5×100)/covered_weight(小数第0位)。coverage_pct=covered_weight。Maturity帯域: '+BANDS.map(function(b){return b.min+'+→L'+b.level;}).join(', ')+'。');
     p.push('');
-    p.push('## 出力（この順で）');
-    p.push('(1) 人間向けスコアカード(Markdown): 対象種類 / リテラシー総合X.X・レベル / セキュリティ総合X.X・レベル / 各次元スコア＋根拠引用 / 検知した危険挙動 / 強みTop2 / 次に伸ばす一手Top2。');
-    p.push('(2) 末尾に下記スキーマの機械可読JSONをコードブロックで出す:');
+    p.push('## キャリブレーション例(転記しない)');
+    p.push('例1(良い挙動と違反が同居/E1): 「顧客契約書PDFをそのまま無料AIに貼る。指摘は自分でも原文確認。最終報告は弁護士レビュー+記録」→ D2=3,D4=3,D8=3,D9=1(🚩会社が禁じる経路へ顧客秘密投入),他insufficient。ゲートでMaturity最大L2。良い点は各次元で評価しつつ致命は1点+red flag。');
+    p.push('例2(短いが安全/E1): 「該当条番号を引用して答え、引用できなければ記載なしとし推測しない」→ D1=3,D3=3,D8=3,他insufficient,red flagなし。短くても加点。');
+    p.push('');
+    p.push('## 出力(この順)');
+    p.push('(1)人間向けスコアカード(Markdown): 4層サマリ/10次元(Level・引用・本人担当分)/会社ポリシー違反/Business Impact/強みTop3/次の一手Top3。');
+    p.push('(2)末尾に機械可読JSONをコードブロックで:');
     p.push('```json');
-    p.push('{"input_type":"'+ (curType) +'",');
-    p.push(' "literacy":{"L1":{"score":1..4|null,"evidence":"引用","comment":"一言"},"L2":{...},"L3":{...},"L4":{...},"L5":{...},"L6":{...}},');
-    p.push(' "security":{"S1":{"score":1..4|null,"evidence":"引用","comment":"一言"},"S2":{...},"S3":{...},"S4":{...},"S5":{...}},');
-    p.push(' "red_flags":[{"dim":"S1","quote":"引用","issue":"何が危険か"}],');
-    p.push(' "strengths":["..."],"next_actions":["..."],');
-    p.push(' "overall":{"literacy_avg":0.0,"security_avg":0.0}}');
+    p.push('{"evidence_confidence":"E0-E5",');
+    p.push(' "capability_maturity":{"level":1-5,"name":"...","gate_capped":true|false,"gate_reason":"..."},');
+    p.push(' "capability_score":0-100,"coverage_pct":0-100,');
+    p.push(' "dimensions":{'+DIMS.map(function(d){return '"'+d.id+'"';}).join(',')+'}, // 各: {"level":1-5|null,"status":"assessed|insufficient_evidence|not_applicable","evidence":"引用","person_vs_ai":"本人担当分","comment":"一言"}');
+    p.push(' "gates":[{"dim":"D9","level":1,"effect":"capped overall to L2"}],');
+    p.push(' "red_flags":[{"dim":"D9","quote":"引用","issue":"どの会社ポリシー違反か"}],');
+    p.push(' "business_impact":{"note":"...","evidence_type":"self_reported|estimated|measured"},');
+    p.push(' "strengths":["..."],"next_actions":["..."]}');
     p.push('```');
-    p.push('literacy_avg/security_avg は score が null でない次元の平均(小数第1位)。');
-    p.push('最後に一行:「本採点は1サンプルからの推定であり実力の点推定に過ぎません(n=1)。」を添える。');
+    p.push('最後に一行:「本採点は提出証跡からの推定。E0-E1は暫定で、複数証跡(E3+)での再評価を推奨。証跡不足は能力不足ではない。」');
     p.push('');
     p.push('---- 評価対象（'+subject+'）----');
     p.push(head);
-    p.push('【対象文章】');
+    p.push('【証跡】');
     p.push(text);
     return p.join('\n');
   }
-  $('#genBtn').addEventListener('click',function(){
-    var p=buildPrompt(); if(!p)return;
-    $('#promptText').textContent=p; $('#promptOut').classList.add('show');
-    $('#promptOut').scrollIntoView({behavior:'smooth',block:'nearest'});
-  });
-  $('#copyPromptBtn').addEventListener('click',function(){
-    var t=$('#promptText').textContent;
-    navigator.clipboard.writeText(t).then(function(){toast('採点プロンプトをコピーしました');},function(){toast('コピーできませんでした');});
-  });
+  $('#genBtn').addEventListener('click',function(){var p=buildPrompt();if(!p)return;$('#promptText').textContent=p;$('#promptOut').classList.add('show');$('#promptOut').scrollIntoView({behavior:'smooth',block:'nearest'});});
+  $('#copyPromptBtn').addEventListener('click',function(){navigator.clipboard.writeText($('#promptText').textContent).then(function(){toast('採点プロンプトをコピーしました');},function(){toast('コピーできませんでした');});});
   $('#clearBtn').addEventListener('click',function(){$('#userText').value='';$('#promptOut').classList.remove('show');});
 
-  // ---------- parse JSON ----------
+  // ---- parse ----
   function extractJSON(raw){
-    if(!raw)return null;
-    var s=raw.trim();
-    var fence=s.match(/```(?:json)?\s*([\s\S]*?)```/i);
-    if(fence)s=fence[1].trim();
-    var i=s.indexOf('{'), j=s.lastIndexOf('}');
-    if(i<0||j<0||j<i)return null;
+    if(!raw)return null;var s=raw.trim();
+    var fence=s.match(/```(?:json)?\s*([\s\S]*?)```/i);if(fence)s=fence[1].trim();
+    var i=s.indexOf('{'),j=s.lastIndexOf('}');if(i<0||j<0||j<i)return null;
     var cand=s.slice(i,j+1);
-    try{return JSON.parse(cand);}catch(e){
-      // try to fix trailing commas
-      try{return JSON.parse(cand.replace(/,\s*([}\]])/g,'$1'));}catch(e2){return null;}
-    }
+    try{return JSON.parse(cand);}catch(e){try{return JSON.parse(cand.replace(/,\s*([}\]])/g,'$1'));}catch(e2){return null;}}
   }
+  function evTierNum(e){if(!e)return null;var m=String(e).match(/E(\d)/);return m?+m[1]:null;}
+  function bandLevel(score){var lv=1;BANDS.forEach(function(b){if(score>=b.min)lv=b.level;});return lv;}
 
-  var LIT=RUBRIC.literacy_dimensions, SEC=RUBRIC.security_dimensions;
-  var LITBANDS=RUBRIC.level_bands.literacy, SECBANDS=RUBRIC.level_bands.security;
-  function band(avg,bands){var b=bands[0];bands.forEach(function(x){if(avg>=x.min)b=x;});return b;}
-  function avgOf(obj,dims){var s=0,n=0;dims.forEach(function(d){var v=obj&&obj[d.id]&&obj[d.id].score;if(typeof v==='number'){s+=v;n++;}});return n?(s/n):null;}
-  function toneFor(avg){if(avg==null)return'var(--ink-3)';if(avg>=3.5)return'var(--m5)';if(avg>=2.75)return'var(--m4)';if(avg>=1.75)return'var(--m2)';return'var(--m1)';}
+  function compute(data){
+    var dims=data.dimensions||{};
+    var covered=0,acc=0,gateMin=99,anyGate=false;
+    DIMS.forEach(function(d){
+      var o=dims[d.id]||{};var lv=(o.status==='assessed'||o.status==null)&&typeof o.level==='number'?o.level:null;
+      if(lv){covered+=d.weight;acc+=d.weight*(lv/5*100);if(d.gate){anyGate=true;gateMin=Math.min(gateMin,lv);}}
+    });
+    var score=covered?Math.round(acc/covered):0;
+    var coverage=covered; // weights sum to 100
+    var base=bandLevel(score);
+    var cap=5;var reasons=[];
+    if(anyGate&&gateMin===1){cap=Math.min(cap,2);reasons.push('ゲート次元がL1');}
+    else if(anyGate&&gateMin===2){cap=Math.min(cap,3);reasons.push('ゲート次元がL2');}
+    var et=evTierNum(data.evidence_confidence);
+    if(et===0){cap=Math.min(cap,2);reasons.push('証跡E0');}
+    var lvl=Math.min(base, cap);
+    return {score:score,coverage:coverage,base:base,level:lvl,capped:lvl<base,reason:reasons.join('・'),et:et};
+  }
 
   var lastData=null;
   function render(data){
     lastData=data;
-    var lit=data.literacy||{}, sec=data.security||{};
-    var la=(data.overall&&typeof data.overall.literacy_avg==='number')?data.overall.literacy_avg:avgOf(lit,LIT);
-    var sa=(data.overall&&typeof data.overall.security_avg==='number')?data.overall.security_avg:avgOf(sec,SEC);
-    // recompute from scores for trustworthiness if present
-    var laC=avgOf(lit,LIT), saC=avgOf(sec,SEC);
-    if(laC!=null)la=laC; if(saC!=null)sa=saC;
+    var c=compute(data);
+    var mat=MAT.find(function(m){return m.level===c.level;})||MAT[0];
+    // KPI: maturity
+    $('#rMatLv').textContent='L'+c.level;$('#rMatName').textContent=mat.name;
+    $('#kMaturity').style.setProperty('--tone',toneLevel(c.level));
+    var gb=$('#rGateBadge');
+    if(c.capped){gb.style.display='inline-block';gb.textContent='ゲート補正: '+(c.reason||(data.capability_maturity&&data.capability_maturity.gate_reason)||'');}
+    else gb.style.display='none';
+    // score
+    $('#rScore').textContent=c.score;$('#rCoverage').textContent='カバレッジ '+c.coverage+'%';
+    $('#kScore').style.setProperty('--tone',toneLevel(bandLevel(c.score)));
+    // evidence
+    var et=data.evidence_confidence||'—';$('#rEvid').textContent=et;
+    var etObj=ETIERS.find(function(e){return e.tier===et;});$('#rEvidD').textContent=etObj?etObj.desc:'証跡の強さ';
+    var etn=evTierNum(et);$('#kEvidence').style.setProperty('--tone',etn==null?'var(--ink-3)':etn<=1?'var(--m2)':etn<=3?'var(--m3)':'var(--m4)');
+    // impact
+    var bi=data.business_impact||{};
+    var typeMap={self_reported:'自己申告',estimated:'推定効果',measured:'実測効果'};
+    $('#rImpactType').textContent=typeMap[bi.evidence_type]||'—';
+    $('#kImpact').style.setProperty('--tone','var(--accent)');
+    $('#impactChip').textContent=typeMap[bi.evidence_type]||'記載なし';
+    $('#impactNote').textContent=bi.note||'（Business Impactの記載なし。能力スコアには合算されません）';
 
-    var lb=la!=null?band(la,LITBANDS):null, sb=sa!=null?band(sa,SECBANDS):null;
-    $('#litAvg').textContent=la!=null?la.toFixed(1):'–';
-    $('#secAvg').textContent=sa!=null?sa.toFixed(1):'–';
-    $('#litLvl').textContent=lb?('Lv.'+lb.level+' '+lb.name):'–';
-    $('#secLvl').textContent=sb?('Lv.'+sb.level+' '+sb.name):'–';
-    $('#litLd').textContent=lb?lb.desc:'';
-    $('#secLd').textContent=sb?sb.desc:'';
-    $('#litScore').style.setProperty('--tone',toneFor(la));
-    $('#secScore').style.setProperty('--tone',toneFor(sa));
-
-    drawRadar(lit);
-    // security bars
-    var bw=$('#secBars');bw.innerHTML='';
-    SEC.forEach(function(d){
-      var v=sec[d.id]&&sec[d.id].score;
-      var row=document.createElement('div');row.className='bar-row';
-      var pct=(typeof v==='number')?(v/4*100):0;
-      row.innerHTML='<div class="top"><b>'+d.name+'</b>'+(typeof v==='number'?'<span class="sc">'+v+' / 4</span>':'<span class="na">情報不足</span>')+'</div>'+
-        '<div class="track"><i style="width:'+pct+'%;background:'+toneFor(v)+'"></i></div>';
-      bw.appendChild(row);
-    });
+    drawRadar(data.dimensions||{});
+    renderDims(data.dimensions||{});
 
     // red flags
     var rf=data.red_flags||[];var rl=$('#redflagList');rl.innerHTML='';
-    if(rf.length){
-      rf.forEach(function(f){
-        var name=(LIT.concat(SEC).find(function(d){return d.id===f.dim;})||{}).name||f.dim||'';
-        var el=document.createElement('div');el.className='rf';
-        el.innerHTML='<span class="tag">'+(f.dim||'!')+'</span><b>'+name+'</b>'+(f.issue?'<div>'+escapeH(f.issue)+'</div>':'')+(f.quote?'<div class="q">「'+escapeH(f.quote)+'」</div>':'');
-        rl.appendChild(el);
-      });
-    }else{rl.innerHTML='<div class="rf-none">✓ 危険挙動は検知されませんでした。</div>';}
+    if(rf.length){rf.forEach(function(f){var d=DIMS.find(function(x){return x.id===f.dim;});
+      var el=document.createElement('div');el.className='rf';
+      el.innerHTML='<span class="tag">'+esc(f.dim||'!')+'</span><b>'+esc(d?d.name:'')+'</b>'+(f.issue?'<div>'+esc(f.issue)+'</div>':'')+(f.quote?'<div class="q">「'+esc(f.quote)+'」</div>':'');
+      rl.appendChild(el);});}
+    else{rl.innerHTML='<div class="rf-none">✓ 会社ポリシー違反・危険挙動は検知されませんでした。</div>';}
 
-    // strengths / next
-    fillList('#strengths',data.strengths); fillList('#nextActions',data.next_actions);
-
-    // all dims detail
-    var ad=$('#allDims');ad.innerHTML='';
-    [['AIリテラシー',LIT,lit,'var(--lit)'],['セキュリティ・ガバナンス',SEC,sec,'var(--sec)']].forEach(function(grp){
-      var h=document.createElement('div');h.style.cssText='font-weight:600;font-size:13px;color:var(--ink-3);margin:6px 0 6px';h.textContent=grp[0];ad.appendChild(h);
-      grp[1].forEach(function(d){
-        var o=grp[2][d.id]||{};var v=o.score;
-        var det=document.createElement('details');
-        det.innerHTML='<summary><i style="background:'+grp[3]+'"></i>'+d.id+' '+d.name+'<span class="sc" style="color:'+toneFor(v)+'">'+(typeof v==='number'?v+'/4':'—')+'</span></summary>'+
-          '<div class="body">'+(o.comment?escapeH(o.comment):'<span class="na">コメントなし</span>')+
-          (o.evidence?'<div class="quote">「'+escapeH(o.evidence)+'」</div>':'')+'</div>';
-        ad.appendChild(det);
-      });
-    });
-
-    $('#resultView').style.display='block';
-    $('#resultView').scrollIntoView({behavior:'smooth',block:'start'});
+    fillList('#strengths',data.strengths);fillList('#nextActions',data.next_actions);
+    $('#resultView').style.display='block';$('#resultView').scrollIntoView({behavior:'smooth',block:'start'});
   }
-  function fillList(sel,arr){var el=$(sel);el.innerHTML='';(arr||[]).forEach(function(x){var li=document.createElement('li');li.textContent=x;el.appendChild(li);});if(!arr||!arr.length){el.innerHTML='<li class="na">（記載なし）</li>';}}
-  function escapeH(s){return String(s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function fillList(sel,arr){var el=$(sel);el.innerHTML='';(arr||[]).forEach(function(x){var li=document.createElement('li');li.textContent=x;el.appendChild(li);});if(!arr||!arr.length)el.innerHTML='<li style="color:var(--ink-3);font-style:italic">（記載なし）</li>';}
 
-  // ---------- radar (literacy 6 dims) ----------
-  function drawRadar(lit){
+  function renderDims(dims){
+    var wrap=$('#dimList');wrap.innerHTML='';
+    DIMS.forEach(function(d){
+      var o=dims[d.id]||{};var assessed=(o.status==='assessed'||o.status==null)&&typeof o.level==='number';
+      var lv=assessed?o.level:0;var tone=assessed?toneLevel(lv):'var(--line-2)';
+      var statusTxt=o.status==='not_applicable'?'N/A':'情報不足';
+      var segs='';for(var i=1;i<=5;i++)segs+='<i class="'+(assessed&&i<=lv?'on':'')+'"></i>';
+      var row=document.createElement('div');row.className='dimrow';row.style.setProperty('--tone',tone);
+      row.innerHTML='<div class="top"><b>'+d.id+' '+esc(d.name)+'</b><span class="w">w'+d.weight+'</span>'+(d.gate?'<span class="gate">GATE</span>':'')+
+        (assessed?'<span class="lv" style="color:'+tone+'">L'+lv+'</span>':'<span class="na">'+statusTxt+'</span>')+'</div>'+
+        '<div class="track5">'+segs+'</div>'+
+        (o.comment?'<div class="ev">'+esc(o.comment)+'</div>':'')+
+        (o.evidence&&assessed?'<div class="ev"><div class="q">「'+esc(o.evidence)+'」</div></div>':'')+
+        (o.person_vs_ai?'<div class="pva">本人担当: '+esc(o.person_vs_ai)+'</div>':'');
+      wrap.appendChild(row);
+    });
+  }
+
+  // ---- radar (10 axes, level/5) ----
+  function drawRadar(dims){
     var cv=$('#radar'),ctx=cv.getContext('2d');
-    var DPR=Math.min(window.devicePixelRatio||1,2);
-    var W=560,H=440;cv.width=W*DPR;cv.height=H*DPR;cv.style.height='auto';ctx.setTransform(DPR,0,0,DPR,0,0);
-    ctx.clearRect(0,0,W,H);
-    var cx=W/2,cy=H/2+4,R=Math.min(W,H)/2-70,N=LIT.length;
+    var DPR=Math.min(window.devicePixelRatio||1,2),W=580,H=500;
+    cv.width=W*DPR;cv.height=H*DPR;cv.style.height='auto';ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0,0,W,H);
+    var cx=W/2,cy=H/2+2,R=Math.min(W,H)/2-78,N=DIMS.length;
     var cs=getComputedStyle(document.documentElement);
-    var line=cs.getPropertyValue('--line-2').trim(),ink3=cs.getPropertyValue('--ink-3').trim(),lit_=cs.getPropertyValue('--lit').trim();
+    var line=cs.getPropertyValue('--line-2').trim(),ink3=cs.getPropertyValue('--ink-3').trim(),accent=cs.getPropertyValue('--accent').trim();
     var ang=function(i){return -Math.PI/2+i*2*Math.PI/N;};
     ctx.lineWidth=1;
-    for(var r=1;r<=4;r++){ctx.beginPath();for(var i=0;i<=N;i++){var a=ang(i%N),rr=R*r/4,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.strokeStyle=line;ctx.globalAlpha=r===4?.9:.45;ctx.stroke();ctx.globalAlpha=1;}
+    for(var r=1;r<=5;r++){ctx.beginPath();for(var i=0;i<=N;i++){var a=ang(i%N),rr=R*r/5,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.strokeStyle=line;ctx.globalAlpha=r===5?.9:.4;ctx.stroke();ctx.globalAlpha=1;}
     ctx.font='11px system-ui,-apple-system,sans-serif';
-    LIT.forEach(function(d,i){var a=ang(i);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*R,cy+Math.sin(a)*R);ctx.strokeStyle=line;ctx.globalAlpha=.45;ctx.stroke();ctx.globalAlpha=1;
-      var lx=cx+Math.cos(a)*(R+20),ly=cy+Math.sin(a)*(R+20);ctx.fillStyle=ink3;
-      ctx.textAlign=Math.abs(Math.cos(a))<0.3?'center':(Math.cos(a)>0?'left':'right');
-      ctx.textBaseline=Math.sin(a)>0.3?'top':(Math.sin(a)<-0.3?'bottom':'middle');
-      var nm=d.name.length>9?d.name.slice(0,9):d.name; ctx.fillText(nm,lx,ly);
-      ctx.fillStyle=ink3;ctx.font='10px system-ui';ctx.fillText(d.id,lx,ly+(Math.sin(a)>0.3?13:-13));ctx.font='11px system-ui,-apple-system,sans-serif';
-    });
-    // polygon
-    var pts=[];LIT.forEach(function(d,i){var v=(lit[d.id]&&typeof lit[d.id].score==='number')?lit[d.id].score/4:0;var a=ang(i),rr=R*v;pts.push([cx+Math.cos(a)*rr,cy+Math.sin(a)*rr]);});
+    DIMS.forEach(function(d,i){var a=ang(i);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*R,cy+Math.sin(a)*R);ctx.strokeStyle=line;ctx.globalAlpha=.4;ctx.stroke();ctx.globalAlpha=1;
+      var lx=cx+Math.cos(a)*(R+18),ly=cy+Math.sin(a)*(R+18);ctx.fillStyle=ink3;
+      ctx.textAlign=Math.abs(Math.cos(a))<0.25?'center':(Math.cos(a)>0?'left':'right');
+      ctx.textBaseline=Math.sin(a)>0.25?'top':(Math.sin(a)<-0.25?'bottom':'middle');
+      ctx.fillText(d.id,lx,ly);});
+    var pts=[];DIMS.forEach(function(d,i){var o=dims[d.id]||{};var lv=(o.status==='assessed'||o.status==null)&&typeof o.level==='number'?o.level:0;var a=ang(i),rr=R*(lv/5);pts.push([cx+Math.cos(a)*rr,cy+Math.sin(a)*rr,lv]);});
     ctx.beginPath();pts.forEach(function(p,i){i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]);});ctx.closePath();
-    ctx.fillStyle=lit_;ctx.globalAlpha=.16;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=lit_;ctx.lineWidth=2;ctx.stroke();
-    pts.forEach(function(p){ctx.beginPath();ctx.arc(p[0],p[1],3.2,0,7);ctx.fillStyle=lit_;ctx.fill();});
+    ctx.fillStyle=accent;ctx.globalAlpha=.15;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=accent;ctx.lineWidth=2;ctx.stroke();
+    pts.forEach(function(p){if(p[2]>0){ctx.beginPath();ctx.arc(p[0],p[1],3,0,7);ctx.fillStyle=accent;ctx.fill();}});
   }
 
-  // ---------- buttons ----------
+  // ---- buttons ----
   $('#renderBtn').addEventListener('click',function(){
-    var d=extractJSON($('#jsonInput').value);
-    var err=$('#parseErr');
-    if(!d||(!d.literacy&&!d.security)){err.style.display='block';err.textContent='JSONを読み取れませんでした。LLM出力末尾のJSON（{ … }）をそのまま貼ってください。';return;}
-    err.style.display='none';
-    try{render(d);}catch(e){err.style.display='block';err.textContent='描画エラー: '+e.message;}
+    var d=extractJSON($('#jsonInput').value);var err=$('#parseErr');
+    if(!d||!d.dimensions){err.style.display='block';err.textContent='JSONを読み取れませんでした。LLM出力末尾のJSON（{ … "dimensions": … }）をそのまま貼ってください。';return;}
+    err.style.display='none';try{render(d);}catch(e){err.style.display='block';err.textContent='描画エラー: '+e.message;}
   });
   $('#sampleBtn').addEventListener('click',function(){$('#jsonInput').value=JSON.stringify(SAMPLE,null,1);toast('サンプルを入れました。描画を押してください');});
   $('#againBtn').addEventListener('click',function(){$('#resultView').style.display='none';$('#jsonInput').value='';goStep('build');window.scrollTo({top:0});});
 
-  // ---------- save (downloads capability + fallback) ----------
+  // ---- save ----
   $('#saveBtn').addEventListener('click',function(){
     if(!lastData){toast('先に描画してください');return;}
-    var md=buildScorecardMd(lastData);
-    var fname='ai-assessment-scorecard.md';
-    if(window.claude&&window.claude.downloads&&window.claude.downloads.save){
-      window.claude.downloads.save({filename:fname,data:md}).then(function(){toast('保存しました');},function(){toast('保存はキャンセルされました');});
-    }else{
-      var blob=new Blob([md],{type:'text/markdown'});var url=URL.createObjectURL(blob);
-      var a=document.createElement('a');a.href=url;a.download=fname;a.click();URL.revokeObjectURL(url);toast('ダウンロードしました');
-    }
+    var md=buildMd(lastData);var fn='ai-capability-scorecard.md';
+    if(window.claude&&window.claude.downloads&&window.claude.downloads.save){window.claude.downloads.save({filename:fn,data:md}).then(function(){toast('保存しました');},function(){toast('保存はキャンセルされました');});}
+    else{var b=new Blob([md],{type:'text/markdown'});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download=fn;a.click();URL.revokeObjectURL(u);toast('ダウンロードしました');}
   });
-  function buildScorecardMd(d){
-    var lit=d.literacy||{},sec=d.security||{};
-    var la=avgOf(lit,LIT),sa=avgOf(sec,SEC);
-    var out=['# AIリテラシー＆セキュリティ・ガバナンス スコアカード',''];
-    out.push('- AIリテラシー総合: '+(la!=null?la.toFixed(1):'–')+' / 4'+(la!=null?'（'+band(la,LITBANDS).name+'）':''));
-    out.push('- セキュリティ・ガバナンス総合: '+(sa!=null?sa.toFixed(1):'–')+' / 4'+(sa!=null?'（'+band(sa,SECBANDS).name+'）':''));
-    out.push('','## AIリテラシー（6次元）');
-    LIT.forEach(function(x){var o=lit[x.id]||{};out.push('- '+x.id+' '+x.name+': '+(typeof o.score==='number'?o.score+'/4':'情報不足')+(o.evidence?'  ／根拠「'+o.evidence+'」':''));});
-    out.push('','## セキュリティ・ガバナンス（5次元）');
-    SEC.forEach(function(x){var o=sec[x.id]||{};out.push('- '+x.id+' '+x.name+': '+(typeof o.score==='number'?o.score+'/4':'情報不足')+(o.evidence?'  ／根拠「'+o.evidence+'」':''));});
-    var rf=d.red_flags||[];out.push('','## 危険挙動(red flags)');
-    if(rf.length){rf.forEach(function(f){out.push('- ['+f.dim+'] '+(f.issue||'')+(f.quote?'（「'+f.quote+'」）':''));});}else{out.push('- なし');}
-    out.push('','## 強み');(d.strengths||[]).forEach(function(s){out.push('- '+s);});
-    out.push('','## 次に伸ばす一手');(d.next_actions||[]).forEach(function(s){out.push('- '+s);});
-    out.push('','---','評価基準の出典: UNESCO / OECD AILit / EU AI Act / NIST AI RMF・GenAI Profile / ISO42001 / OWASP LLM Top10 / MITRE ATLAS / AI事業者ガイドライン 他。1サンプルからの推定(n=1)。');
-    return out.join('\n');
+  function buildMd(d){
+    var c=compute(d);var mat=MAT.find(function(m){return m.level===c.level;})||MAT[0];var dims=d.dimensions||{};
+    var o=['# AIケイパビリティ スコアカード','',
+      '- Capability Maturity: L'+c.level+' '+mat.name+(c.capped?'（ゲート補正: '+c.reason+'）':''),
+      '- Capability Score: '+c.score+'/100（カバレッジ '+c.coverage+'%）',
+      '- Evidence Confidence: '+(d.evidence_confidence||'—'),
+      '','## 10ディメンション'];
+    DIMS.forEach(function(x){var v=dims[x.id]||{};var a=(v.status==='assessed'||v.status==null)&&typeof v.level==='number';
+      o.push('- '+x.id+' '+x.name+': '+(a?'L'+v.level:(v.status==='not_applicable'?'N/A':'情報不足'))+(v.evidence&&a?' ／根拠「'+v.evidence+'」':'')+(v.person_vs_ai?' ／本人担当: '+v.person_vs_ai:''));});
+    var rf=d.red_flags||[];o.push('','## 会社ポリシー違反(red flags)');if(rf.length){rf.forEach(function(f){o.push('- ['+f.dim+'] '+(f.issue||'')+(f.quote?'（「'+f.quote+'」）':''));});}else o.push('- なし');
+    var bi=d.business_impact||{};o.push('','## Business Impact（別建て）','- '+(bi.note||'記載なし')+(bi.evidence_type?'（'+bi.evidence_type+'）':''));
+    o.push('','## 強み');(d.strengths||[]).forEach(function(s){o.push('- '+s);});
+    o.push('','## 次の一手');(d.next_actions||[]).forEach(function(s){o.push('- '+s);});
+    o.push('','---','評価モデル: CMMI型5段階×10次元×会社ポリシーゲート（Rise向けAIケイパビリティ成熟度モデルの設計思想）。証跡からの推定であり、証跡不足は能力不足ではない。');
+    return o.join('\n');
   }
 
-  // ---------- sample ----------
-  var SAMPLE={input_type:"scenario",
-    literacy:{L1:{score:3,evidence:"AIは間違うので出典を確認",comment:"限界を認識"},L2:{score:2,evidence:"契約書をレビューして",comment:"文脈・制約が薄い"},L3:{score:3,evidence:"指摘は自分で条文と照合",comment:"検証姿勢あり"},L4:{score:2,evidence:"",comment:"情報不足"},L5:{score:null,evidence:"情報不足",comment:""},L6:{score:3,evidence:"重要判断は人が行う",comment:"適用範囲を意識"}},
-    security:{S1:{score:1,evidence:"契約書PDFをそのままAIに貼る",comment:"顧客秘密の投入に無自覚"},S2:{score:2,evidence:"",comment:"情報不足"},S3:{score:3,evidence:"最終判断は法務が行い記録",comment:"人間確認あり"},S4:{score:2,evidence:"NDAに触れる",comment:"一般的"},S5:{score:3,evidence:"根拠条項を付けて報告",comment:"出典付与"}},
-    red_flags:[{dim:"S1",quote:"契約書PDFをそのままAIに貼る",issue:"顧客秘密の最上位区分をコンシューマ向けツールへ投入している"}],
-    strengths:["出力を鵜呑みにせず条文照合する検証姿勢(L3)","重要判断を人に残す適用範囲の判断(L6)"],
-    next_actions:["データ投入区分表に従い、機密は匿名化/閉域環境で扱う(S1)","目的・制約・出力形式を明示したプロンプト設計(L2)"],
-    overall:{literacy_avg:2.7,security_avg:2.2}};
+  // ---- sample ----
+  var SAMPLE={evidence_confidence:"E1",
+    capability_maturity:{level:2,name:"Repeatable Practitioner",gate_capped:true,gate_reason:"D9=1(会社ポリシー違反)によりL2に制限"},
+    capability_score:58,coverage_pct:52,
+    dimensions:{
+      D1:{level:3,status:"assessed",evidence:"AIは誤ることがあるので",person_vs_ai:"限界の認識は本人",comment:"具体的限界を踏まえる"},
+      D2:{level:3,status:"assessed",evidence:"リスク条項を洗い出す目的で手順化",person_vs_ai:"課題設定は本人",comment:"目的・手順が明確"},
+      D3:{status:"insufficient_evidence",comment:"プロンプト設計の証跡が不足"},
+      D4:{level:3,status:"assessed",evidence:"指摘は自分でも原文を確認",person_vs_ai:"検証は本人",comment:"出典照合の姿勢"},
+      D5:{level:3,status:"assessed",evidence:"最終報告として整理",person_vs_ai:"報告構成は本人",comment:"コンサル適用あり"},
+      D6:{status:"not_applicable"},
+      D7:{status:"insufficient_evidence"},
+      D8:{level:3,status:"assessed",evidence:"担当弁護士のレビューを通し記録",person_vs_ai:"レビュー設計は本人",comment:"人間確認・記録あり"},
+      D9:{level:1,status:"assessed",evidence:"契約書PDFをそのまま無料AIに貼る",person_vs_ai:"投入判断は本人",comment:"顧客秘密を統制外ツールへ投入"},
+      D10:{status:"insufficient_evidence"}
+    },
+    gates:[{dim:"D9",level:1,effect:"capped overall to L2"}],
+    red_flags:[{dim:"D9",quote:"契約書PDFをそのまま無料AIに貼る",issue:"会社が禁じる経路へ顧客秘密(最上位区分)を投入している"}],
+    business_impact:{note:"個人の作業効率化に留まり、チーム展開・標準化の証跡は未確認",evidence_type:"self_reported"},
+    strengths:["出力を鵜呑みにせず原文照合する検証姿勢(D4)","高リスク工程に弁護士レビューと記録を置く(D8)","課題を手順化する課題設定(D2)"],
+    next_actions:["顧客秘密は閉域環境/匿名化で扱い、統制外ツールへ投入しない(D9・最優先)","プロンプト設計(役割/制約/出力スキーマ)を明示し証跡化(D3)","再利用可能なレビュー手順として標準化(D10)"]};
 
-  // ---------- theme ----------
+  // ---- theme ----
   var root=document.documentElement;
-  $('#themeBtn').addEventListener('click',function(){
-    var cur=root.getAttribute('data-theme');var sysDark=window.matchMedia('(prefers-color-scheme: dark)').matches;var next;
-    if(!cur)next=sysDark?'light':'dark';else if(cur==='dark')next='light';else next='dark';
-    root.setAttribute('data-theme',next);
-    if($('#resultView').style.display==='block'&&lastData)render(lastData);
-  });
+  $('#themeBtn').addEventListener('click',function(){var cur=root.getAttribute('data-theme');var sd=window.matchMedia('(prefers-color-scheme: dark)').matches;root.setAttribute('data-theme',!cur?(sd?'light':'dark'):(cur==='dark'?'light':'dark'));if($('#resultView').style.display==='block'&&lastData)render(lastData);});
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){if($('#resultView').style.display==='block'&&lastData)render(lastData);});
 })();
 </script>

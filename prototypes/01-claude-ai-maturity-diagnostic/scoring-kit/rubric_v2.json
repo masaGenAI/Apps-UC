@@ -1,0 +1,285 @@
+{
+  "meta": {
+    "name": "AIケイパビリティ成熟度アセスメント・型(テンプレート)",
+    "version": "2.0",
+    "date": "2026-08-12",
+    "model": "CMMI型5段階の縦軸 × 10ディメンションの横軸 × 会社ポリシーのゲート。個人能力・証跡信頼度・ビジネス価値を分離する4層出力。",
+    "design_basis": "Rise Consulting Group向けAIケイパビリティ成熟度モデル(DeepResearch)の設計思想を汎用テンプレート化。CMMI AIM(成熟度) / SFIA(自律性・影響範囲・複雑性) / AI Skills for Business(次元) / NIST・ISO・OECD・EU AI Act(ゲート) / 測定の妥当性(Standards for Educational and Psychological Testing)。",
+    "governance_note": "D9(Responsible AI/Security)と一部ゲートは各社のガイドライン・規程を差し込むスロット方式。company-policy を指定して使う。"
+  },
+  "maturity_levels": [
+    {
+      "level": 1,
+      "name": "Exploratory／Ad Hoc",
+      "desc": "個別作業でAIを試行的に利用するが、方法・品質が安定しない。"
+    },
+    {
+      "level": 2,
+      "name": "Repeatable Practitioner",
+      "desc": "一定用途でAI活用を反復でき、基本的な検証・テンプレート化を行う。"
+    },
+    {
+      "level": 3,
+      "name": "Defined／Integrated Practitioner",
+      "desc": "AI活用が体系化され、複数の業務・ツール・成果物へ統合されている。"
+    },
+    {
+      "level": 4,
+      "name": "Measured／Managed Lead",
+      "desc": "品質・効果・リスクを測定・管理し、複雑な案件やチームへ展開できる。"
+    },
+    {
+      "level": 5,
+      "name": "Optimizing／Transformational Leader",
+      "desc": "AI活用プロセスを継続的に改善し、再利用可能な仕組み・組織能力・顧客価値・新サービスへ発展させる。"
+    }
+  ],
+  "statuses": {
+    "assessed": "証跡から採点済み",
+    "insufficient_evidence": "能力が低いのではなく、判断できる証跡が不足(≠低評価)",
+    "not_applicable": "この対象・役割には非該当",
+    "not_assessed": "未評価"
+  },
+  "evidence_tiers": [
+    {
+      "tier": "E0",
+      "desc": "自己申告のみ"
+    },
+    {
+      "tier": "E1",
+      "desc": "単一の会話・プロンプト"
+    },
+    {
+      "tier": "E2",
+      "desc": "成果物または設定ファイルが存在"
+    },
+    {
+      "tier": "E3",
+      "desc": "複数案件・複数時点で反復実績が確認可能"
+    },
+    {
+      "tier": "E4",
+      "desc": "テスト結果・利用実績・第三者レビューが存在"
+    },
+    {
+      "tier": "E5",
+      "desc": "業務効果・顧客価値・組織展開が客観的に確認可能"
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "D1",
+      "name": "AI Foundations／AIリテラシー",
+      "weight": 6,
+      "gate": false,
+      "definition": "LLM・生成AI・RAG・Agent・Tool Useの違い、確率的出力・ハルシネーション・知識鮮度・コンテキスト窓・モデル別特性と限界の理解。",
+      "levels": [
+        "AIを万能視し、仕組みや限界への言及がない。",
+        "「間違うこともある」程度で、限界の理解が一般的・抽象的。",
+        "ハルシネーション・知識鮮度・非決定性・コンテキスト窓など具体的限界を踏まえて使う。",
+        "RAG／Fine-tuning／Tool Use／Agentの違いとモデル別特性・制約を理解し使い分ける。",
+        "モデル特性・不確実性を前提に限界を回避する運用・方式選定まで設計し、他者に説明できる。"
+      ],
+      "source_basis": "AI4K12 / UNESCO / Long&Magerko / AI Skills for Business(AI Foundations)",
+      "governance_slot": false
+    },
+    {
+      "id": "D2",
+      "name": "Problem Framing／課題設定",
+      "weight": 14,
+      "gate": true,
+      "definition": "AIで解くべき課題の見極め、目的・読者・意思決定事項・制約の定義、タスク分解、AIを使わない領域の判断、業務要件とAI要件の接続。",
+      "levels": [
+        "何を解くか不明確で、丸投げ・目的が曖昧。",
+        "目的は述べるが、読者・意思決定事項・制約の定義が部分的。",
+        "目的・読者・意思決定・制約を定義しタスクを分解。AIを使う／使わない領域を判断する。",
+        "業務要件とAI要件を接続し、複雑な課題を構造化。適合しない領域を明示的に外す。",
+        "経営・業務課題をAI活用テーマへ変換し、投資対効果と実行可能性まで見据えて論点設計する。"
+      ],
+      "source_basis": "SFIA(complexity) / AI Skills for Business / コンサル問題解決フレーム",
+      "governance_slot": false
+    },
+    {
+      "id": "D3",
+      "name": "Human-AI Interaction & Prompt/Context Engineering",
+      "weight": 14,
+      "gate": false,
+      "definition": "対話設計・追加質問・反証・再構成、System/Developer/User指示、コンテキスト設計、Few-shot、出力スキーマ、評価基準、長文管理、モデル別最適化、Human-in-the-Loop。",
+      "levels": [
+        "一問一答の丸投げで、文脈・出力条件がない。",
+        "目的は伝わるが役割・制約・出力形式の指定が部分的。",
+        "役割・文脈・制約・出力スキーマ・評価基準を与え、追加質問・反証・再構成で対話的に改善する。",
+        "System/Developer/User指示・Few-shot・長文コンテキスト管理・モデル別最適化を使い分け、Human-in-the-Loopを設計する。",
+        "再利用可能なプロンプト／コンテキスト設計を体系化し、自己検証を組み込む。"
+      ],
+      "source_basis": "OECD AILit / UNESCO(AI system design) / IPA DSS ※長いプロンプト自体は加点しない",
+      "governance_slot": false
+    },
+    {
+      "id": "D4",
+      "name": "Research & Knowledge Synthesis",
+      "weight": 12,
+      "gate": false,
+      "definition": "Deep Research等の調査設計、情報源選定、一次情報重視、引用・出典検証、複数情報の統合、不確実性の明示、示唆・方針への変換。",
+      "levels": [
+        "出力を検証せず受け入れ、出典・一次情報の意識がない。",
+        "重要そうな箇所だけ何となく確認する程度。",
+        "情報源を選定し一次情報を重視、引用・出典を検証、複数情報を統合、不確実性・情報不足を明示する。",
+        "Deep Research等で調査設計を行い、体系的に統合して示唆・方針へ変換する。",
+        "調査・検証プロセスを再現可能な手順として資産化し、意思決定に接続する。"
+      ],
+      "source_basis": "Long&Magerko / DigComp2.2 / 測定の妥当性(Standards for Educational and Psychological Testing)",
+      "governance_slot": false
+    },
+    {
+      "id": "D5",
+      "name": "Consulting Application",
+      "weight": 16,
+      "gate": false,
+      "definition": "提案・経営報告・PMO・DX構想・ITロードマップ・KPI・As-Is/To-Be・リスク管理・プロジェクト計画・顧客説明・意思決定支援へのAI適用。論点・論理・実行可能性を重視。",
+      "levels": [
+        "AI出力をそのまま成果物にし、論点・論理・意思決定への寄与が薄い。",
+        "提案書・報告書等の下書きにAIを使うが、示唆・実行可能性が限定的。",
+        "提案・PMO・DX構想・意思決定支援に適用し、論点・論理・実行可能性を担保する。",
+        "複雑な案件で、顧客の期待・制約を踏まえた要件定義から示唆・提言へ転換する。",
+        "顧客の意思決定・成果に直結する形でAI活用を設計し、新たな価値・サービスへ発展させる。"
+      ],
+      "source_basis": "AI Skills for Business(AI Workers/Professionals) / コンサル能力フレーム ※見栄えだけで加点しない",
+      "governance_slot": false
+    },
+    {
+      "id": "D6",
+      "name": "LLM Application／GPT／Agent Design",
+      "weight": 8,
+      "gate": false,
+      "definition": "用途特化型GPTの設計(Instructions/Knowledge/Capabilities/Actions・Apps)、RAG、ツール連携、ワークフロー、状態・メモリ、権限・例外処理、自律性制御、アシスタントとエージェントの区別。",
+      "levels": [
+        "既製ツールの利用のみで、設計の言及がない。",
+        "用途特化型GPTのInstructions／Knowledgeを簡単に設定する程度。",
+        "RAG・Actions/Apps・ツール連携を含むLLMアプリを設計し、アシスタントとエージェントを区別する。",
+        "ワークフロー・状態/メモリ・権限・例外処理・自律性制御を設計する。",
+        "再利用可能なエージェント／アプリを設計し、評価・運用・改善まで回す。"
+      ],
+      "source_basis": "SFIA / AI Skills for Business(AI Professionals) ※通常は設定ファイル等の証跡が必要",
+      "governance_slot": false
+    },
+    {
+      "id": "D7",
+      "name": "AI-Assisted Development & Analytics",
+      "weight": 8,
+      "gate": false,
+      "definition": "要件整理・アーキテクチャ・コード生成・実行検証・デバッグ・テスト・リファクタリング・バージョン管理、データ取得/前処理・統計/時系列・可視化・バックテスト・再現性。",
+      "levels": [
+        "言及がない、またはコード/分析結果を無検証で丸写しする。",
+        "コード生成やデータ処理をAIに依頼するが検証が弱い。",
+        "要件整理・実行検証・デバッグ・テスト・再現性を意識して開発／分析する。",
+        "アーキテクチャ選定・リファクタリング・バージョン管理・統計/時系列/可視化/バックテストを適切に行う。",
+        "再現可能なパイプライン／分析基盤を設計する。"
+      ],
+      "source_basis": "SFIA(software dev/data science) ※コード行数を能力の代理にしない・証跡が必要",
+      "governance_slot": false
+    },
+    {
+      "id": "D8",
+      "name": "Evaluation & Quality Assurance",
+      "weight": 8,
+      "gate": true,
+      "definition": "正確性検証、評価データセット・ルーブリック・Golden Set・回帰・A/B・エラー分類・出力の一貫性・モデル比較・人手レビュー・継続的改善。",
+      "levels": [
+        "評価・検証の仕組みがなく、出力をそのまま採用する。",
+        "目視で何となく確認する程度。",
+        "ルーブリック・チェックリスト・人手レビューで品質を確認し、エラーを分類する。",
+        "評価データセット/Golden Set・回帰・A/B・モデル比較・一貫性測定を運用する。",
+        "評価→失敗分類→改善→回帰確認のループを継続的に回す。"
+      ],
+      "source_basis": "AIエンジニアリング(evalが実装より先) / NIST AI RMF(Measure) ※完成物だけでなく評価・修正履歴を重視",
+      "governance_slot": false
+    },
+    {
+      "id": "D9",
+      "name": "Responsible AI／Security／Compliance",
+      "weight": 8,
+      "gate": true,
+      "definition": "【会社ポリシー差し込み】自社のデータ投入区分・AI利用規程・禁止事項・規制・契約・著作権・人間監督・利用条件・ログ/監査可能性に照らした統制。",
+      "levels": [
+        "データ区分の意識なく機微情報を投入。規制・契約・著作権・人間監督の意識がない。",
+        "「機密は注意」程度で、具体的な区分・経路・記録の判断がない。",
+        "会社ポリシーに沿ってデータ区分・投入可否を判断し、高リスクに人間監督・記録を置く。",
+        "リスクベースの利用判断・ログ/監査可能性・利用条件確認・組織ルール適合を運用する。",
+        "統制設計(承認ゲート・監査・権限最小化・説明責任)を体系化し、組織の受け皿になる。"
+      ],
+      "source_basis": "NIST AI RMF・GenAI Profile / ISO/IEC 42001・23894 / EU AI Act(Art.4, human oversight) / OWASP LLM Top10 / 各社ガイドライン(差し込み)",
+      "governance_slot": true
+    },
+    {
+      "id": "D10",
+      "name": "Workflow Orchestration & Reuse",
+      "weight": 6,
+      "gate": false,
+      "definition": "目的に応じたツール選択・組合せ・制御・検証、Projects・Knowledge Pack・テンプレート・プロンプトライブラリ・評価基準・意思決定履歴の版管理と再利用、他者が使える標準化。",
+      "levels": [
+        "単発利用で、再利用・標準化の意識がない。",
+        "個人用のテンプレ・プロンプトを持つ程度。",
+        "目的に応じたツール選択・組合せ・検証を行い、成果を再利用できる形にする。",
+        "Projects/Knowledge Pack/テンプレ/評価基準を版管理し、他者が使える標準にする。",
+        "再利用可能なワークフロー・ナレッジを組織へ横展開する。"
+      ],
+      "source_basis": "AI Skills for Business / ナレッジマネジメント ※ツール数では加点しない・証跡が必要",
+      "governance_slot": false
+    }
+  ],
+  "gates": {
+    "gate_dimensions": [
+      "D2",
+      "D8",
+      "D9"
+    ],
+    "rule": "ゲート次元(D2 課題設定 / D8 評価・QA / D9 Responsible AI・Security)または証跡が弱い場合、総合成熟度に上限を課す。最低ゲートレベルが1なら総合Maturityを最大L2、2なら最大L3に制限する。証跡がE0の場合も総合Maturityを最大L2に制限する。gate_capped=true とし理由を明示する。",
+    "rationale": "総合点が高くてもResponsible AIやQA、課題設定が未成熟なら実務上信頼できないため(NIST/ISO/EU AI Actをゲート根拠とする設計)。"
+  },
+  "scoring": {
+    "capability_score": "assessed次元のみで、Σ(weight×(level/5×100)) を covered_weight で正規化した0-100。coverage(%)を併記する。",
+    "capability_maturity": "capability_score を 5段階へ写像(下記band)後、gatesで上限補正した総合レベル。",
+    "capability_bands": [
+      {
+        "min": 0,
+        "level": 1
+      },
+      {
+        "min": 30,
+        "level": 2
+      },
+      {
+        "min": 50,
+        "level": 3
+      },
+      {
+        "min": 70,
+        "level": 4
+      },
+      {
+        "min": 88,
+        "level": 5
+      }
+    ],
+    "evidence_confidence": "各次元のevidence_tierの中央値〜最頻で全体E0-E5を決める。単一テキスト提出は通常E0-E1。",
+    "business_impact": "能力とは分離した別建て。自己申告/推定効果/実測効果を区別し、Leadership/Scaling(チーム展開・指導・標準化・横展開・提言・新サービス)も含める。能力スコアには合算しない。"
+  },
+  "principles": {
+    "consultant_orientation": "AI研究者/ML基盤エンジニアではなく、AIで顧客価値を生むビジネスコンサルタントとして評価する。基盤モデル研究やGPU運用の欠如を理由に低評価にしない。",
+    "attribution": "AIが生成したものと本人が担った部分(問題設定/要件/制約/方式選定/品質基準/検証/修正判断/リスク判断/最終意思決定/関係者調整/実務適用)を区別して評価する。",
+    "anti_misjudgment": [
+      "利用量・会話数・プロンプトの長さで加点しない",
+      "出力の見栄えだけで加点しない",
+      "高級モデルやツール数の多さで加点しない",
+      "AI生成物を本人の能力と同一視しない",
+      "同じ作業の反復を複数実績として数えない",
+      "コード生成量を技術能力の代理にしない",
+      "失敗・修正の多さ自体を低評価にしない",
+      "ログ/証跡が無いことを能力不足とみなさない",
+      "機密で提示できない実績を自動的にゼロ評価にしない"
+    ],
+    "fairness": "長さ・文体・母語で評価しない。証跡が無い場合はinsufficient_evidenceとし、能力低と混同しない。妥当性・信頼性・公平性を担保する。",
+    "technical_vs_business": "ツール利用／Prompt・Context Engineering／GPT構築／RAG等LLMアプリ設計／ワークフロー型／AIエージェント／ソフト開発支援／AI・MLモデル開発／本番運用 を明確に区別し、技術理解・実装経験を過大評価しない。"
+  }
+}

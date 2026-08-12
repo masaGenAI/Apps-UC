@@ -57,26 +57,28 @@
 <main class="wrap">
   <section class="hero">
     <span class="plat">● 採点キット</span>
-    <h1>お使いのLLMに読ませて、簡単なプロンプトで採点するキット</h1>
-    <p class="lead">下記を<b>会社の任意のLLM</b>（ChatGPT／Gemini／Copilot／Claude／社内LLM 等）にシステムプロンプト／カスタムアシスタントとして取り込むと、あなたの文章を貼るだけで世界標準ルーブリックで採点できます。特定ベンダーに依存しません（G5）。</p>
+    <h1>お使いのLLMに読ませて、証跡から採点する型（テンプレート）</h1>
+    <p class="lead">下記を<b>会社の任意のLLM</b>（ChatGPT／Gemini／Copilot／Claude／社内LLM 等）に取り込むと、証跡を貼るだけで<b>CMMI型5段階×10次元</b>で採点できます。<b>セキュリティ・ガバナンス（D9）は各社ポリシーを差し込む</b>ゲート方式。ベンダー非依存（G5）。</p>
   </section>
 
   <div class="files">
-    <div class="file"><div class="ic">SYS</div><div class="m"><b>採点キット_SYSTEM.md</b><span>採点システムプロンプト＋ルーブリック（任意LLMのシステム指示/カスタムアシスタントに丸ごと貼る本体）</span></div><a class="dl" href="./%E6%8E%A1%E7%82%B9%E3%82%AD%E3%83%83%E3%83%88_SYSTEM.md" download>⬇ 取得</a></div>
-    <div class="file"><div class="ic">{ }</div><div class="m"><b>rubric.json</b><span>機械可読ルーブリック（11次元・4段階アンカー・red_flags）</span></div><a class="dl" href="./rubric.json" download>⬇ 取得</a></div>
-    <div class="file"><div class="ic">USE</div><div class="m"><b>使い方.md</b><span>Project導入手順＋「打つだけ」のプロンプト例</span></div><a class="dl" href="./%E4%BD%BF%E3%81%84%E6%96%B9.md" download>⬇ 取得</a></div>
-    <div class="file"><div class="ic">SCN</div><div class="m"><b>scenarios.md</b><span>セキュリティ・ガバナンス挙動を炙り出す実務シナリオ課題5本</span></div><a class="dl" href="./scenarios.md" download>⬇ 取得</a></div>
+    <div class="file"><div class="ic">SYS</div><div class="m"><b>採点キット_SYSTEM.md</b><span>型（汎用）。任意LLMのシステム指示に丸ごと貼る本体。会社ポリシーはスロット</span></div><a class="dl" href="./%E6%8E%A1%E7%82%B9%E3%82%AD%E3%83%83%E3%83%88_SYSTEM.md" download>⬇ 取得</a></div>
+    <div class="file"><div class="ic">{ }</div><div class="m"><b>rubric_v2.json</b><span>評価モデルの正（10次元・5段階アンカー・ウェイト・ゲート・証跡E0-E5）</span></div><a class="dl" href="./rubric_v2.json" download>⬇ 取得</a></div>
+    <div class="file"><div class="ic">POL</div><div class="m"><b>company-policy.template.md</b><span>会社ポリシー記入フォーム（D9・ゲートの差し込みスロット）</span></div><a class="dl" href="./company-policy.template.md" download>⬇ 取得</a></div>
+    <div class="file"><div class="ic">USE</div><div class="m"><b>使い方.md</b><span>任意LLMへの導入手順＋会社ポリシー差し込み＋4層出力の見方</span></div><a class="dl" href="./%E4%BD%BF%E3%81%84%E6%96%B9.md" download>⬇ 取得</a></div>
+    <div class="file"><div class="ic">SCN</div><div class="m"><b>scenarios.md</b><span>コンサル実務で証跡を引き出すシナリオ課題7本</span></div><a class="dl" href="./scenarios.md" download>⬇ 取得</a></div>
+    <div class="file"><div class="ic">RISE</div><div class="m"><b>Rise専用インスタンス</b><span>型のインスタンス例：Riseのガバナンスを差し込んだ完成版（採点キット_SYSTEM_Rise.md＋policy）</span></div><a class="dl" href="./instances/rise/README.md">▶ 説明</a></div>
   </div>
 
   <div class="callout">
-    <b>打つだけの簡単プロンプト例：</b>
-    <pre>私が書いたプロンプトを採点して：
-「〈自分のプロンプトを貼る〉」</pre>
-    出力末尾のJSONを、<a href="../">可視化アプリ</a>に貼り戻すとスコアカードが描画されます。
+    <b>簡単プロンプト例：</b>
+    <pre>次の証跡でこの人のAIケイパビリティを採点して：
+〈プロンプト／会話ログ／シナリオ回答／成果物 を貼る〉</pre>
+    出力末尾のJSONを、<a href="../">可視化アプリ</a>に貼り戻すと4層スコアカードが描画されます。
   </div>
 
   <p><a class="btn-solid" href="../">▶ 可視化アプリを開く</a></p>
-  <footer><b>アプリ・ユースケースラボ Prototype 01</b> — 採点キット。評価基準の出典は <a href="../research/evidence_ai_literacy_20260811.md">research/</a>。</footer>
+  <footer><b>アプリ・ユースケースラボ Prototype 01 v2</b> — 採点キット（型）。設計思想はRise向けAIケイパビリティ成熟度モデル。出典は <a href="../research/evidence_ai_literacy_20260811.md">research/</a>。</footer>
 </main>
 <script>(function(){var r=document.documentElement;document.getElementById('themeBtn').addEventListener('click',function(){var c=r.getAttribute('data-theme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;r.setAttribute('data-theme',!c?(d?'light':'dark'):(c==='dark'?'light':'dark'));});})();</script>
 </body>
