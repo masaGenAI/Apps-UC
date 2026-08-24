@@ -1,0 +1,382 @@
+<title>AIアプリ20本 3ヶ月実行計画</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="1人＋AI・専念で3ヶ月にAIアプリ20本を要件定義からリリースまで作り切る実行計画。外販・コンサル高速化・セキュリティ/ガバナンスを横断し、共通基盤とゲート付き開発プロセスで量と質を両立する。">
+<style>
+  :root{
+    color-scheme: light dark;
+    --paper:#eef1f5; --surface:#ffffff; --surface-2:#f5f7fa; --surface-3:#eceff4;
+    --ink:#18202b; --ink-2:#47535f; --ink-3:#78838f;
+    --line:#dce1e9; --line-2:#c6cdd8;
+    --accent:#1f4e79; --accent-soft:#e4edf6; --accent-ink:#16385a;
+    --sell:#8a5a1f; --sell-soft:#f4ecdf;          /* 外販 gold */
+    --consult:#2f8f7a; --consult-soft:#e0f0eb;    /* コンサル teal */
+    --sec:#5b4b9e; --sec-soft:#ebe8f6;            /* セキュリティ indigo */
+    --found:#1f4e79; --found-soft:#e4edf6;        /* 基盤 */
+    --ok:#2f8f7a; --warn:#c0453a; --warn-soft:#f7e6e4;
+    --shadow:0 1px 2px rgba(24,32,43,.05),0 6px 20px -8px rgba(24,32,43,.16);
+    --radius:13px; --maxw:1060px;
+    --serif:ui-serif,"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  :root:not([data-theme="light"]){ @media (prefers-color-scheme: dark){
+    --paper:#0f141a; --surface:#171d26; --surface-2:#1e2630; --surface-3:#232c38;
+    --ink:#e7ecf3; --ink-2:#aab5c2; --ink-3:#7a8593;
+    --line:#28313d; --line-2:#39434f;
+    --accent:#6ea8dc; --accent-soft:#1d2a38; --accent-ink:#bcd6ef;
+    --sell:#c9a15c; --sell-soft:#2c2416; --consult:#5cbfa8; --consult-soft:#173028;
+    --sec:#9a8fd6; --sec-soft:#221d3a; --found:#6ea8dc; --found-soft:#1d2a38;
+    --ok:#5cbfa8; --warn:#e0685c; --warn-soft:#3a211f;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -12px rgba(0,0,0,.6);
+  }}
+  :root[data-theme="dark"]{
+    --paper:#0f141a; --surface:#171d26; --surface-2:#1e2630; --surface-3:#232c38;
+    --ink:#e7ecf3; --ink-2:#aab5c2; --ink-3:#7a8593;
+    --line:#28313d; --line-2:#39434f;
+    --accent:#6ea8dc; --accent-soft:#1d2a38; --accent-ink:#bcd6ef;
+    --sell:#c9a15c; --sell-soft:#2c2416; --consult:#5cbfa8; --consult-soft:#173028;
+    --sec:#9a8fd6; --sec-soft:#221d3a; --found:#6ea8dc; --found-soft:#1d2a38;
+    --ok:#5cbfa8; --warn:#e0685c; --warn-soft:#3a211f;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -12px rgba(0,0,0,.6);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:15.5px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;letter-spacing:-.01em;line-height:1.2}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:var(--mono);font-size:.86em;background:var(--surface-2);padding:1px 5px;border-radius:4px}
+  .num{font-variant-numeric:tabular-nums}
+
+  .topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex;align-items:center;gap:12px;height:56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:14.5px}
+  .brand .dot{width:26px;height:26px;border-radius:7px;background:linear-gradient(150deg,var(--accent),color-mix(in srgb,var(--accent) 55%,#000));display:grid;place-items:center;color:#fff;font-family:var(--serif);font-size:13px}
+  .brand small{display:block;font-weight:500;color:var(--ink-3);font-size:10.5px;letter-spacing:.03em;text-transform:uppercase}
+  .spacer{flex:1}
+  .tbtn{border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);border-radius:8px;height:32px;padding:0 12px;font-size:12.5px;cursor:pointer;font-family:var(--sans)}
+  .tbtn:hover{border-color:var(--accent);color:var(--accent)}
+  .tbtn.solid{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  .hero{padding:44px 0 22px}
+  .eyebrow{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 13px}
+  .hero h1{font-size:clamp(28px,4.6vw,44px);margin:0 0 14px}
+  .hero p.lead{font-size:clamp(15px,2vw,18px);color:var(--ink-2);max-width:70ch;margin:0 0 20px}
+  .facts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:6px}
+  @media(min-width:760px){.facts{grid-template-columns:repeat(4,1fr)}}
+  .fact{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:13px 15px}
+  .fact .k{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+  .fact .v{font-family:var(--serif);font-size:24px;font-weight:600;margin-top:3px}
+  .fact .v small{font-size:13px;color:var(--ink-3);font-family:var(--sans)}
+
+  section.blk{padding:26px 0;border-top:1px solid var(--line)}
+  section.blk>.wrap>h2{font-size:22px;margin:0 0 4px;display:flex;align-items:baseline;gap:10px}
+  section.blk>.wrap>h2 .no{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:700}
+  section.blk>.wrap>p.sub{margin:0 0 16px;color:var(--ink-2);font-size:14px;max-width:74ch}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .grid{display:grid;gap:12px}
+  .g2{grid-template-columns:1fr} @media(min-width:720px){.g2{grid-template-columns:1fr 1fr}}
+  .g3{grid-template-columns:1fr} @media(min-width:720px){.g3{grid-template-columns:repeat(3,1fr)}}
+  .p{padding:16px 17px}
+  .p h3{font-family:var(--sans);font-size:15px;font-weight:700;margin:0 0 7px}
+  .p h3 .tag{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-3)}
+  .p ul{margin:6px 0 0;padding-left:18px} .p li{font-size:13.5px;margin-bottom:5px;color:var(--ink-2)}
+  .p p{margin:0;font-size:13.5px;color:var(--ink-2)}
+
+  .callout{padding:15px 17px;border-radius:12px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 28%,var(--line));font-size:14px;color:var(--ink-2)}
+  .callout.warn{background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 35%,var(--line))}
+  .callout b{color:var(--ink)}
+
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+  table{width:100%;border-collapse:collapse;font-size:13px;background:var(--surface);min-width:720px}
+  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--surface-2);color:var(--ink-3);font-weight:700;font-size:11.5px;letter-spacing:.03em;position:sticky;top:56px}
+  tbody tr:last-child td{border-bottom:none}
+  td .id{font-family:var(--mono);font-weight:700;font-size:12px}
+  td b{font-weight:650}
+  .catstripe{border-left:4px solid var(--c,var(--line))}
+  .chip{display:inline-block;font-size:10.5px;font-weight:700;border-radius:5px;padding:1px 7px;white-space:nowrap;line-height:1.7}
+  .chip.sell{background:var(--sell-soft);color:var(--sell)}
+  .chip.consult{background:var(--consult-soft);color:var(--consult)}
+  .chip.sec{background:var(--sec-soft);color:var(--sec)}
+  .chip.tierA{background:var(--surface-3);color:var(--ink-2);border:1px solid var(--line-2)}
+  .chip.tierB{background:var(--accent);color:#fff}
+  .chip.done{background:var(--ok);color:#fff}
+
+  /* schedule */
+  .sched{display:flex;flex-direction:column;gap:10px}
+  .wave{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
+  .wave .wh{display:flex;align-items:center;gap:12px;padding:12px 15px;border-left:5px solid var(--wc,var(--accent));background:var(--surface-2)}
+  .wave .wh .wk{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink-2);white-space:nowrap}
+  .wave .wh .wt{font-weight:700;font-size:14.5px}
+  .wave .wh .wg{margin-left:auto;font-size:11.5px;color:var(--ink-3)}
+  .wave .wb{padding:12px 15px;font-size:13.5px;color:var(--ink-2)}
+  .wave .wb .apps{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
+  .wave .wb .a{font-family:var(--mono);font-size:11.5px;font-weight:700;border:1px solid var(--line-2);border-radius:6px;padding:2px 7px;color:var(--ink-2)}
+
+  /* lifecycle */
+  .phases{display:grid;gap:8px}
+  @media(min-width:820px){.phases{grid-template-columns:repeat(6,1fr)}}
+  .ph{border:1px solid var(--line);border-radius:11px;padding:12px;background:var(--surface);position:relative}
+  .ph .pn{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent)}
+  .ph .pt{font-weight:700;font-size:13.5px;margin:3px 0 5px}
+  .ph .pd{font-size:12px;color:var(--ink-2)}
+  .ph .gate{margin-top:8px;font-size:11px;color:var(--warn-ink,var(--warn));background:var(--warn-soft);border-radius:6px;padding:4px 7px;font-weight:600}
+  .ph .gate b{color:var(--warn)}
+
+  ol.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:grid;gap:9px}
+  ol.steps li{position:relative;padding:12px 14px 12px 46px;background:var(--surface);border:1px solid var(--line);border-radius:11px;font-size:14px;color:var(--ink-2)}
+  ol.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:12px;top:11px;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px;font-family:var(--mono)}
+  ol.steps li b{color:var(--ink)}
+
+  footer{border-top:1px solid var(--line);padding:22px 0 60px;font-size:12.5px;color:var(--ink-3);margin-top:8px}
+  .legend{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:12px;color:var(--ink-2);margin:2px 0 14px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+
+  @media print{
+    @page{margin:11mm}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    html,body{background:#fff;font-size:10.5px}
+    .topbar,.tbtn,.printnote{display:none !important}
+    section.blk{padding:12px 0;break-inside:avoid}
+    .card,.wave,.tablewrap,.ph,ol.steps li,.fact{break-inside:avoid}
+    thead th{position:static}
+    .hero{padding:6px 0 10px}
+    a{color:var(--ink)}
+  }
+</style>
+
+<div class="topbar"><div class="wrap">
+  <div class="brand"><span class="dot">計</span><span>AIアプリ 3ヶ月ロードマップ<small>アプリ・ユースケースラボ / Planning</small></span></div>
+  <span class="spacer"></span>
+  <button class="tbtn" id="themeBtn" type="button">◐ テーマ</button>
+  <button class="tbtn solid" id="pdfBtn" type="button">📄 PDF</button>
+</div></div>
+
+<main>
+  <section class="wrap hero">
+    <p class="eyebrow">Requirements → Release · 13 weeks · Solo + AI</p>
+    <h1>3ヶ月でAIアプリを20本、作り切る計画。</h1>
+    <p class="lead">
+      1人＋AIの専念体制（週30–40h）で、<b>外販プロダクト・コンサルワーク高速化・セキュリティ/ガバナンス</b>を横断して20本を出す。
+      鍵は「数を狙う」ことではなく、<b>共通基盤で作る手間を1回に畳み</b>、社内標準プロセスの<b>ゲートで質を落とさない</b>こと。
+      各アプリは要件定義（P1）からリリース（P5）・定着（P6）まで同じ型で通す。
+    </p>
+    <div class="facts">
+      <div class="fact"><div class="k">Target</div><div class="v num">20 <small>本 / 13週</small></div></div>
+      <div class="fact"><div class="k">Cadence</div><div class="v num">~1.5 <small>本 / 週</small></div></div>
+      <div class="fact"><div class="k">Tier構成</div><div class="v num">12A <small>+ 7B + 1済</small></div></div>
+      <div class="fact"><div class="k">重心</div><div class="v" style="font-size:15px;font-family:var(--sans);font-weight:650">外販 / コンサル / セキュリティ</div></div>
+    </div>
+  </section>
+
+  <!-- 0 reality -->
+  <section class="blk"><div class="wrap">
+    <h2><span class="no">00</span>結論と現実的な前提</h2>
+    <p class="sub">「20本」は達成可能。ただし成立条件がある。ここを外すと数は出ても“売れない・使われない”棚卸しになる。</p>
+    <div class="grid g2">
+      <div class="callout"><b>成立させる3条件</b>
+        <ul style="margin:8px 0 0;padding-left:18px">
+          <li><b>共通基盤を先に作る</b>（W1–2）。20本の8割は同じ骨格（型キット＋HTML＋PDF出力＋軽量バックエンド）を使い回す。</li>
+          <li><b>Tier分け</b>。TierA=HTML＋LLMキット（2–4日）、TierB=軽量バックエンド付き（6–10日）。全部をSaaS化しない。</li>
+          <li><b>ゲートで質を担保</b>。社内標準のP1–P6を各アプリに適用し、特に<b>データ区分（P1）</b>と<b>セキュリティ/ガバナンス審査（P5前）</b>は非通過なら出さない。</li>
+        </ul>
+      </div>
+      <div class="callout warn"><b>正直なトレードオフ</b>
+        <ul style="margin:8px 0 0;padding-left:18px">
+          <li>1人＋AIで「20本すべてを本格SaaS」は不可能。だから<b>買い切り／診断→コンサル誘導／社内利用</b>を軸に、運用負荷の重いサブスクは後回し。</li>
+          <li>質が危うくなったら<b>数より質</b>。最終手段は「14本を磨き上げ＋6本はβ公開」に切替える判断基準を持つ（後述）。</li>
+          <li>契約書/DD/PIIなど<b>高リスク領域</b>は閉域前提・社内先行。安易に外販しない。</li>
+        </ul>
+      </div>
+    </div>
+  </div></section>
+
+  <!-- 1 operating model / foundation -->
+  <section class="blk"><div class="wrap">
+    <h2><span class="no">01</span>共通基盤（W1–2の投資が20本を軽くする）</h2>
+    <p class="sub">最初の2週間で「毎回作るもの」を一度だけ作る。以降の各アプリはこの上に乗せるだけにする。</p>
+    <div class="grid g3">
+      <div class="card p"><h3>アプリ基盤 <span class="tag">shell</span></h3>
+        <ul><li>デザインシステム／テーマ（ラボ共通）</li><li><b>PDFレポート出力</b>（印刷最適化）</li><li>入力→プロンプト生成→JSON可視化の共通部品</li><li>GitHub Pages / Artifact 配布</li></ul></div>
+      <div class="card p"><h3>「型」キット枠 <span class="tag">kit</span></h3>
+        <ul><li>system-prompt＋rubric.json＋<b>会社ポリシー差し込みスロット</b></li><li>証跡E0–E5・ゲート・4層出力の共通仕様</li><li>①アセスメントで実証済み → 横展開</li></ul></div>
+      <div class="card p"><h3>軽量バックエンド <span class="tag">TierB</span></h3>
+        <ul><li>認証・保存・課金：Supabase＋Vercel</li><li>買い切り<b>ライセンスキー</b>（Gumroad/Lemon Squeezy）</li><li>サーバレスでPDF生成・ファイル処理</li></ul></div>
+      <div class="card p"><h3>評価・レッドチーム <span class="tag">quality</span></h3>
+        <ul><li>評価セット雛形（代表20–50件・機密除去）</li><li>LLM-as-judge校正＋一貫性テスト</li><li>プロンプトインジェクション点検チェックリスト</li></ul></div>
+      <div class="card p"><h3>GTM・法務 <span class="tag">go-to-market</span></h3>
+        <ul><li>ランディング／価格ページ雛形</li><li>利用規約・プライバシー・データ取扱いの標準文</li><li>「診断→コンサル」導線テンプレ</li></ul></div>
+      <div class="card p"><h3>資産ライブラリ <span class="tag">reuse</span></h3>
+        <ul><li>プロンプト・rubric・様式を版管理（UC-22相当）</li><li>各アプリの学び→基盤へ還流</li><li>他社インスタンス量産の元</li></ul></div>
+    </div>
+  </div></section>
+
+  <!-- 2 portfolio -->
+  <section class="blk"><div class="wrap">
+    <h2><span class="no">02</span>アプリ・ポートフォリオ（20本）</h2>
+    <p class="sub">3領域を横断。UC＝社内ユースケース資料の対応番号、PT＝開発パターン、Tier＝A(HTML＋キット)/B(軽量バックエンド)。収益は買い切り・診断→コンサル・社内を明記。</p>
+    <div class="legend">
+      <span><i style="background:var(--sell)"></i>外販プロダクト</span>
+      <span><i style="background:var(--consult)"></i>コンサル高速化</span>
+      <span><i style="background:var(--sec)"></i>セキュリティ/ガバナンス</span>
+      <span><span class="chip tierA">A</span> HTML＋キット</span>
+      <span><span class="chip tierB">B</span> 軽量バックエンド</span>
+      <span><span class="chip done">済</span> 完成済み</span>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>ID</th><th>アプリ</th><th>領域</th><th>Tier</th><th>UC/PT</th><th>買い手・利用者</th><th>収益モデル</th><th>主要KPI</th><th>波</th></tr></thead>
+        <tbody>
+          <tr class="catstripe" style="--c:var(--sec)"><td class="id">A01</td><td><b>AIケイパビリティ成熟度アセスメント</b><br><span style="color:var(--ink-3)">証跡→CMMI5段階×10次元・4層</span></td><td><span class="chip sec">セキュ</span><span class="chip sell">外販</span></td><td><span class="chip done">済</span><span class="chip tierB">B化予定</span></td><td>UC-29/23 · PT1</td><td>人材開発・AI推進／コンサル</td><td>買い切り＋診断→コンサル</td><td>受検数・改善度</td><td>済</td></tr>
+          <tr class="catstripe" style="--c:var(--sec)"><td class="id">A02</td><td><b>AIガバナンス成熟度診断（組織版）</b><br><span style="color:var(--ink-3)">ISO42001/NIST RMFチェック</span></td><td><span class="chip sec">セキュ</span><span class="chip sell">外販</span></td><td><span class="chip tierA">A</span></td><td>UC-29 · PT1</td><td>経営・情シス・AI推進</td><td>診断→コンサル</td><td>診断数・要改善検出</td><td>W1</td></tr>
+          <tr class="catstripe" style="--c:var(--sec)"><td class="id">A03</td><td><b>データ投入可否ゲート</b><br><span style="color:var(--ink-3)">区分判定＋匿名化提案</span></td><td><span class="chip sec">セキュ</span></td><td><span class="chip tierA">A</span></td><td>G1/UC-32 · PT1</td><td>全社員・AI推進</td><td>社内→他社ライセンス</td><td>誤投入の未然防止数</td><td>W1</td></tr>
+          <tr class="catstripe" style="--c:var(--sec)"><td class="id">A04</td><td><b>AI利用ポリシー・チェッカー</b><br><span style="color:var(--ink-3)">計画/プロンプトを自社規程に照合</span></td><td><span class="chip sec">セキュ</span></td><td><span class="chip tierA">A</span></td><td>UC-49 · PT1</td><td>AI推進・法務</td><td>買い切り＋社内</td><td>違反検出・是正率</td><td>W2</td></tr>
+          <tr class="catstripe" style="--c:var(--sec)"><td class="id">A05</td><td><b>プロンプトインジェクション/脆弱性テスター</b><br><span style="color:var(--ink-3)">OWASP LLM Top10・MITRE ATLAS</span></td><td><span class="chip sec">セキュ</span><span class="chip sell">外販</span></td><td><span class="chip tierA">A</span></td><td>UC-48 · PT2</td><td>開発・セキュリティ</td><td>買い切り</td><td>検出脆弱性数</td><td>W3</td></tr>
+          <tr class="catstripe" style="--c:var(--sec)"><td class="id">A06</td><td><b>PII・機密リダクター</b><br><span style="color:var(--ink-3)">検出→マスキング→対応表</span></td><td><span class="chip sec">セキュ</span><span class="chip consult">コンサル</span></td><td><span class="chip tierB">B</span></td><td>UC-09 · PT3</td><td>コンサル・管理部門</td><td>買い切り＋社内</td><td>検出率・処理時間</td><td>W10</td></tr>
+          <tr class="catstripe" style="--c:var(--sec)"><td class="id">A07</td><td><b>AIツール/ベンダー審査キット</b><br><span style="color:var(--ink-3)">DPA・学習利用・保管地・認証スコア</span></td><td><span class="chip sec">セキュ</span><span class="chip consult">コンサル</span></td><td><span class="chip tierA">A</span></td><td>D9/A1 · PT1</td><td>情シス・調達・AI推進</td><td>買い切り＋社内</td><td>審査所要・可否明確化</td><td>W4</td></tr>
+          <tr class="catstripe" style="--c:var(--sec)"><td class="id">A08</td><td><b>AI成果物 来歴・開示チェッカー</b><br><span style="color:var(--ink-3)">出典・未検証主張・生成物表示</span></td><td><span class="chip sec">セキュ</span><span class="chip consult">コンサル</span></td><td><span class="chip tierA">A</span></td><td>G6 · PT2</td><td>コンサル・広報</td><td>買い切り＋社内</td><td>未検証発信の抑止</td><td>W4</td></tr>
+          <tr class="catstripe" style="--c:var(--consult)"><td class="id">A09</td><td><b>提案書ストラクチャ・ジェネレーター</b><br><span style="color:var(--ink-3)">論点→ストーリー→スライド構成＋自己検品20項目</span></td><td><span class="chip consult">コンサル</span><span class="chip sell">外販</span></td><td><span class="chip tierA">A</span></td><td>UC-12 · PT1</td><td>コンサル・提案担当</td><td>買い切り＋社内</td><td>作成時間削減・採択率</td><td>W3</td></tr>
+          <tr class="catstripe" style="--c:var(--consult)"><td class="id">A10</td><td><b>会議自動化パック v2</b><br><span style="color:var(--ink-3)">議事録・決定・タスク（貼付/連携）</span></td><td><span class="chip consult">コンサル</span></td><td><span class="chip tierB">B</span></td><td>UC-16 · PT6</td><td>PM・全社員</td><td>社内＋買い切り</td><td>議事録時間・取りこぼし</td><td>W6</td></tr>
+          <tr class="catstripe" style="--c:var(--consult)"><td class="id">A11</td><td><b>RFP/提案要件アナライザー</b><br><span style="color:var(--ink-3)">要件抽出・落とし穴・勝ち筋・工数レンジ</span></td><td><span class="chip consult">コンサル</span><span class="chip sell">外販</span></td><td><span class="chip tierA">A</span></td><td>UC-59 · PT2</td><td>提案リーダー</td><td>買い切り＋社内</td><td>抜け漏れ削減・勝率</td><td>W6</td></tr>
+          <tr class="catstripe" style="--c:var(--consult)"><td class="id">A12</td><td><b>競合・市場ベンチマーク更新</b><br><span style="color:var(--ink-3)">watchlist→出典付きブリーフィング</span></td><td><span class="chip consult">コンサル</span></td><td><span class="chip tierB">B</span></td><td>UC-05/53 · PT6</td><td>アカウント・調査担当</td><td>社内＋サブスク候補</td><td>更新頻度・変化検知数</td><td>W7</td></tr>
+          <tr class="catstripe" style="--c:var(--consult)"><td class="id">A13</td><td><b>As-Is/To-Be プロセス可視化</b><br><span style="color:var(--ink-3)">メモ→プロセス図＋課題→施策</span></td><td><span class="chip consult">コンサル</span></td><td><span class="chip tierA">A</span></td><td>UC-01系 · PT1</td><td>業務改革・DXコンサル</td><td>買い切り＋社内</td><td>図化時間・合意形成</td><td>W7</td></tr>
+          <tr class="catstripe" style="--c:var(--consult)"><td class="id">A14</td><td><b>KPIツリー／ロジックモデル ビルダー</b><br><span style="color:var(--ink-3)">目的→KPIツリー→測定設計</span></td><td><span class="chip consult">コンサル</span><span class="chip sell">外販</span></td><td><span class="chip tierA">A</span></td><td>UC-04系 · PT1</td><td>事業企画・コンサル</td><td>買い切り</td><td>設計時間・指標妥当性</td><td>W8</td></tr>
+          <tr class="catstripe" style="--c:var(--consult)"><td class="id">A15</td><td><b>ワークプラン/工数見積キット</b><br><span style="color:var(--ink-3)">WBS・マイルストン・工数レンジ</span></td><td><span class="chip consult">コンサル</span></td><td><span class="chip tierA">A</span></td><td>UC-59 · PT1</td><td>マネージャー</td><td>社内＋買い切り</td><td>見積時間・乖離率</td><td>W5</td></tr>
+          <tr class="catstripe" style="--c:var(--consult)"><td class="id">A16</td><td><b>エビデンス・リサーチ アシスタント</b><br><span style="color:var(--ink-3)">出典付き調査→URL検証→一覧化</span></td><td><span class="chip consult">コンサル</span><span class="chip sell">外販</span></td><td><span class="chip tierB">B</span></td><td>UC-02系 · PT2</td><td>コンサル・リサーチャー</td><td>買い切り＋社内</td><td>出典正答率・調査時間</td><td>W8</td></tr>
+          <tr class="catstripe" style="--c:var(--sell)"><td class="id">A17</td><td><b>生成AI研修・確認テスト ジェネレーター</b><br><span style="color:var(--ink-3)">階層別カリキュラム＋クイズ</span></td><td><span class="chip sell">外販</span><span class="chip consult">コンサル</span></td><td><span class="chip tierA">A</span></td><td>UC-24 · PT1</td><td>人材開発・研修</td><td>買い切り＋研修販売</td><td>受講完了・理解度</td><td>W9</td></tr>
+          <tr class="catstripe" style="--c:var(--sell)"><td class="id">A18</td><td><b>契約書・NDA 一次スクリーニング</b><br><span style="color:var(--ink-3)">自社標準条項チェック（要閉域）</span></td><td><span class="chip sec">セキュ</span><span class="chip consult">コンサル</span></td><td><span class="chip tierB">B</span></td><td>UC-26/58 · PT8</td><td>法務・M&Aコンサル</td><td>社内先行→限定外販</td><td>検出条項・レビュー短縮</td><td>W11</td></tr>
+          <tr class="catstripe" style="--c:var(--sell)"><td class="id">A19</td><td><b>議事録→タスク自動起票</b><br><span style="color:var(--ink-3)">メール/Slack連携</span></td><td><span class="chip sell">外販</span></td><td><span class="chip tierB">B</span></td><td>UC-16派生 · PT6</td><td>チーム・PM</td><td>買い切り／将来サブスク</td><td>起票率・期限遵守</td><td>W11</td></tr>
+          <tr class="catstripe" style="--c:var(--sell)"><td class="id">A20</td><td><b>AIリテラシー・チームダッシュボード</b><br><span style="color:var(--ink-3)">複数人の診断を集計・PDF</span></td><td><span class="chip sell">外販</span><span class="chip sec">セキュ</span></td><td><span class="chip tierB">B</span></td><td>UC-23/29 · PT8</td><td>人材開発・経営</td><td>診断→コンサル＋買い切り</td><td>組織分布・改善トレンド</td><td>W12</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="sub" style="margin-top:12px">内訳：セキュリティ/ガバナンス <b>8本</b>（A02–A08, A18）／コンサル高速化 <b>8本</b>（A09–A16）／外販起点 <b>4本</b>（A01, A17, A19, A20）。多くが2領域にまたがり、診断系は「診断→コンサル」導線を兼ねる。既存プロトタイプ（会議パック=A10、競合モニタ=A12、エビデンス調査=A16、①=A01）を再利用して初速を出す。</p>
+  </div></section>
+
+  <!-- 3 schedule -->
+  <section class="blk"><div class="wrap">
+    <h2><span class="no">03</span>13週スケジュール（3波）</h2>
+    <p class="sub">各アプリは社内標準のP1–P6を圧縮して通す（TierA≈4–8日、TierB≈8–12日）。要件定義はまとめて先行バッチ化し、着手のたびに立ち止まらない。</p>
+    <div class="sched">
+      <div class="wave"><div class="wh" style="--wc:var(--accent)"><span class="wk">W1–2</span><span class="wt">基盤スプリント＋要件バッチ</span><span class="wg">Gate: 基盤DoD＋Wave1のP1承認</span></div>
+        <div class="wb">共通基盤（shell/型/軽量BE/評価/GTM/資産）を構築。Wave1〜2アプリの<b>P1要件定義</b>（目的・現状値・KPI・Go基準・データ区分）を一括作成し事業部代表＋ガバナンスで承認。①のB化着手＋セキュリティ即効2本を先行。
+          <div class="apps"><span class="a">基盤</span><span class="a">A03</span><span class="a">A04</span></div></div></div>
+      <div class="wave"><div class="wh" style="--wc:var(--sec)"><span class="wk">W3–5</span><span class="wt">第1波：セキュリティ核＋コンサル即効（全TierA）</span><span class="wg">Gate: 各アプリ 評価合格＋セキュリティ審査</span></div>
+        <div class="wb">型キットを最大再利用。売り物・社内即効の軽い6本を連続リリース。
+          <div class="apps"><span class="a">A02</span><span class="a">A05</span><span class="a">A07</span><span class="a">A08</span><span class="a">A09</span><span class="a">A15</span></div></div></div>
+      <div class="wave"><div class="wh" style="--wc:var(--consult)"><span class="wk">W6–9</span><span class="wt">第2波：コンサル加速＋プロトタイプ製品化（A/B混在）</span><span class="wg">Gate: パイロット実測＋可搬性テスト(G5)</span></div>
+        <div class="wb">既存プロトタイプを製品化し、コンサル高速化を厚くする。TierB（軽量バックエンド）に初挑戦。
+          <div class="apps"><span class="a">A11</span><span class="a">A13</span><span class="a">A14</span><span class="a">A16</span><span class="a">A10</span><span class="a">A12</span><span class="a">A17</span></div></div></div>
+      <div class="wave"><div class="wh" style="--wc:var(--sell)"><span class="wk">W10–12</span><span class="wt">第3波：TierB・外販・高リスク領域</span><span class="wg">Gate: 高リスク審査（閉域/契約/PII）＋課金導線</span></div>
+        <div class="wb">バックエンド付き・売り物・要注意領域。契約/PIIは社内先行＋限定外販。
+          <div class="apps"><span class="a">A06</span><span class="a">A18</span><span class="a">A19</span><span class="a">A20</span></div></div></div>
+      <div class="wave"><div class="wh" style="--wc:var(--accent)"><span class="wk">W13</span><span class="wt">ハードニング・パッケージング・GTM・予備</span><span class="wg">Gate: 販売可否・セキュリティ再審査</span></div>
+        <div class="wb">上位5本を磨き込み（ランディング・価格・ドキュメント・再セキュリティ審査）。バッファとして遅延吸収。四半期レビュー準備。</div></div>
+    </div>
+  </div></section>
+
+  <!-- 4 lifecycle -->
+  <section class="blk"><div class="wrap">
+    <h2><span class="no">04</span>1アプリの作り方（要件定義→リリース→定着）</h2>
+    <p class="sub">社内標準の6フェーズを各アプリに適用。<b>ゲート未達で次へ進まない</b>のがPoC死の防止装置。太字ゲートは非通過ならリリースしない。</p>
+    <div class="phases">
+      <div class="ph"><div class="pn">P1</div><div class="pt">要件定義</div><div class="pd">目的・現状値・KPI・Go/No-Go・利用者/場面・<b>データ区分</b>を1枚に。</div><div class="gate"><b>Gate</b> KPI＋データ区分をガバナンス承認</div></div>
+      <div class="ph"><div class="pn">P2</div><div class="pt">設計</div><div class="pd">プロンプト/rubric・データの流れ・<b>評価チェックリスト</b>・人間承認点。可搬性（代替LLM）前提。</div><div class="gate"><b>Gate</b> ガバナンスレビュー通過</div></div>
+      <div class="ph"><div class="pn">P3</div><div class="pt">プロトタイプ検証</div><div class="pd">最小構成＋評価セット20–50件で採点。失敗分類→改善2–3周。代替ツール1回確認。</div><div class="gate"><b>Gate</b> 合格率がGo基準超え</div></div>
+      <div class="ph"><div class="pn">P4</div><div class="pt">パイロット</div><div class="pd">灯台部門/自分の実案件で実測。Before-After比較。使われない理由を聞く。</div><div class="gate"><b>Gate</b> 実測効果＋継続利用</div></div>
+      <div class="ph"><div class="pn">P5</div><div class="pt">リリース</div><div class="pd">利用手引き（冒頭にデータ区分表）・説明・窓口・資産登録。外販は価格/ライセンス/LP。</div><div class="gate"><b>Gate</b> セキュリティ/ガバナンス審査＋手引き承認</div></div>
+      <div class="ph"><div class="pn">P6</div><div class="pt">定着・改善</div><div class="pd">利用率モニタ・失敗事例を評価セットに追加・四半期で継続/改修/廃止判定。</div><div class="gate">四半期レビュー</div></div>
+    </div>
+    <div class="callout" style="margin-top:14px"><b>Definition of Done（全アプリ共通・これが揃って“完成”）：</b>
+      ①評価セットで合格率がGo基準超え ②ライト/ダーク＋レスポンシブ＋アクセシビリティ ③<b>セキュリティ/ガバナンス審査パス</b>（データ取扱い・PII・インジェクション・IP/ライセンス・人間承認）
+      ④利用手引き＋データ区分表 ⑤PDF/成果物出力 ⑥（外販時）価格・ライセンス・LP・規約 ⑦資産ライブラリ登録。
+    </div>
+  </div></section>
+
+  <!-- 5 GTM -->
+  <section class="blk"><div class="wrap">
+    <h2><span class="no">05</span>収益化とGTM</h2>
+    <p class="sub">運用負荷の重いサブスクは当面避け、<b>買い切り</b>・<b>診断→コンサル誘導</b>・<b>社内利用</b>の3本柱で回す。</p>
+    <div class="grid g3">
+      <div class="card p"><h3>買い切り／ライセンス</h3><p>キット・テンプレ・TierBツールを買い切り販売（Gumroad/Lemon Squeezyでライセンスキー発行、運用最小）。まずは A05/A07/A09/A11/A14 など単体で完結するもの。</p></div>
+      <div class="card p"><h3>診断→コンサル誘導</h3><p>無料/低額の診断（A01/A02/A20）を入口に、深掘りレポート＝有料、さらに改善支援＝コンサル案件へ。Rise文脈の主力導線。CTAと事例を各診断に標準搭載。</p></div>
+      <div class="card p"><h3>社内利用（デリバリー高速化）</h3><p>A10/A12/A13/A15/A16/A18 は自社案件で先に使い、実測（時間削減・品質）を取得。この実測が外販の根拠と価格の裏付けになる。</p></div>
+    </div>
+    <div class="callout" style="margin-top:12px"><b>価格の目安（仮説・要検証）：</b>買い切りキット ¥9,800–¥49,800／診断 無料〜¥30,000（深掘りレポート）／チーム版・社内導入は個別見積。まず1本で価格テストしてから横展開する。</div>
+  </div></section>
+
+  <!-- 6 governance -->
+  <section class="blk"><div class="wrap">
+    <h2><span class="no">06</span>ガバナンス・品質バー（全アプリ必須）</h2>
+    <p class="sub">セキュリティ/ガバナンスは加点でなく<b>ゲート</b>。1本でも事故れば全体の信頼を失うため、ここは妥協しない。</p>
+    <div class="grid g2">
+      <div class="card p"><h3>データ取扱いの既定</h3><ul>
+        <li>TierA：入力は<b>ブラウザ内処理・非保存</b>を既定に。</li>
+        <li>TierB：リージョン管理・学習利用オフ・保存最小化。顧客秘密/個人情報は原則扱わない（扱うA06/A18は閉域・同意・匿名化前提）。</li>
+        <li>「型」の会社ポリシー差し込みで、各社基準に適合。</li></ul></div>
+      <div class="card p"><h3>リリース前チェック</h3><ul>
+        <li>外部入力を扱うアプリは<b>プロンプトインジェクション点検</b>必須（A05の自己適用）。</li>
+        <li>PII・著作権/ライセンス・来歴表示・人間最終判断の確認。</li>
+        <li>評価の妥当性・一貫性・公平性（測定基準に準拠）。</li>
+        <li>規約・プライバシー・免責の明記（人事評価に直結させない等）。</li></ul></div>
+    </div>
+  </div></section>
+
+  <!-- 7 risks -->
+  <section class="blk"><div class="wrap">
+    <h2><span class="no">07</span>リスクと対処</h2>
+    <div class="tablewrap"><table style="min-width:640px">
+      <thead><tr><th>リスク</th><th>影響</th><th>対処</th></tr></thead>
+      <tbody>
+        <tr><td><b>1人のキャパ超過</b></td><td>遅延・品質低下</td><td>共通基盤の徹底再利用／TierA比率を上げる／週次で残ゲートを可視化</td></tr>
+        <tr><td><b>数優先で浅くなる</b></td><td>売れない・使われない</td><td>DoDとゲートを死守。危険時は<b>「14本磨き＋6本β」</b>へ切替（判断基準：W8終了時に良品6本未満なら数を落とす）</td></tr>
+        <tr><td><b>高リスク領域（契約/DD/PII）</b></td><td>情報事故・信頼失墜</td><td>閉域前提・社内先行・限定外販。A06/A18は法務レビュー必須</td></tr>
+        <tr><td><b>課金/税/サポート</b></td><td>運用負荷</td><td>買い切り＋外部決済で運用最小化。サブスクは実需確認後</td></tr>
+        <tr><td><b>モデルコスト/変動</b></td><td>採算・可搬性</td><td>プロンプト/様式を汎用形式で外部化（G5）。代替LLMで動作確認</td></tr>
+        <tr><td><b>評価の主観・不安定</b></td><td>採点の信頼性</td><td>評価セット＋校正＋一貫性テスト。診断は「証跡不足＝暫定」を明示</td></tr>
+      </tbody>
+    </table></div>
+  </div></section>
+
+  <!-- 8 metrics -->
+  <section class="blk"><div class="wrap">
+    <h2><span class="no">08</span>成功の測り方</h2>
+    <div class="grid g3">
+      <div class="card p"><h3>アプリ単位</h3><ul><li>アクティベーション率・継続利用</li><li>（外販）購入率・NPS</li><li>作業時間削減（Before実測）</li></ul></div>
+      <div class="card p"><h3>ポートフォリオ</h3><ul><li>リリース本数／ゲート通過率</li><li>買い切り売上・診断→コンサル案件数</li><li>社内デリバリー削減時間の合計</li></ul></div>
+      <div class="card p"><h3>統制</h3><ul><li>セキュリティ事故＝0（最優先）</li><li>インジェクション点検実施率100%</li><li>データ区分承認100%</li></ul></div>
+    </div>
+  </div></section>
+
+  <!-- 9 next -->
+  <section class="blk"><div class="wrap">
+    <h2><span class="no">09</span>最初の2週間（今すぐ着手）</h2>
+    <ol class="steps">
+      <li><b>基盤スプリント開始</b>：アプリshell＋型キット枠＋PDF出力を1本化（①アセスメントを土台に抽出）。</li>
+      <li><b>要件バッチ（P1）</b>：Wave1の6本＋A03/A04について、目的・現状値・KPI・Go基準・<b>データ区分</b>を各1枚で作成。</li>
+      <li><b>軽量バックエンド雛形</b>：Supabase＋Vercel＋買い切りライセンスの最小構成を1つ立てる（後のTierB全部で再利用）。</li>
+      <li><b>セキュリティ即効2本を出す</b>：A03 データ投入可否ゲート／A04 ポリシー・チェッカー（型の会社ポリシー差し込みを流用）。</li>
+      <li><b>評価・レッドチームの型</b>：評価セット雛形＋インジェクション点検チェックリストを用意（以降全アプリで使う）。</li>
+      <li><b>GTM下地</b>：ランディング/価格ページ雛形＋規約・データ取扱い標準文を用意し、A01の診断→コンサル導線を先行実装。</li>
+    </ol>
+    <div class="callout printnote" style="margin-top:14px">この計画は <code>planning/roadmap-3month-20apps.html</code>。右上「📄 PDF」→ ブラウザの「PDFとして保存」で配布用PDFになります。前提（体制・技術・重心・収益）が変われば各表はすぐ再構成します。</div>
+  </div></section>
+
+  <footer class="wrap">
+    <b>アプリ・ユースケースラボ</b> — AIアプリ20本 3ヶ月実行計画。社内AIユースケース資料の標準開発プロセス（P1–P6）・優先マトリクス、AIケイパビリティ成熟度モデルの設計思想に基づく。数値・価格は仮説であり検証対象。
+  </footer>
+</main>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  document.getElementById('themeBtn').addEventListener('click',function(){
+    var c=root.getAttribute('data-theme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;
+    root.setAttribute('data-theme',!c?(d?'light':'dark'):(c==='dark'?'light':'dark'));
+  });
+  document.getElementById('pdfBtn').addEventListener('click',function(){window.print();});
+})();
+</script>
